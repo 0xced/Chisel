@@ -1,0 +1,40 @@
+<Project>
+
+<!--  <UsingTask TaskName="ChiselTask" AssemblyFile="$([MSBuild]::NormalizePath('$(MSBuildThisFileDirectory)', '..', 'tasks', 'Chisel.dll'))" />-->
+  <UsingTask TaskName="ChiselTask" AssemblyFile="$([MSBuild]::NormalizePath('$(MSBuildThisFileDirectory)', '..', 'bin', 'Debug', 'netstandard2.0', 'Chisel.dll'))" />
+
+  <Target Name="Chisel" AfterTargets="ResolvePackageAssets" DependsOnTargets="ChiselDefaultGraph" Condition="$(ChiselEnabled) == 'true'">
+    <ItemGroup>
+      <ChiselPackages Include="$(ChiselPackages)" />
+    </ItemGroup>
+    <ChiselTask
+          ProjectAssetsFile="$(ProjectAssetsFile)"
+          TargetFramework="$(TargetFramework)"
+          RuntimeIdentifier="$(RuntimeIdentifier)"
+          IntermediateOutputPath="$(IntermediateOutputPath)"
+          Graph="$(ChiselGraph)"
+          ChiselPackages="@(ChiselPackages)"
+          RuntimeAssemblies="@(RuntimeCopyLocalItems)"
+          NativeLibraries="@(NativeCopyLocalItems)">
+      <Output TaskParameter="RemoveRuntimeAssemblies" ItemName="ChiselRemoveRuntimeCopyLocalItems" />
+      <Output TaskParameter="RemoveNativeLibraries" ItemName="ChiselRemoveNativeCopyLocalItems" />
+      <Output TaskParameter="GraphPath" ItemName="ChiselGraphPath" />
+    </ChiselTask>
+    <ItemGroup>
+      <RuntimeCopyLocalItems Remove="@(ChiselRemoveRuntimeCopyLocalItems)" />
+      <NativeCopyLocalItems Remove="@(ChiselRemoveNativeCopyLocalItems)" />
+      <FileWrites Include="@(ChiselGraphPath)" />
+    </ItemGroup>
+  </Target>
+
+  <Target Name="ChiselDefaultGraph" Condition="$(ChiselGraph) == ''">
+    <Exec Command="dot -V" IgnoreExitCode="true" StandardOutputImportance="low" StandardErrorImportance="low">
+      <Output TaskParameter="ExitCode" PropertyName="ChiselDotExitCode" />
+    </Exec>
+    <PropertyGroup>
+      <ChiselGraph Condition="$(ChiselDotExitCode) == '0'">$(MSBuildProjectName).Chisel.svg</ChiselGraph>
+      <ChiselGraph Condition="$(ChiselDotExitCode) != '0'">$(MSBuildProjectName).Chisel.gv</ChiselGraph>
+    </PropertyGroup>
+  </Target>
+
+</Project>

@@ -1,0 +1,7 @@
+<Project>
+
+  <PropertyGroup>
+    <ChiselEnabled Condition="$(ChiselEnabled) == ''">true</ChiselEnabled>
+  </PropertyGroup>
+
+</Project>

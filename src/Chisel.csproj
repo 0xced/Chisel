@@ -1,7 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup Label="Compiling">
@@ -20,7 +21,23 @@
     <DebugType>embedded</DebugType>
     <EmbedAllSources>true</EmbedAllSources>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <!-- https://learn.microsoft.com/en-us/visualstudio/msbuild/tutorial-custom-task-code-generation#bundle-dependencies-into-the-package -->
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
+    <BuildOutputTargetFolder>tasks</BuildOutputTargetFolder>
+    <NoWarn>NU5100</NoWarn>
+    <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
   </PropertyGroup>
+
+  <ItemGroup Label="Packaging">
+    <Content Include="build/Chisel.props;build/Chisel.targets" Pack="true" PackagePath="build/" />
+  </ItemGroup>
+
+  <Target Label="Packaging" Name="CopyProjectReferencesToPackage" DependsOnTargets="ResolveReferences">
+    <ItemGroup>
+      <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths)" TargetPath="%(ReferenceCopyLocalPaths.DestinationSubPath)" />
+    </ItemGroup>
+  </Target>
 
   <PropertyGroup Label="Packaging Metadata">
     <Authors>Cédric Luthi</Authors>
@@ -50,12 +67,21 @@
     <RestoreLockedMode Condition="$(ContinuousIntegrationBuild) == 'true'">true</RestoreLockedMode>
   </PropertyGroup>
 
+  <PropertyGroup Label="Developing" Condition="$(Configuration) == 'Debug'">
+    <!-- Doing <Import Project="../../src/build/Chisel.targets" /> locks the Chisel.dll, so don't try 10 times, just once to get the process id to kill -->
+    <CopyRetryCount>1</CopyRetryCount>
+  </PropertyGroup>
+
   <ItemGroup Label="Restoring">
     <None Update="packages.lock.json" Visible="false" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="CliWrap" Version="3.6.6" PrivateAssets="all" />
+    <PackageReference Include="GiGraph.Dot" Version="3.0.1" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.9.5" PrivateAssets="all" ExcludeAssets="runtime" />
     <PackageReference Include="MinVer" Version="5.0.0" PrivateAssets="all" />
+    <PackageReference Include="NuGet.ProjectModel" Version="6.9.1" PrivateAssets="all" />
   </ItemGroup>
 
   <Target Name="ValidateNuGetPackage" AfterTargets="Pack">
