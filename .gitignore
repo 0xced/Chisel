@@ -1,0 +1,6 @@
+*.user
+bin/
+obj/
+coverage/
+.idea/
+.vs/
