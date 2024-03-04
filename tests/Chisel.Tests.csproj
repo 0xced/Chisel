@@ -1,0 +1,82 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" Version="6.0.0" PrivateAssets="all" />
+    <PackageReference Include="FluentAssertions" Version="6.12.0" />
+    <PackageReference Include="GitHubActionsTestLogger" Version="2.3.3" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.7.2" />
+    <PackageReference Include="PublicApiGenerator" Version="11.0.0" />
+    <PackageReference Include="ReportGenerator" Version="5.1.25" PrivateAssets="all" />
+    <PackageReference Include="Verify.Xunit" Version="21.2.0" />
+    <PackageReference Include="xunit" Version="2.5.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.1" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <VSTestLogger Include="GitHubActions" Visible="false" Condition="$(ContinuousIntegrationBuild) == 'true'" />
+    <VSTestLogger Include="trx%3BLogFileName=TestResults-$(TargetFramework).trx" Visible="false" Condition="$(ContinuousIntegrationBuild) == 'true'" />
+    <VSTestLogger Include="html%3BLogFileName=TestResults-$(TargetFramework).html" Visible="false" />
+  </ItemGroup>
+
+  <PropertyGroup Label="Coverage">
+    <RootDirectory>$([System.IO.Directory]::GetParent($(MSBuildProjectDirectory)))</RootDirectory>
+    <CoverageReportDirectory>$([System.IO.Path]::Combine($(RootDirectory),'coverage',$(TargetFramework)))</CoverageReportDirectory>
+    <VSTestResultsDirectory Condition="$(ContinuousIntegrationBuild) == 'true'">$(RootDirectory)</VSTestResultsDirectory>
+    <VSTestResultsDirectory Condition="$(ContinuousIntegrationBuild) != 'true'">$([System.IO.Path]::Combine($(CoverageReportDirectory),'results'))</VSTestResultsDirectory>
+    <VSTestCollect>XPlat Code Coverage</VSTestCollect>
+    <VSTestLogger>@(VSTestLogger)</VSTestLogger>
+  </PropertyGroup>
+
+  <Target Name="GenerateHtmlCoverageReport" AfterTargets="VSTest" Condition="$(TargetFramework) != ''">
+    <ItemGroup>
+      <CoverletReport Include="$(VSTestResultsDirectory)/*/coverage.cobertura.xml" />
+    </ItemGroup>
+    <ReportGenerator ReportFiles="@(CoverletReport)" TargetDirectory="$(CoverageReportDirectory)" ReportTypes="Html;TextSummary" />
+  </Target>
+
+  <!-- Because of https://github.com/microsoft/vstest/issues/2378 -->
+  <Target Name="MoveCoverletReport" AfterTargets="GenerateHtmlCoverageReport" Condition="$(TargetFramework) != ''">
+    <Move SourceFiles="@(CoverletReport)" DestinationFolder="$(CoverageReportDirectory)" />
+    <PropertyGroup>
+      <CoverletReport>@(CoverletReport)</CoverletReport>
+    </PropertyGroup>
+    <ItemGroup>
+      <CoverletReportParentDirectory Include="$([System.IO.Path]::Combine($(CoverletReport),'..'))" Condition="$(CoverletReport) != ''" />
+    </ItemGroup>
+    <RemoveDir Directories="@(CoverletReportParentDirectory)" />
+  </Target>
+
+  <Target Name="DisplayCoverageSummary" AfterTargets="MoveCoverletReport" Condition="$(TargetFramework) != ''">
+    <PropertyGroup>
+      <CatCommand Condition="!$([MSBuild]::IsOSPlatform('Windows'))">cat</CatCommand>
+      <CatCommand Condition="$([MSBuild]::IsOSPlatform('Windows'))">type</CatCommand>
+    </PropertyGroup>
+    <Exec WorkingDirectory="$(CoverageReportDirectory)" Command="$(CatCommand) Summary.txt" />
+  </Target>
+  
+  <Target Name="OpenHtmlCoverageReport" AfterTargets="MoveCoverletReport" Condition="$(TargetFramework) != '' AND $(ContinuousIntegrationBuild) != 'true'">
+    <PropertyGroup>
+      <OpenCommand Condition="$([MSBuild]::IsOSPlatform('Linux'))">xdg-open</OpenCommand>
+      <OpenCommand Condition="$([MSBuild]::IsOSPlatform('OSX'))">open</OpenCommand>
+      <OpenCommand Condition="$([MSBuild]::IsOSPlatform('Windows'))">explorer</OpenCommand>
+    </PropertyGroup>
+    <!-- executing "explorer path\to\index.html" returns exit code 1, so we ignore it -->
+    <Exec WorkingDirectory="$(CoverageReportDirectory)" Command="$(OpenCommand) index.html" Condition="$(OpenCommand) != ''" IgnoreExitCode="true" />
+  </Target>
+
+  <ItemGroup>
+    <ProjectReference Include="../src/Chisel.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="PublicApi.*.cs" />
+    <None Include="PublicApi.*.cs" />
+  </ItemGroup>
+
+</Project>
