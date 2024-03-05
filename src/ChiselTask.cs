@@ -86,11 +86,16 @@ public class ChiselTask : Task
         try
         {
             var graph = new DependencyGraph(ProjectAssetsFile, TargetFramework, RuntimeIdentifier);
-            var (removed, notFound) = graph.Remove(ChiselPackages.Select(e => e.ItemSpec));
+            var (removed, notFound, removedRoots) = graph.Remove(ChiselPackages.Select(e => e.ItemSpec));
 
             foreach (var packageName in notFound)
             {
                 Log.LogWarning($"The package {packageName} (defined in ChiselPackages) was not found in the dependency graph");
+            }
+
+            foreach (var packageName in removedRoots)
+            {
+                Log.LogWarning($"The package {packageName} (defined in ChiselPackages) can't be removed from the dependency graph because it's a root");
             }
 
             RemoveRuntimeAssemblies = RuntimeAssemblies.Where(item => removed.Contains(item.GetMetadata("NuGetPackageId"))).ToArray();
@@ -103,13 +108,13 @@ public class ChiselTask : Task
 
             if (Graph != Path.GetFileName(Graph))
             {
-                Log.LogWarning($"The ChiselGraph property ({Graph}) must be a file name that does not include a directory.");
+                Log.LogWarning($"The ChiselGraph property ({Graph}) must be a file name that does not include a directory");
                 return true;
             }
 
             if (!Directory.Exists(IntermediateOutputPath))
             {
-                Log.LogWarning($"The IntermediateOutputPath property ({IntermediateOutputPath}) must point to an existing directory.");
+                Log.LogWarning($"The IntermediateOutputPath property ({IntermediateOutputPath}) must point to an existing directory");
                 return true;
             }
 

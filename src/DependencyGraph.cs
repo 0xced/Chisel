@@ -66,17 +66,24 @@ internal sealed class DependencyGraph
         }
     }
 
-    internal (HashSet<string> Removed, HashSet<string> NotFound) Remove(IEnumerable<string> packages)
+    internal (HashSet<string> Removed, HashSet<string> NotFound, HashSet<string> RemovedRoots) Remove(IEnumerable<string> packages)
     {
-        var notFound = new HashSet<string>();
-        var dependencies = new HashSet<Package>();
+        var notFound = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        var removedRoots = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        var dependencies = new HashSet<Package>(PackageComparer.Instance);
         foreach (var packageName in packages.Distinct())
         {
             var packageDependency = _reverseGraph.Keys.SingleOrDefault(e => e.Name.Equals(packageName, StringComparison.OrdinalIgnoreCase));
             if (packageDependency == null)
             {
-                if (_roots)
-                notFound.Add(packageName);
+                if (_roots.Any(e => e.Name.Equals(packageName, StringComparison.OrdinalIgnoreCase)))
+                {
+                    removedRoots.Add(packageName);
+                }
+                else
+                {
+                    notFound.Add(packageName);
+                }
             }
             else
             {
@@ -90,7 +97,7 @@ internal sealed class DependencyGraph
             Restore(dependency, dependencies);
         }
 
-        return ([.._reverseGraph.Keys.Where(e => !e.Keep).Select(e => e.Name)], notFound);
+        return ([.._reverseGraph.Keys.Where(e => !e.Keep).Select(e => e.Name)], notFound, removedRoots);
     }
 
     private void Remove(Package package)
