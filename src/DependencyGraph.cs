@@ -66,11 +66,11 @@ internal class DependencyGraph
         }
     }
 
-    internal HashSet<string> Remove(IEnumerable<string> packages)
+    internal (HashSet<string> Removed, HashSet<string> NotFound) Remove(IEnumerable<string> packages)
     {
-        var notFound = new List<string>();
+        var notFound = new HashSet<string>();
         var dependencies = new HashSet<Package>();
-        foreach (var packageName in packages)
+        foreach (var packageName in packages.Distinct())
         {
             var packageDependency = _reverseGraph.Keys.SingleOrDefault(e => e.Name == packageName);
             if (packageDependency == null)
@@ -83,21 +83,13 @@ internal class DependencyGraph
             }
         }
 
-        _ = notFound.Count switch
-        {
-            0 => 0,
-            1 => throw new ArgumentException($"\"{notFound[0]}\" was not found in the dependency graph.", nameof(packages)),
-            2 => throw new ArgumentException($"\"{notFound[0]}\" and \"{notFound[1]}\" were not found in the dependency graph.", nameof(packages)),
-            _ => throw new ArgumentException($"{string.Join(", ", notFound.Take(notFound.Count - 1).Select(e => $"\"{e}\""))} and \"{notFound.Last()}\" were not found in the dependency graph.", nameof(packages)),
-        };
-
         foreach (var dependency in dependencies)
         {
             Remove(dependency);
             Restore(dependency, dependencies);
         }
 
-        return [.._reverseGraph.Keys.Where(e => !e.Keep).Select(e => e.Name)];
+        return ([.._reverseGraph.Keys.Where(e => !e.Keep).Select(e => e.Name)], notFound);
     }
 
     private void Remove(Package package)

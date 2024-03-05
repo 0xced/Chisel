@@ -86,7 +86,12 @@ public class ChiselTask : Task
         try
         {
             var graph = new DependencyGraph(ProjectAssetsFile, TargetFramework, RuntimeIdentifier);
-            var removed = graph.Remove(ChiselPackages.Select(e => e.ItemSpec));
+            var (removed, notFound) = graph.Remove(ChiselPackages.Select(e => e.ItemSpec));
+
+            foreach (var packageName in notFound)
+            {
+                Log.LogWarning($"The package {packageName} (defined in ChiselPackages) was not found in the dependency graph");
+            }
 
             RemoveRuntimeAssemblies = RuntimeAssemblies.Where(item => removed.Contains(item.GetMetadata("NuGetPackageId"))).ToArray();
             RemoveNativeLibraries = NativeLibraries.Where(item => removed.Contains(item.GetMetadata("NuGetPackageId"))).ToArray();
