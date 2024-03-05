@@ -137,7 +137,7 @@ public class ChiselTask : Task
         }
         catch (Exception exception)
         {
-            Log.LogErrorFromException(exception, showStackTrace: false, showDetail: true, null);
+            Log.LogErrorFromException(exception, showStackTrace: true, showDetail: true, null);
             return false;
         }
     }

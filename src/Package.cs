@@ -5,7 +5,7 @@ using System.Diagnostics;
 namespace Chisel;
 
 [DebuggerDisplay("{Name}/{Version}")]
-internal class Package : IEquatable<Package>
+internal sealed class Package : IEquatable<Package>
 {
     public Package(string name, string version, IReadOnlyCollection<string> dependencies)
     {
@@ -24,19 +24,9 @@ internal class Package : IEquatable<Package>
 
     public override string ToString() => Name;
 
-    public bool Equals(Package? other)
-    {
-        if (ReferenceEquals(null, other)) return false;
-        if (ReferenceEquals(this, other)) return true;
-        return Name == other.Name;
-    }
+    public bool Equals(Package? other) => PackageComparer.Instance.Equals(this, other);
 
-    public override bool Equals(object? obj)
-    {
-        if (ReferenceEquals(null, obj)) return false;
-        if (ReferenceEquals(this, obj)) return true;
-        return obj.GetType() == GetType() && Equals((Package)obj);
-    }
+    public override bool Equals(object? other) => PackageComparer.Instance.Equals(this, other as Package);
 
-    public override int GetHashCode() => Name.GetHashCode();
+    public override int GetHashCode() => PackageComparer.Instance.GetHashCode(this);
 }

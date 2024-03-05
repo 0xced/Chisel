@@ -6,11 +6,11 @@ using NuGet.ProjectModel;
 
 namespace Chisel;
 
-internal class DependencyGraph
+internal sealed class DependencyGraph
 {
     private readonly HashSet<Package> _roots;
-    private readonly Dictionary<Package, HashSet<Package>> _graph = new();
-    private readonly Dictionary<Package, HashSet<Package>> _reverseGraph = new();
+    private readonly Dictionary<Package, HashSet<Package>> _graph = new(PackageComparer.Instance);
+    private readonly Dictionary<Package, HashSet<Package>> _reverseGraph = new(PackageComparer.Instance);
 
     private static Package CreatePackage(LockFileTargetLibrary library)
     {
@@ -39,9 +39,9 @@ internal class DependencyGraph
             1 => targets[0],
             _ => throw new ArgumentException($"Multiple targets are matching \"{targetId}\" in assets at \"{projectAssetsFile}\" (JSON path: targets)", nameof(rid)),
         };
-        var packages = target.Libraries.ToDictionary(e => e.Name ?? "", CreatePackage);
+        var packages = target.Libraries.ToDictionary(e => e.Name ?? "", CreatePackage, StringComparer.OrdinalIgnoreCase);
 
-        _roots = new HashSet<Package>(framework.Dependencies.Select(e => packages[e.Name]));
+        _roots = new HashSet<Package>(framework.Dependencies.Select(e => packages[e.Name]), PackageComparer.Instance);
 
         foreach (var package in packages.Values)
         {
@@ -72,9 +72,10 @@ internal class DependencyGraph
         var dependencies = new HashSet<Package>();
         foreach (var packageName in packages.Distinct())
         {
-            var packageDependency = _reverseGraph.Keys.SingleOrDefault(e => e.Name == packageName);
+            var packageDependency = _reverseGraph.Keys.SingleOrDefault(e => e.Name.Equals(packageName, StringComparison.OrdinalIgnoreCase));
             if (packageDependency == null)
             {
+                if (_roots)
                 notFound.Add(packageName);
             }
             else
