@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using Microsoft.Build.Framework;
@@ -9,6 +10,9 @@ namespace Chisel;
 /// <summary>
 /// Task that determines which package to remove from the build.
 /// </summary>
+[SuppressMessage("ReSharper", "AutoPropertyCanBeMadeGetOnly.Global", Justification = "For MSBuild")]
+[SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global", Justification = "For MSBuild")]
+[SuppressMessage("ReSharper", "MemberCanBePrivate.Global", Justification = "For MSBuild")]
 public class ChiselTask : Task
 {
     /// <summary>
@@ -114,7 +118,14 @@ public class ChiselTask : Task
             catch (Exception exception)
             {
                 Log.LogWarningFromException(exception, showStackTrace: true);
-                File.Delete(graphPath);
+                try
+                {
+                    File.Delete(graphPath);
+                }
+                catch (Exception deleteException)
+                {
+                    Log.LogWarningFromException(deleteException, showStackTrace: true);
+                }
             }
 
             return true;
