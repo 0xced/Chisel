@@ -108,8 +108,7 @@ public class ChiselTask : Task
             try
             {
                 using var output = new FileStream(graphPath, FileMode.Create);
-                var format = Path.GetExtension(output.Name).Equals(".svg", StringComparison.OrdinalIgnoreCase) ? GraphFormat.Svg : GraphFormat.Dot;
-                graph.WriteAsync(output, format).GetAwaiter().GetResult();
+                graph.Write(output);
                 GraphPath = [ new TaskItem(graphPath) ];
             }
             catch (Exception exception)

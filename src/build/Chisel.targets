@@ -3,7 +3,7 @@
 <!--  <UsingTask TaskName="ChiselTask" AssemblyFile="$([MSBuild]::NormalizePath('$(MSBuildThisFileDirectory)', '..', 'tasks', 'Chisel.dll'))" />-->
   <UsingTask TaskName="ChiselTask" AssemblyFile="$([MSBuild]::NormalizePath('$(MSBuildThisFileDirectory)', '..', 'bin', 'Debug', 'netstandard2.0', 'Chisel.dll'))" />
 
-  <Target Name="Chisel" AfterTargets="ResolvePackageAssets" DependsOnTargets="ChiselDefaultGraph" Condition="$(ChiselEnabled) == 'true'">
+  <Target Name="Chisel" AfterTargets="ResolvePackageAssets" Condition="$(ChiselEnabled) == 'true'">
     <ItemGroup>
       <ChiselPackages Include="$(ChiselPackages)" />
     </ItemGroup>
@@ -25,16 +25,6 @@
       <NativeCopyLocalItems Remove="@(ChiselRemoveNativeCopyLocalItems)" />
       <FileWrites Include="@(ChiselGraphPath)" />
     </ItemGroup>
-  </Target>
-
-  <Target Name="ChiselDefaultGraph" Condition="$(ChiselGraph) == ''">
-    <Exec Command="dot -V" IgnoreExitCode="true" StandardOutputImportance="low" StandardErrorImportance="low">
-      <Output TaskParameter="ExitCode" PropertyName="ChiselDotExitCode" />
-    </Exec>
-    <PropertyGroup>
-      <ChiselGraph Condition="$(ChiselDotExitCode) == '0'">$(MSBuildProjectName).Chisel.svg</ChiselGraph>
-      <ChiselGraph Condition="$(ChiselDotExitCode) != '0'">$(MSBuildProjectName).Chisel.gv</ChiselGraph>
-    </PropertyGroup>
   </Target>
 
 </Project>

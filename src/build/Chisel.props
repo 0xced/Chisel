@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <ChiselEnabled Condition="$(ChiselEnabled) == ''">true</ChiselEnabled>
+    <ChiselGraph Condition="$(ChiselGraph) == ''">$(MSBuildProjectName).Chisel.gv</ChiselGraph>
   </PropertyGroup>
 
 </Project>
