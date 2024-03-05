@@ -14,12 +14,6 @@
           "System.Threading.Tasks.Extensions": "4.5.4"
         }
       },
-      "GiGraph.Dot": {
-        "type": "Direct",
-        "requested": "[3.0.1, )",
-        "resolved": "3.0.1",
-        "contentHash": "TseDWNkBFKrrrzamgl2yeSDk9gmxQZvymcTqRydY/EL9REM9jBwCHFceg7AutXw3ULUL/FKhc1uFzfd2Cjpe/A=="
-      },
       "Microsoft.Build.Utilities.Core": {
         "type": "Direct",
         "requested": "[17.9.5, )",
