@@ -24,9 +24,14 @@ internal sealed class Package : IEquatable<Package>
 
     public override string ToString() => Name;
 
-    public bool Equals(Package? other) => PackageComparer.Instance.Equals(this, other);
+    public bool Equals(Package? other)
+    {
+        if (ReferenceEquals(null, other)) return false;
+        if (ReferenceEquals(this, other)) return true;
+        return Name.Equals(other.Name, StringComparison.OrdinalIgnoreCase);
+    }
 
-    public override bool Equals(object? other) => PackageComparer.Instance.Equals(this, other as Package);
+    public override bool Equals(object? obj) => ReferenceEquals(this, obj) || obj is Package other && Equals(other);
 
-    public override int GetHashCode() => PackageComparer.Instance.GetHashCode(this);
+    public override int GetHashCode() => Name.GetHashCode();
 }

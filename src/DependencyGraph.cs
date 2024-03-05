@@ -9,8 +9,8 @@ namespace Chisel;
 internal sealed class DependencyGraph
 {
     private readonly HashSet<Package> _roots;
-    private readonly Dictionary<Package, HashSet<Package>> _graph = new(PackageComparer.Instance);
-    private readonly Dictionary<Package, HashSet<Package>> _reverseGraph = new(PackageComparer.Instance);
+    private readonly Dictionary<Package, HashSet<Package>> _graph = new();
+    private readonly Dictionary<Package, HashSet<Package>> _reverseGraph = new();
 
     private static Package CreatePackage(LockFileTargetLibrary library)
     {
@@ -41,7 +41,7 @@ internal sealed class DependencyGraph
         };
         var packages = target.Libraries.ToDictionary(e => e.Name ?? "", CreatePackage, StringComparer.OrdinalIgnoreCase);
 
-        _roots = new HashSet<Package>(framework.Dependencies.Select(e => packages[e.Name]), PackageComparer.Instance);
+        _roots = new HashSet<Package>(framework.Dependencies.Select(e => packages[e.Name]));
 
         foreach (var package in packages.Values)
         {
@@ -70,7 +70,7 @@ internal sealed class DependencyGraph
     {
         var notFound = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         var removedRoots = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        var dependencies = new HashSet<Package>(PackageComparer.Instance);
+        var dependencies = new HashSet<Package>();
         foreach (var packageName in packages.Distinct())
         {
             var packageDependency = _reverseGraph.Keys.SingleOrDefault(e => e.Name.Equals(packageName, StringComparison.OrdinalIgnoreCase));
