@@ -3,6 +3,7 @@
   <PropertyGroup>
     <ChiselEnabled Condition="$(ChiselEnabled) == ''">true</ChiselEnabled>
     <ChiselGraph Condition="$(ChiselGraph) == ''">$(MSBuildProjectName).Chisel.gv</ChiselGraph>
+    <ChiselGraphDirection Condition="$(ChiselGraphDirection) == ''">LeftToRight</ChiselGraphDirection>
   </PropertyGroup>
 
   <ItemDefinitionGroup>

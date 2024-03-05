@@ -63,6 +63,11 @@ public class ChiselTask : Task
     public string Graph { get; set; } = "";
 
     /// <summary>
+    /// The dependency graph direction. Allowed values are <c>LeftToRight</c> and <c>TopToBottom</c>.
+    /// </summary>
+    public string GraphDirection { get; set; } = nameof(Chisel.GraphDirection.LeftToRight);
+
+    /// <summary>
     /// The <c>RuntimeCopyLocalItems</c> to remove from the build.
     /// </summary>
     [Output]
@@ -122,7 +127,11 @@ public class ChiselTask : Task
             try
             {
                 using var output = new FileStream(graphPath, FileMode.Create);
-                graph.Write(output);
+                if (!Enum.TryParse<GraphDirection>(GraphDirection, ignoreCase: true, out var graphDirection))
+                {
+                    Log.LogWarning($"The ChiselGraphDirection property ({GraphDirection}) must be either {nameof(Chisel.GraphDirection.LeftToRight)} or {nameof(Chisel.GraphDirection.TopToBottom)}");
+                }
+                graph.Write(output, graphDirection);
                 GraphPath = [ new TaskItem(graphPath) ];
             }
             catch (Exception exception)

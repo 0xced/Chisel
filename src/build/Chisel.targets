@@ -13,6 +13,7 @@
           RuntimeIdentifier="$(RuntimeIdentifier)"
           IntermediateOutputPath="$(IntermediateOutputPath)"
           Graph="$(ChiselGraph)"
+          GraphDirection="$(ChiselGraphDirection)"
           ChiselPackages="@(ChiselPackages)"
           RuntimeAssemblies="@(RuntimeCopyLocalItems)"
           NativeLibraries="@(NativeCopyLocalItems)">
