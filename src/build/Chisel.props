@@ -5,4 +5,10 @@
     <ChiselGraph Condition="$(ChiselGraph) == ''">$(MSBuildProjectName).Chisel.gv</ChiselGraph>
   </PropertyGroup>
 
+  <ItemDefinitionGroup>
+    <ChiselPackages>
+      <Visible>false</Visible>
+    </ChiselPackages>
+  </ItemDefinitionGroup>
+
 </Project>
