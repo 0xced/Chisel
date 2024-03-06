@@ -1,6 +1,6 @@
 #!/bin/bash -xeo pipefail
 
-# Bought https://thenounproject.com/icon/chisel-3880496/ by Noura Mbarki for $2.99
+# Bought https://thenounproject.com/icon/chisel-1211331/ by Creative Mahira for $2.99
 
 SCRIPT_DIR=$(dirname "$BASH_SOURCE")
 
