@@ -22,7 +22,6 @@
     <EmbedAllSources>true</EmbedAllSources>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <!-- https://learn.microsoft.com/en-us/visualstudio/msbuild/tutorial-custom-task-code-generation#bundle-dependencies-into-the-package -->
-    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
     <BuildOutputTargetFolder>tasks</BuildOutputTargetFolder>
     <NoWarn>NU5100</NoWarn>

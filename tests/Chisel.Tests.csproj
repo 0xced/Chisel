@@ -18,6 +18,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="NuGet.ProjectModel">
+      <HintPath>$([MSBuild]::NormalizePath('$(MSBuildExtensionsPath)', 'NuGet.ProjectModel.dll'))</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
     <VSTestLogger Include="GitHubActions" Visible="false" Condition="$(ContinuousIntegrationBuild) == 'true'" />
     <VSTestLogger Include="trx%3BLogFileName=TestResults-$(TargetFramework).trx" Visible="false" Condition="$(ContinuousIntegrationBuild) == 'true'" />
     <VSTestLogger Include="html%3BLogFileName=TestResults-$(TargetFramework).html" Visible="false" />
