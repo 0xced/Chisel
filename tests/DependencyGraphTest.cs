@@ -17,14 +17,14 @@ public class DependencyGraphTest
         var assetsFile = GetAssetsPath("Graph01.json");
         var graph = new DependencyGraph(assetsFile, tfm: "net8.0", rid: "", [ "Testcontainers.MongoDb" ]);
         var (removed, notFound, removedRoots) = graph.Remove([ "MongoDB.Driver", "AWSSDK.SecurityToken" ]);
-        using var stream = new MemoryStream();
-        graph.Write(stream, GraphDirection.LeftToRight, writeIgnoredPackages);
+        await using var writer = new StringWriter();
+        graph.Write(writer, GraphDirection.LeftToRight, writeIgnoredPackages);
 
         removed.Should().BeEquivalentTo("AWSSDK.SecurityToken", "AWSSDK.Core");
         notFound.Should().BeEmpty();
         removedRoots.Should().BeEquivalentTo("MongoDB.Driver");
 
-        await Verify(stream, "gv").UseParameters(writeIgnoredPackages);
+        await Verify(writer.ToString(), "gv").UseParameters(writeIgnoredPackages);
     }
 
     private static string GetAssetsPath(string file, [CallerFilePath] string path = "")

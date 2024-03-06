@@ -131,12 +131,13 @@ public class ChiselTask : Task
             var graphPath = Path.Combine(IntermediateOutputPath, Graph);
             try
             {
-                using var output = new FileStream(graphPath, FileMode.Create);
                 if (!Enum.TryParse<GraphDirection>(GraphDirection, ignoreCase: true, out var graphDirection))
                 {
                     Log.LogWarning($"The ChiselGraphDirection property ({GraphDirection}) must be either {nameof(Chisel.GraphDirection.LeftToRight)} or {nameof(Chisel.GraphDirection.TopToBottom)}");
                 }
-                graph.Write(output, graphDirection);
+                using var graphStream = new FileStream(graphPath, FileMode.Create);
+                using var writer = new StreamWriter(graphStream);
+                graph.Write(writer, graphDirection);
                 GraphPath = [ new TaskItem(graphPath) ];
             }
             catch (Exception exception)
