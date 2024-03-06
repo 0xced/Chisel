@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Meta", "Meta", "{13D33453-8FDA-4FBC-863A-24383232D951}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "meta", "meta", "{13D33453-8FDA-4FBC-863A-24383232D951}"
 ProjectSection(SolutionItems) = preProject
 	global.json = global.json
 	NuGet.config = NuGet.config
@@ -18,6 +18,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chisel", "src\Chisel.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chisel.Tests", "tests\Chisel.Tests.csproj", "{EC3CCB92-1AA1-4C33-B296-D7111EEF84E4}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{0CC84E67-19D2-480B-B36A-6BB15A9109E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MongoDbSample", "samples\MongoDbSample\MongoDbSample.csproj", "{845EDA2A-5207-4C6D-ABE9-9635F4630D90}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,5 +36,12 @@ Global
 		{EC3CCB92-1AA1-4C33-B296-D7111EEF84E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC3CCB92-1AA1-4C33-B296-D7111EEF84E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC3CCB92-1AA1-4C33-B296-D7111EEF84E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{845EDA2A-5207-4C6D-ABE9-9635F4630D90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{845EDA2A-5207-4C6D-ABE9-9635F4630D90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{845EDA2A-5207-4C6D-ABE9-9635F4630D90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{845EDA2A-5207-4C6D-ABE9-9635F4630D90}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{845EDA2A-5207-4C6D-ABE9-9635F4630D90} = {0CC84E67-19D2-480B-B36A-6BB15A9109E7}
 	EndGlobalSection
 EndGlobal

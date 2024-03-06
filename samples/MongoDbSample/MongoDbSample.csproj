@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>true</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <UseCurrentRuntimeIdentifier>true</UseCurrentRuntimeIdentifier>
+  </PropertyGroup>
+
+  <Import Project="../../src/build/Chisel.props" />
+  <Import Project="../../src/build/Chisel.targets" />
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
+    <PackageReference Include="MongoDB.Driver" Version="2.24.0" />
+    <PackageReference Include="Testcontainers.MongoDb" Version="3.7.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ChiselPackages Include="AWSSDK.SecurityToken" />
+  </ItemGroup>
+
+</Project>
