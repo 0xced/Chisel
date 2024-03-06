@@ -23,7 +23,7 @@ internal sealed class DependencyGraph
     public DependencyGraph(string projectAssetsFile, string tfm, string rid)
     {
         var assetsLockFile = new LockFileFormat().Read(projectAssetsFile);
-        var frameworks = assetsLockFile.PackageSpec.TargetFrameworks.Where(e => e.TargetAlias == tfm).ToList();
+        var frameworks = assetsLockFile.PackageSpec?.TargetFrameworks?.Where(e => e.TargetAlias == tfm).ToList() ?? [];
         var framework = frameworks.Count switch
         {
             0 => throw new ArgumentException($"Target framework \"{tfm}\" is not available in assets at \"{projectAssetsFile}\" (JSON path: project.frameworks)", nameof(tfm)),
