@@ -6,7 +6,7 @@ ProjectSection(SolutionItems) = preProject
 	NuGet.config = NuGet.config
 	.config\dotnet-tools.json = .config\dotnet-tools.json
 	.github\workflows\continuous-integration.yml = .github\workflows\continuous-integration.yml
-	src\packages.lock.json = src\packages.lock.json
+	src\packages.lock.json = src\Chisel\packages.lock.json
 	.github\dependabot.yml = .github\dependabot.yml
 	MAINTENANCE.md = MAINTENANCE.md
 	CHANGELOG.md = CHANGELOG.md
@@ -14,13 +14,17 @@ ProjectSection(SolutionItems) = preProject
 	LICENSE = LICENSE
 EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chisel", "src\Chisel.csproj", "{F4CAEC64-3B0C-4ACD-BF87-760A838A5D86}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chisel", "src\Chisel\Chisel.csproj", "{F4CAEC64-3B0C-4ACD-BF87-760A838A5D86}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chisel.Tests", "tests\Chisel.Tests.csproj", "{EC3CCB92-1AA1-4C33-B296-D7111EEF84E4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chisel.Tests", "tests\Chisel.Tests\Chisel.Tests.csproj", "{EC3CCB92-1AA1-4C33-B296-D7111EEF84E4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{0CC84E67-19D2-480B-B36A-6BB15A9109E7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MongoDbSample", "samples\MongoDbSample\MongoDbSample.csproj", "{845EDA2A-5207-4C6D-ABE9-9635F4630D90}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{89268D80-B21D-4C76-AF7F-796AAD1E00D9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{AC8C6685-EDF9-443A-BAF6-A5E7CF777B2A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,5 +47,7 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{845EDA2A-5207-4C6D-ABE9-9635F4630D90} = {0CC84E67-19D2-480B-B36A-6BB15A9109E7}
+		{F4CAEC64-3B0C-4ACD-BF87-760A838A5D86} = {89268D80-B21D-4C76-AF7F-796AAD1E00D9}
+		{EC3CCB92-1AA1-4C33-B296-D7111EEF84E4} = {AC8C6685-EDF9-443A-BAF6-A5E7CF777B2A}
 	EndGlobalSection
 EndGlobal

@@ -1,6 +1,6 @@
 *.user
 bin/
 obj/
-src/tasks/
+src/Chisel/tasks/
 .idea/
 .vs/

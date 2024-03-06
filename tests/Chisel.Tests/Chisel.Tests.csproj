@@ -30,7 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../src/Chisel.csproj" />
+    <ProjectReference Include="../../src/Chisel/Chisel.csproj" />
   </ItemGroup>
 
   <ItemGroup>

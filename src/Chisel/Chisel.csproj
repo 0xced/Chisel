@@ -53,8 +53,8 @@
   </PropertyGroup>
 
   <ItemGroup Label="Packaging Metadata">
-    <None Include="../resources/icon.png" Pack="true" PackagePath="" Visible="false" />
-    <None Include="../README.md" Pack="true" PackagePath="" />
+    <None Include="../../resources/icon.png" Pack="true" PackagePath="" Visible="false" />
+    <None Include="../../README.md" Pack="true" PackagePath="" />
   </ItemGroup>
 
   <PropertyGroup Label="Versioning">
@@ -68,7 +68,7 @@
   </PropertyGroup>
 
   <PropertyGroup Label="Developing" Condition="$(Configuration) == 'Debug'">
-    <!-- Doing <Import Project="../../src/build/Chisel.targets" /> locks the Chisel.dll, so don't try 10 times, just once to get the process id to kill -->
+    <!-- Doing <Import Project="../../src/Chisel/build/Chisel.targets" /> locks the Chisel.dll, so don't try 10 times, just once to get the process id to kill -->
     <CopyRetryCount>1</CopyRetryCount>
   </PropertyGroup>
 
