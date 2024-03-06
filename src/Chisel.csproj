@@ -72,6 +72,10 @@
     <CopyRetryCount>1</CopyRetryCount>
   </PropertyGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="Chisel.Tests" />
+  </ItemGroup>
+
   <ItemGroup Label="Restoring">
     <None Update="packages.lock.json" Visible="false" />
   </ItemGroup>

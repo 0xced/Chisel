@@ -6,6 +6,7 @@
   <Target Name="Chisel" AfterTargets="ResolvePackageAssets" Condition="$(ChiselEnabled) == 'true'">
     <ItemGroup>
       <ChiselPackages Include="$(ChiselPackages)" />
+      <ChiselIgnores Include="$(ChiselIgnores)" />
     </ItemGroup>
     <ChiselTask
           ProjectAssetsFile="$(ProjectAssetsFile)"
@@ -15,6 +16,7 @@
           Graph="$(ChiselGraph)"
           GraphDirection="$(ChiselGraphDirection)"
           ChiselPackages="@(ChiselPackages)"
+          ChiselIgnores="@(ChiselIgnores)"
           RuntimeAssemblies="@(RuntimeCopyLocalItems)"
           NativeLibraries="@(NativeCopyLocalItems)">
       <Output TaskParameter="RemoveRuntimeAssemblies" ItemName="ChiselRemoveRuntimeCopyLocalItems" />

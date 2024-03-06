@@ -20,7 +20,7 @@ internal sealed class Package : IEquatable<Package>
 
     public string Id => $"{Name}/{Version}";
 
-    public bool Keep { get; set; } = true;
+    public PackageState State { get; set; } = PackageState.Keep;
 
     public override string ToString() => Name;
 

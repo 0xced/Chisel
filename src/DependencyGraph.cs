@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using NuGet.ProjectModel;
 
 namespace Chisel;
@@ -20,7 +21,7 @@ internal sealed class DependencyGraph
         return new Package(name, version, dependencies);
     }
 
-    public DependencyGraph(string projectAssetsFile, string tfm, string rid)
+    public DependencyGraph(string projectAssetsFile, string tfm, string rid, IEnumerable<string> ignores)
     {
         var assetsLockFile = new LockFileFormat().Read(projectAssetsFile);
         var frameworks = assetsLockFile.PackageSpec?.TargetFrameworks?.Where(e => e.TargetAlias == tfm).ToList() ?? [];
@@ -40,8 +41,6 @@ internal sealed class DependencyGraph
             _ => throw new ArgumentException($"Multiple targets are matching \"{targetId}\" in assets at \"{projectAssetsFile}\" (JSON path: targets)", nameof(rid)),
         };
         var packages = target.Libraries.ToDictionary(e => e.Name ?? "", CreatePackage, StringComparer.OrdinalIgnoreCase);
-
-        _roots = new HashSet<Package>(framework.Dependencies.Select(e => packages[e.Name]));
 
         foreach (var package in packages.Values)
         {
@@ -64,73 +63,99 @@ internal sealed class DependencyGraph
                 }
             }
         }
+
+        _roots = new HashSet<Package>(framework.Dependencies.Select(e => packages[e.Name]).Except(_reverseGraph.Keys));
+
+        foreach (var root in _roots)
+        {
+            _reverseGraph[root] = [ root ];
+        }
+
+        Ignore(ignores);
     }
 
-    internal (HashSet<string> Removed, HashSet<string> NotFound, HashSet<string> RemovedRoots) Remove(IEnumerable<string> packages)
+    internal (HashSet<string> Removed, HashSet<string> NotFound, HashSet<string> RemovedRoots) Remove(IEnumerable<string> packageNames)
     {
         var notFound = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         var removedRoots = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        var dependencies = new HashSet<Package>();
-        foreach (var packageName in packages.Distinct())
+        var packages = new HashSet<Package>();
+        foreach (var packageName in packageNames.Distinct())
         {
-            var packageDependency = _reverseGraph.Keys.SingleOrDefault(e => e.Name.Equals(packageName, StringComparison.OrdinalIgnoreCase));
-            if (packageDependency == null)
+            var package = _reverseGraph.Keys.SingleOrDefault(e => e.Name.Equals(packageName, StringComparison.OrdinalIgnoreCase));
+            if (package == null)
             {
-                if (_roots.Any(e => e.Name.Equals(packageName, StringComparison.OrdinalIgnoreCase)))
-                {
-                    removedRoots.Add(packageName);
-                }
-                else
-                {
-                    notFound.Add(packageName);
-                }
+                notFound.Add(packageName);
             }
             else
             {
-                dependencies.Add(packageDependency);
+                if (_roots.Contains(package))
+                {
+                    removedRoots.Add(package.Name);
+                }
+                else
+                {
+                    packages.Add(package);
+                }
             }
         }
 
-        foreach (var dependency in dependencies)
+        foreach (var package in packages)
         {
-            Remove(dependency);
-            Restore(dependency, dependencies);
+            Remove(package);
+            Restore(package, packages);
         }
 
-        return ([.._reverseGraph.Keys.Where(e => !e.Keep).Select(e => e.Name)], notFound, removedRoots);
+        return ([.._reverseGraph.Keys.Where(e => e.State == PackageState.Remove).Select(e => e.Name)], notFound, removedRoots);
     }
 
-    private void Remove(Package package)
+    private void Ignore(IEnumerable<string> packageNames)
     {
-        package.Keep = false;
+        var packages = new HashSet<Package>(packageNames.Intersect(_reverseGraph.Keys.Select(p => p.Name), StringComparer.OrdinalIgnoreCase)
+            .Select(e => _reverseGraph.Keys.Single(p => p.Name.Equals(e, StringComparison.OrdinalIgnoreCase))));
+
+        foreach (var package in packages)
+        {
+            Ignore(package);
+            Restore(package, packages);
+        }
+    }
+
+    private void Remove(Package package) => UpdateDependencies(package, PackageState.Remove);
+    private void Ignore(Package package) => UpdateDependencies(package, PackageState.Ignore);
+
+    private void UpdateDependencies(Package package, PackageState state)
+    {
+        package.State = state;
         if (_graph.TryGetValue(package, out var dependencies))
         {
             foreach (var dependency in dependencies)
             {
-                Remove(dependency);
+                UpdateDependencies(dependency, state);
             }
         }
     }
 
-    private void Restore(Package package, ICollection<Package> removedPackages)
+    private void Restore(Package package, HashSet<Package> excludePackages)
     {
-        if ((_reverseGraph[package].Any(e => e.Keep) && !removedPackages.Contains(package)) || _roots.Contains(package))
+        if ((_reverseGraph[package].Any(e => e.State == PackageState.Keep) && !excludePackages.Contains(package)) || _roots.Except(excludePackages).Contains(package))
         {
-            package.Keep = true;
+            package.State = PackageState.Keep;
         }
 
         if (_graph.TryGetValue(package, out var dependencies))
         {
             foreach (var dependency in dependencies)
             {
-                Restore(dependency, removedPackages);
+                Restore(dependency, excludePackages);
             }
         }
     }
 
-    public void Write(Stream stream, GraphDirection graphDirection)
+    public void Write(Stream stream, GraphDirection graphDirection = GraphDirection.LeftToRight, bool writeIgnoredPackages = false)
     {
-        using var writer = new StreamWriter(stream);
+        bool FilterIgnored(Package package) => writeIgnoredPackages || package.State != PackageState.Ignore;
+
+        using var writer = new StreamWriter(stream, encoding: Encoding.UTF8, bufferSize: -1, leaveOpen: true);
 
         writer.WriteLine("# Generated by https://github.com/0xced/Chisel");
         writer.WriteLine("digraph");
@@ -144,10 +169,14 @@ internal sealed class DependencyGraph
         writer.WriteLine("  node [ fontname = \"Segoe UI, sans-serif\", shape = box, style = filled, color = aquamarine ]");
         writer.WriteLine();
 
-        foreach (var package in _reverseGraph.Keys.Union(_roots).OrderBy(e => e.Id))
+        foreach (var package in _reverseGraph.Keys.Where(FilterIgnored).OrderBy(e => e.Id))
         {
             writer.Write($"  \"{package.Id}\"");
-            if (!package.Keep)
+            if (package.State == PackageState.Ignore)
+            {
+                writer.Write(" [ color = lightgray ]");
+            }
+            else if (package.State == PackageState.Remove)
             {
                 writer.Write(" [ color = lightcoral ]");
             }
@@ -155,9 +184,9 @@ internal sealed class DependencyGraph
         }
         writer.WriteLine();
 
-        foreach (var (package, dependencies) in _graph.Select(e => (e.Key, e.Value)).OrderBy(e => e.Key.Id))
+        foreach (var (package, dependencies) in _graph.Select(e => (e.Key, e.Value)).Where(e => FilterIgnored(e.Key)).OrderBy(e => e.Key.Id))
         {
-            foreach (var dependency in dependencies.OrderBy(e => e.Id))
+            foreach (var dependency in dependencies.Where(FilterIgnored).OrderBy(e => e.Id))
             {
                 writer.WriteLine($"  \"{package.Id}\" -> \"{dependency.Id}\"");
             }

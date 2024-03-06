@@ -6,10 +6,20 @@
     <ChiselGraphDirection Condition="$(ChiselGraphDirection) == ''">LeftToRight</ChiselGraphDirection>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ChiselIgnores Include="NETStandard.Library" />
+  </ItemGroup>
+
   <ItemDefinitionGroup>
     <ChiselPackages>
       <Visible>false</Visible>
     </ChiselPackages>
+  </ItemDefinitionGroup>
+
+  <ItemDefinitionGroup>
+    <ChiselIgnores>
+      <Visible>false</Visible>
+    </ChiselIgnores>
   </ItemDefinitionGroup>
 
 </Project>

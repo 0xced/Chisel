@@ -38,6 +38,11 @@ public class ChiselTask : Task
     public ITaskItem[] ChiselPackages { get; set; } = [];
 
     /// <summary>
+    /// The package references to ignore when building the dependency graph.
+    /// </summary>
+    public ITaskItem[] ChiselIgnores { get; set; } = [];
+
+    /// <summary>
     /// The list of resolved runtime assemblies (<c>RuntimeCopyLocalItems</c>).
     /// </summary>
     [Required]
@@ -90,7 +95,7 @@ public class ChiselTask : Task
     {
         try
         {
-            var graph = new DependencyGraph(ProjectAssetsFile, TargetFramework, RuntimeIdentifier);
+            var graph = new DependencyGraph(ProjectAssetsFile, TargetFramework, RuntimeIdentifier, ChiselIgnores.Select(e => e.ItemSpec));
             var (removed, notFound, removedRoots) = graph.Remove(ChiselPackages.Select(e => e.ItemSpec));
 
             foreach (var packageName in notFound)
