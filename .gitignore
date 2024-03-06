@@ -1,6 +1,6 @@
 *.user
 bin/
 obj/
-coverage/
+src/tasks/
 .idea/
 .vs/

@@ -1,13 +1,14 @@
 <Project>
 
-<!--  <UsingTask TaskName="ChiselTask" AssemblyFile="$([MSBuild]::NormalizePath('$(MSBuildThisFileDirectory)', '..', 'tasks', 'Chisel.dll'))" />-->
-  <UsingTask TaskName="ChiselTask" AssemblyFile="$([MSBuild]::NormalizePath('$(MSBuildThisFileDirectory)', '..', 'bin', 'Debug', 'netstandard2.0', 'Chisel.dll'))" />
+  <UsingTask TaskName="ChiselTask" AssemblyFile="$([MSBuild]::NormalizePath('$(MSBuildThisFileDirectory)', '..', 'tasks', 'netstandard2.0', 'Chisel.dll'))" />
 
   <Target Name="Chisel" AfterTargets="ResolvePackageAssets" Condition="$(ChiselEnabled) == 'true'">
+
     <ItemGroup>
       <ChiselPackages Include="$(ChiselPackages)" />
       <ChiselIgnores Include="$(ChiselIgnores)" />
     </ItemGroup>
+
     <ChiselTask
           ProjectAssetsFile="$(ProjectAssetsFile)"
           TargetFramework="$(TargetFramework)"
@@ -23,11 +24,13 @@
       <Output TaskParameter="RemoveNativeLibraries" ItemName="ChiselRemoveNativeCopyLocalItems" />
       <Output TaskParameter="GraphPath" ItemName="ChiselGraphPath" />
     </ChiselTask>
+
     <ItemGroup>
       <RuntimeCopyLocalItems Remove="@(ChiselRemoveRuntimeCopyLocalItems)" />
       <NativeCopyLocalItems Remove="@(ChiselRemoveNativeCopyLocalItems)" />
       <FileWrites Include="@(ChiselGraphPath)" />
     </ItemGroup>
+
   </Target>
 
 </Project>
