@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -20,5 +20,9 @@
   <ItemGroup>
     <ChiselPackages Include="AWSSDK.SecurityToken" />
   </ItemGroup>
+
+  <PropertyGroup>
+    <ChiselGraphAlias>MongoDBSample.gv</ChiselGraphAlias>
+  </PropertyGroup>
 
 </Project>

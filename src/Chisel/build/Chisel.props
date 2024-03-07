@@ -7,6 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="$(IntermediateOutputPath)$(ChiselGraph)" Condition="Exists('$(IntermediateOutputPath)$(ChiselGraph)') AND $(ChiselGraphAlias) != ''">
+      <Link>$(ChiselGraphAlias)</Link>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <ChiselIgnores Include="NETStandard.Library" />
   </ItemGroup>
 
