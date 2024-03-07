@@ -4,7 +4,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "meta", "meta", "{13D33453-8
 ProjectSection(SolutionItems) = preProject
 	global.json = global.json
 	NuGet.config = NuGet.config
-	.config\dotnet-tools.json = .config\dotnet-tools.json
 	.github\workflows\continuous-integration.yml = .github\workflows\continuous-integration.yml
 	src\packages.lock.json = src\Chisel\packages.lock.json
 	.github\dependabot.yml = .github\dependabot.yml
