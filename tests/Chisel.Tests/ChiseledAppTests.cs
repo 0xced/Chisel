@@ -60,8 +60,7 @@ public sealed class ChiseledAppTests : IDisposable, IClassFixture<TestApp>
         stdOut.Should().Contain("✅");
         stdErr.Should().BeEmpty();
 
-        var intermediateOutputPath = await _testApp.GetIntermediateOutputPathAsync();
-        await Verifier.VerifyFile(Path.Combine(intermediateOutputPath, "TestApp.Chisel.gv")).DisableRequireUniquePrefix();
+        await Verifier.VerifyFile(_testApp.IntermediateOutputPath.File("TestApp.Chisel.gv")).DisableRequireUniquePrefix();
     }
 
     private async Task<(string StdOut, string StdErr)> RunTestAppAsync(PublishMode publishMode, params string[] args)

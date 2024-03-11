@@ -50,11 +50,7 @@ public class TestApp : IAsyncLifetime
 
     public string GetExecutablePath(PublishMode publishMode) => _executables[publishMode].FullName;
 
-    public async Task<string> GetIntermediateOutputPathAsync()
-    {
-        var result = await RunDotnetAsync(_workingDirectory, "build", "--getProperty:IntermediateOutputPath", "--configuration", "Release");
-        return Path.Combine(_workingDirectory.FullName, result.TrimEnd());
-    }
+    public DirectoryInfo IntermediateOutputPath { get; private set; }
 
     private async Task CreateTestAppAsync()
     {
@@ -93,6 +89,9 @@ public class TestApp : IAsyncLifetime
             "-p:Configuration=Release",
         };
         await RunDotnetAsync(_workingDirectory, restoreArgs);
+
+        var intermediateOutputPath = await RunDotnetAsync(_workingDirectory, "build", "--getProperty:IntermediateOutputPath", "--configuration", "Release");
+        IntermediateOutputPath = _workingDirectory.SubDirectory(intermediateOutputPath.TrimEnd());
     }
 
     private async Task PublishAsync(PublishMode publishMode)
@@ -112,7 +111,7 @@ public class TestApp : IAsyncLifetime
         await RunDotnetAsync(_workingDirectory, publishArgs);
 
         var executableFileName = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "TestApp.exe" : "TestApp";
-        var executableFile = new FileInfo(Path.Combine(outputDirectory.FullName, executableFileName));
+        var executableFile = outputDirectory.File(executableFileName);
         executableFile.Exists.Should().BeTrue();
         var dlls = executableFile.Directory!.EnumerateFiles("*.dll");
         if (publishMode == PublishMode.Standard)
