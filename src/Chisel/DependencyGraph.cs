@@ -16,8 +16,14 @@ internal sealed class DependencyGraph
     {
         var name = library.Name ?? throw new ArgumentException("The library must have a name", nameof(library));
         var version = library.Version?.ToString() ?? throw new ArgumentException("The library must have a version", nameof(library));
+        var type = library.Type switch
+        {
+            "package" => PackageType.Package,
+            "project" => PackageType.Project,
+            _ => PackageType.Unknown,
+        };
         var dependencies = library.Dependencies.Select(e => e.Id).ToList();
-        return new Package(name, version, dependencies);
+        return new Package(name, version, type, dependencies);
     }
 
     public DependencyGraph(HashSet<string> resolvedPackages, string projectAssetsFile, string tfm, string rid, IEnumerable<string> ignores)
@@ -177,6 +183,14 @@ internal sealed class DependencyGraph
             else if (package.State == PackageState.Remove)
             {
                 writer.Write(" [ color = lightcoral ]");
+            }
+            else if (package.Type == PackageType.Project)
+            {
+                writer.Write(" [ color = skyblue ]");
+            }
+            else if (package.Type == PackageType.Unknown)
+            {
+                writer.Write(" [ color = khaki ]");
             }
             writer.WriteLine();
         }

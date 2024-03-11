@@ -7,15 +7,17 @@ namespace Chisel;
 [DebuggerDisplay("{Name}/{Version}")]
 internal sealed class Package : IEquatable<Package>
 {
-    public Package(string name, string version, IReadOnlyCollection<string> dependencies)
+    public Package(string name, string version, PackageType type, IReadOnlyCollection<string> dependencies)
     {
         Name = name;
         Version = version;
+        Type = type;
         Dependencies = dependencies;
     }
 
     public string Name { get; }
     public string Version { get; }
+    public PackageType Type { get; }
     public IReadOnlyCollection<string> Dependencies { get; }
 
     public string Id => $"{Name}/{Version}";
