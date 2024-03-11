@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="CliWrap" Version="3.6.6" />
     <PackageReference Include="FluentAssertions" Version="6.12.0" />
     <PackageReference Include="GitHubActionsTestLogger" Version="2.3.3" PrivateAssets="all" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
@@ -18,6 +19,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="NuGet.Frameworks">
+      <HintPath>$([MSBuild]::NormalizePath('$(MSBuildExtensionsPath)', 'NuGet.Frameworks.dll'))</HintPath>
+    </Reference>
     <Reference Include="NuGet.ProjectModel">
       <HintPath>$([MSBuild]::NormalizePath('$(MSBuildExtensionsPath)', 'NuGet.ProjectModel.dll'))</HintPath>
     </Reference>
