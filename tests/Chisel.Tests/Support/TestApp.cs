@@ -50,6 +50,12 @@ public class TestApp : IAsyncLifetime
 
     public string GetExecutablePath(PublishMode publishMode) => _executables[publishMode].FullName;
 
+    public async Task<string> GetIntermediateOutputPathAsync()
+    {
+        var result = await RunDotnetAsync(_workingDirectory, "build", "--getProperty:IntermediateOutputPath", "--configuration", "Release");
+        return Path.Combine(_workingDirectory.FullName, result.TrimEnd());
+    }
+
     private async Task CreateTestAppAsync()
     {
         // It might be tempting to do pack -> restore -> build --no-restore -> publish --no-build (and parallelize over publish modes)
@@ -122,7 +128,7 @@ public class TestApp : IAsyncLifetime
         _executables[publishMode] = executableFile;
     }
 
-    private async Task RunDotnetAsync(DirectoryInfo workingDirectory, params string[] arguments)
+    private async Task<string> RunDotnetAsync(DirectoryInfo workingDirectory, params string[] arguments)
     {
         var outBuilder = new StringBuilder();
         var errBuilder = new StringBuilder();
@@ -148,6 +154,8 @@ public class TestApp : IAsyncLifetime
         {
             throw new CommandExecutionException(command, result.ExitCode, $"An unexpected exception has occurred while running {command}{Environment.NewLine}{errBuilder}{outBuilder}".Trim());
         }
+
+        return outBuilder.ToString();
     }
 
     private static DirectoryInfo GetDirectory(params string[] paths) => new(GetFullPath(paths));

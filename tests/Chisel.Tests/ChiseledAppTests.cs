@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using CliWrap;
 using CliWrap.Exceptions;
 using FluentAssertions;
 using FluentAssertions.Execution;
+using VerifyXunit;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -57,6 +59,9 @@ public sealed class ChiseledAppTests : IDisposable, IClassFixture<TestApp>
         allDlls.Except(expectedDlls).Should().BeEmpty();
         stdOut.Should().Contain("✅");
         stdErr.Should().BeEmpty();
+
+        var intermediateOutputPath = await _testApp.GetIntermediateOutputPathAsync();
+        await Verifier.VerifyFile(Path.Combine(intermediateOutputPath, "TestApp.Chisel.gv")).DisableRequireUniquePrefix();
     }
 
     private async Task<(string StdOut, string StdErr)> RunTestAppAsync(PublishMode publishMode, params string[] args)

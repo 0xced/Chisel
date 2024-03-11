@@ -20,7 +20,7 @@ internal sealed class DependencyGraph
         return new Package(name, version, dependencies);
     }
 
-    public DependencyGraph(string projectAssetsFile, string tfm, string rid, IEnumerable<string> ignores)
+    public DependencyGraph(HashSet<string> resolvedPackages, string projectAssetsFile, string tfm, string rid, IEnumerable<string> ignores)
     {
         var assetsLockFile = new LockFileFormat().Read(projectAssetsFile);
         var frameworks = assetsLockFile.PackageSpec?.TargetFrameworks?.Where(e => e.TargetAlias == tfm).ToList() ?? [];
@@ -39,11 +39,12 @@ internal sealed class DependencyGraph
             1 => targets[0],
             _ => throw new ArgumentException($"Multiple targets are matching \"{targetId}\" in assets at \"{projectAssetsFile}\" (JSON path: targets)", nameof(rid)),
         };
-        var packages = target.Libraries.ToDictionary(e => e.Name ?? "", CreatePackage, StringComparer.OrdinalIgnoreCase);
+        var relevantPackages = new HashSet<string>(resolvedPackages.Union(target.Libraries.Where(e => e.Type == "project").Select(e => e.Name ?? "")), StringComparer.OrdinalIgnoreCase);
+        var packages = target.Libraries.Where(e => relevantPackages.Contains(e.Name ?? "")).ToDictionary(e => e.Name ?? "", CreatePackage, StringComparer.OrdinalIgnoreCase);
 
         foreach (var package in packages.Values)
         {
-            var dependencies = new HashSet<Package>(package.Dependencies.Select(e => packages[e]));
+            var dependencies = new HashSet<Package>(package.Dependencies.Where(relevantPackages.Contains).Select(e => packages[e]));
 
             if (dependencies.Count > 0)
             {
@@ -63,7 +64,7 @@ internal sealed class DependencyGraph
             }
         }
 
-        _roots = new HashSet<Package>(framework.Dependencies.Select(e => packages[e.Name]).Except(_reverseGraph.Keys));
+        _roots = new HashSet<Package>(framework.Dependencies.Where(e => relevantPackages.Contains(e.Name)).Select(e => packages[e.Name]).Except(_reverseGraph.Keys));
 
         foreach (var root in _roots)
         {

@@ -1435,10 +1435,6 @@
       "Testcontainers.MongoDb >= 3.7.0"
     ]
   },
-  "packageFolders": {
-    "~/.nuget/packages/": {},
-    "/usr/local/share/dotnet/sdk/NuGetFallbackFolder": {}
-  },
   "project": {
     "version": "1.0.0",
     "frameworks": {
@@ -1473,8 +1469,7 @@
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
           }
-        },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.201/PortableRuntimeIdentifierGraph.json"
+        }
       }
     }
   }

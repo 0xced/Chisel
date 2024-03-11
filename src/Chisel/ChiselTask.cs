@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
@@ -95,7 +96,8 @@ public class ChiselTask : Task
     {
         try
         {
-            var graph = new DependencyGraph(ProjectAssetsFile, TargetFramework, RuntimeIdentifier, ChiselIgnores.Select(e => e.ItemSpec));
+            var resolvedPackages = new HashSet<string>(RuntimeAssemblies.Select(e => e.GetMetadata("NuGetPackageId")).Concat(NativeLibraries.Select(e => e.GetMetadata("NuGetPackageId"))));
+            var graph = new DependencyGraph(resolvedPackages, ProjectAssetsFile, TargetFramework, RuntimeIdentifier, ChiselIgnores.Select(e => e.ItemSpec));
             var (removed, notFound, removedRoots) = graph.Remove(ChiselPackages.Select(e => e.ItemSpec));
 
             foreach (var packageName in notFound)
