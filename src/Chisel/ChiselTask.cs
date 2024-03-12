@@ -14,6 +14,7 @@ namespace Chisel;
 [SuppressMessage("ReSharper", "AutoPropertyCanBeMadeGetOnly.Global", Justification = "For MSBuild")]
 [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global", Justification = "For MSBuild")]
 [SuppressMessage("ReSharper", "MemberCanBePrivate.Global", Justification = "For MSBuild")]
+[SuppressMessage("ReSharper", "UnusedType.Global", Justification = "For MSBuild")]
 public class ChiselTask : Task
 {
     /// <summary>

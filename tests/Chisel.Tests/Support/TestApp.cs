@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Text;
 using System.Threading.Tasks;
@@ -100,17 +99,16 @@ public class TestApp : IAsyncLifetime
 
         var outputDirectory = publishDirectory.SubDirectory(publishMode.ToString());
 
-        var publishArgsBase = new[] {
+        var publishArgs = new[] {
             "publish",
             "--no-restore",
             "--configuration", "Release",
             "--output", outputDirectory.FullName,
+            $"-p:PublishSingleFile={publishMode is PublishMode.SingleFile}",
         };
-        var publishSingleFile = $"-p:PublishSingleFile={publishMode is PublishMode.SingleFile}";
-        var publishArgs = publishArgsBase.Append(publishSingleFile).ToArray();
         await RunDotnetAsync(_workingDirectory, publishArgs);
 
-        var executableFileName = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "TestApp.exe" : "TestApp";
+        var executableFileName = OperatingSystem.IsWindows() ? "TestApp.exe" : "TestApp";
         var executableFile = outputDirectory.File(executableFileName);
         executableFile.Exists.Should().BeTrue();
         var dlls = executableFile.Directory!.EnumerateFiles("*.dll");

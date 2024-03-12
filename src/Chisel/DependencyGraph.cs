@@ -15,7 +15,7 @@ internal sealed class DependencyGraph
     private static Package CreatePackage(LockFileTargetLibrary library)
     {
         var name = library.Name ?? throw new ArgumentException("The library must have a name", nameof(library));
-        var version = library.Version?.ToString() ?? throw new ArgumentException("The library must have a version", nameof(library));
+        var version = library.Version?.ToString() ?? throw new ArgumentException($"The library \"{name}\" must have a version", nameof(library));
         var type = library.Type switch
         {
             "package" => PackageType.Package,

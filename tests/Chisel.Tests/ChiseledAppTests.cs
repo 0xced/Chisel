@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,23 +14,11 @@ using Xunit.Abstractions;
 namespace Chisel.Tests;
 
 [Trait("Category", "Integration")]
-public sealed class ChiseledAppTests : IDisposable, IClassFixture<TestApp>
+public sealed class ChiseledAppTests(ITestOutputHelper outputHelper, TestApp testApp) : IDisposable, IClassFixture<TestApp>
 {
-    private readonly ITestOutputHelper _outputHelper;
-    private readonly TestApp _testApp;
-    private readonly AssertionScope _scope;
+    private readonly AssertionScope _scope = new();
 
-    public ChiseledAppTests(ITestOutputHelper outputHelper, TestApp testApp)
-    {
-        _outputHelper = outputHelper;
-        _testApp = testApp;
-        _scope = new AssertionScope();
-    }
-
-    public void Dispose()
-    {
-        _scope.Dispose();
-    }
+    public void Dispose() => _scope.Dispose();
 
     public static readonly TheoryData<PublishMode> PublishModeData = new(Enum.GetValues<PublishMode>());
 
@@ -60,7 +47,7 @@ public sealed class ChiseledAppTests : IDisposable, IClassFixture<TestApp>
         stdOut.Should().Contain("✅");
         stdErr.Should().BeEmpty();
 
-        await Verifier.VerifyFile(_testApp.IntermediateOutputPath.File("TestApp.Chisel.gv"))
+        await Verifier.VerifyFile(testApp.IntermediateOutputPath.File("TestApp.Chisel.gv"))
             .UseTextForParameters(OperatingSystem.IsWindows() ? "windows" : "non-windows")
             .DisableRequireUniquePrefix();
     }
@@ -70,13 +57,13 @@ public sealed class ChiseledAppTests : IDisposable, IClassFixture<TestApp>
         var stdOutBuilder = new StringBuilder();
         var stdErrBuilder = new StringBuilder();
 
-        var command = Cli.Wrap(_testApp.GetExecutablePath(publishMode))
+        var command = Cli.Wrap(testApp.GetExecutablePath(publishMode))
             .WithArguments(args)
             .WithValidation(CommandResultValidation.None)
             .WithStandardOutputPipe(PipeTarget.ToStringBuilder(stdOutBuilder))
             .WithStandardErrorPipe(PipeTarget.ToStringBuilder(stdErrBuilder));
 
-        _outputHelper.WriteLine(command.ToString());
+        outputHelper.WriteLine(command.ToString());
 
         var stopwatch = Stopwatch.StartNew();
         var result = await command.ExecuteAsync();
@@ -85,8 +72,8 @@ public sealed class ChiseledAppTests : IDisposable, IClassFixture<TestApp>
         var stdOut = stdOutBuilder.ToString().Trim();
         var stdErr = stdErrBuilder.ToString().Trim();
 
-        _outputHelper.WriteLine($"⌚ Executed in {executionTime} ms");
-        _outputHelper.WriteLine(stdOut);
+        outputHelper.WriteLine($"⌚ Executed in {executionTime} ms");
+        outputHelper.WriteLine(stdOut);
 
         if (result.ExitCode != 0)
         {
