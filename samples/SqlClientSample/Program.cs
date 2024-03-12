@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using System.Diagnostics;
+using Microsoft.Data.SqlClient;
 
 try
 {
@@ -7,7 +8,14 @@ try
     await using var command = dataSource.CreateCommand("Select @@version");
     var result = await command.ExecuteScalarAsync();
 
-    Console.WriteLine($"✅ {result}");
+    if (BinaryData.Empty.IsEmpty)
+    {
+        Console.WriteLine($"✅ {result}");
+    }
+    else
+    {
+        throw new UnreachableException();
+    }
     return 0;
 }
 catch (Exception exception)

@@ -69,7 +69,7 @@ internal sealed class DependencyGraph
             }
         }
 
-        _roots = new HashSet<Package>(framework.Dependencies.Where(e => relevantPackages.Contains(e.Name)).Select(e => packages[e.Name]).Except(_reverseGraph.Keys));
+        _roots = new HashSet<Package>(framework.Dependencies.Where(e => relevantPackages.Contains(e.Name)).Select(e => packages[e.Name]));
 
         foreach (var root in _roots)
         {

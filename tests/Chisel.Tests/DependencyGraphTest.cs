@@ -95,7 +95,7 @@ public class DependencyGraphTest
             "System.Text.Json",
         ];
         var assetsFile = GetAssetsPath("SqlClientGraph.json");
-        var graph = new DependencyGraph(resolvedPackages, assetsFile, tfm: "net8.0", rid: "win-x64", ignores: []);
+        var graph = new DependencyGraph(resolvedPackages, assetsFile, tfm: "net8.0-windows", rid: "win-x64", ignores: []);
         var (removed, notFound, removedRoots) = graph.Remove([ "Azure.Identity", "Microsoft.IdentityModel.JsonWebTokens", "Microsoft.IdentityModel.Protocols.OpenIdConnect" ]);
         await using var writer = new StringWriter();
 
@@ -116,13 +116,10 @@ public class DependencyGraphTest
             "System.Diagnostics.DiagnosticSource",
             "System.IO.FileSystem.AccessControl",
             "System.IdentityModel.Tokens.Jwt",
-            "System.Memory.Data",
             "System.Runtime.CompilerServices.Unsafe",
             "System.Security.AccessControl",
             "System.Security.Cryptography.Cng",
             "System.Security.Principal.Windows",
-            "System.Text.Encodings.Web",
-            "System.Text.Json",
         ]);
         notFound.Should().BeEmpty();
         removedRoots.Should().BeEmpty();
