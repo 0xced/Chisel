@@ -40,27 +40,29 @@ public sealed class ChiseledAppTests : IDisposable, IClassFixture<TestApp>
     public async Task RunTestApp(PublishMode publishMode)
     {
         var (stdOut, stdErr) = await RunTestAppAsync(publishMode);
-        var allDlls = stdOut.Split(Environment.NewLine).Where(e => e.EndsWith(".dll"));
-        var expectedDlls = new[]
-        {
+        var actualDlls = stdOut.Split(Environment.NewLine).Where(e => e.EndsWith(".dll")).ToHashSet();
+        var platformDlls = OperatingSystem.IsWindows() ? ["Microsoft.Data.SqlClient.SNI.dll", "System.Diagnostics.EventLog.Messages.dll"] : Array.Empty<string>();
+        var expectedDlls = platformDlls.Concat(
+        [
             "Microsoft.Data.SqlClient.dll",
-            "Microsoft.Data.SqlClient.SNI.dll",
             "Microsoft.Extensions.DependencyModel.dll",
             "Microsoft.Identity.Client.dll",
             "Microsoft.IdentityModel.Abstractions.dll",
             "Microsoft.SqlServer.Server.dll",
             "System.Configuration.ConfigurationManager.dll",
             "System.Diagnostics.EventLog.dll",
-            "System.Diagnostics.EventLog.Messages.dll",
             "System.Runtime.Caching.dll",
             "System.Security.Cryptography.ProtectedData.dll",
             "TestApp.dll",
-        };
-        allDlls.Except(expectedDlls).Should().BeEmpty();
+        ]).ToHashSet();
+        actualDlls.Except(expectedDlls).Should().BeEmpty();
+        expectedDlls.Except(actualDlls).Should().BeEmpty();
         stdOut.Should().Contain("✅");
         stdErr.Should().BeEmpty();
 
-        await Verifier.VerifyFile(_testApp.IntermediateOutputPath.File("TestApp.Chisel.gv")).DisableRequireUniquePrefix();
+        await Verifier.VerifyFile(_testApp.IntermediateOutputPath.File("TestApp.Chisel.gv"))
+            .UseTextForParameters(OperatingSystem.IsWindows() ? "windows" : "non-windows")
+            .DisableRequireUniquePrefix();
     }
 
     private async Task<(string StdOut, string StdErr)> RunTestAppAsync(PublishMode publishMode, params string[] args)
