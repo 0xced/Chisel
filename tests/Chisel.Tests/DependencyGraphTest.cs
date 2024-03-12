@@ -50,7 +50,7 @@ public class DependencyGraphTest
         var graph = new DependencyGraph(resolvedPackages, assetsFile, tfm: "net8.0", rid: "", ignores: [ "Testcontainers.MongoDb" ]);
         var (removed, notFound, removedRoots) = graph.Remove([ "MongoDB.Driver", "AWSSDK.SecurityToken" ]);
         await using var writer = new StringWriter();
-        graph.Write(writer, GraphDirection.LeftToRight, writeIgnoredPackages);
+        GraphWriter.Graphviz(writer).Write(graph, GraphDirection.LeftToRight, writeIgnoredPackages);
 
         removed.Should().BeEquivalentTo("AWSSDK.SecurityToken", "AWSSDK.Core");
         notFound.Should().BeEmpty();
@@ -59,8 +59,10 @@ public class DependencyGraphTest
         await Verify(writer.ToString(), "gv").UseParameters(writeIgnoredPackages);
     }
 
-    [Fact]
-    public async Task SqlClientGraph()
+    [Theory]
+    [InlineData("graphviz")]
+    [InlineData("mermaid")]
+    public async Task SqlClientGraph(string graphFormat)
     {
         HashSet<string> resolvedPackages =
         [
@@ -96,7 +98,9 @@ public class DependencyGraphTest
         var graph = new DependencyGraph(resolvedPackages, assetsFile, tfm: "net8.0", rid: "win-x64", ignores: []);
         var (removed, notFound, removedRoots) = graph.Remove([ "Azure.Identity", "Microsoft.IdentityModel.JsonWebTokens", "Microsoft.IdentityModel.Protocols.OpenIdConnect" ]);
         await using var writer = new StringWriter();
-        graph.Write(writer, writeIgnoredPackages: true);
+
+        var graphWriter = graphFormat == "graphviz" ? GraphWriter.Graphviz(writer) : GraphWriter.Mermaid(writer);
+        graphWriter.Write(graph, GraphDirection.LeftToRight, writeIgnoredPackages: true);
 
         removed.Should().BeEquivalentTo([
             "Azure.Core",
@@ -123,7 +127,7 @@ public class DependencyGraphTest
         notFound.Should().BeEmpty();
         removedRoots.Should().BeEmpty();
 
-        await Verify(writer.ToString(), "gv");
+        await Verify(writer.ToString(), graphFormat == "graphviz" ? "gv" : "mmd").UseTextForParameters(graphFormat);
     }
 
     private static string GetAssetsPath(string file, [CallerFilePath] string path = "")

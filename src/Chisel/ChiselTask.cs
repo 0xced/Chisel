@@ -150,7 +150,8 @@ public class ChiselTask : Task
                 }
                 using var graphStream = new FileStream(graphPath, FileMode.Create);
                 using var writer = new StreamWriter(graphStream);
-                graph.Write(writer, graphDirection);
+                var graphWriter = Path.GetExtension(Graph) is ".mmd" or ".mermaid" ? GraphWriter.Mermaid(writer) : GraphWriter.Graphviz(writer);
+                graphWriter.Write(graph, graphDirection, writeIgnoredPackages: false);
                 GraphPath = [ new TaskItem(graphPath) ];
             }
             catch (Exception exception)
