@@ -48,12 +48,12 @@ public class DependencyGraphTest
         ];
         var assetsFile = GetAssetsPath("MongoDbGraph.json");
         var graph = new DependencyGraph(resolvedPackages, assetsFile, tfm: "net8.0", rid: "", ignores: [ "Testcontainers.MongoDb" ]);
-        var (removed, notFound, removedRoots) = graph.Remove([ "MongoDB.Driver", "AWSSDK.SecurityToken" ]);
+        var (removed, notFound, removedRoots) = graph.Remove([ "MongoDB.Driver", "AWSSDK.SecurityToken", "NonExistentPackage" ]);
         await using var writer = new StringWriter();
         GraphWriter.Graphviz(writer).Write(graph, GraphDirection.LeftToRight, writeIgnoredPackages);
 
         removed.Should().BeEquivalentTo("AWSSDK.SecurityToken", "AWSSDK.Core");
-        notFound.Should().BeEmpty();
+        notFound.Should().BeEquivalentTo("NonExistentPackage");
         removedRoots.Should().BeEquivalentTo("MongoDB.Driver");
 
         await Verify(writer.ToString(), "gv").UseParameters(writeIgnoredPackages);
@@ -96,7 +96,7 @@ public class DependencyGraphTest
         ];
         var assetsFile = GetAssetsPath("SqlClientGraph.json");
         var graph = new DependencyGraph(resolvedPackages, assetsFile, tfm: "net8.0-windows", rid: "win-x64", ignores: []);
-        var (removed, notFound, removedRoots) = graph.Remove([ "Azure.Identity", "Microsoft.IdentityModel.JsonWebTokens", "Microsoft.IdentityModel.Protocols.OpenIdConnect" ]);
+        var (removed, notFound, removedRoots) = graph.Remove([ "Azure.Identity", "Microsoft.IdentityModel.JsonWebTokens", "Microsoft.IdentityModel.Protocols.OpenIdConnect", "System.Memory.Data" ]);
         await using var writer = new StringWriter();
 
         var graphWriter = graphFormat == "graphviz" ? GraphWriter.Graphviz(writer) : GraphWriter.Mermaid(writer);
@@ -122,7 +122,7 @@ public class DependencyGraphTest
             "System.Security.Principal.Windows",
         ]);
         notFound.Should().BeEmpty();
-        removedRoots.Should().BeEmpty();
+        removedRoots.Should().BeEquivalentTo(["System.Memory.Data"]);
 
         await Verify(writer.ToString(), graphFormat == "graphviz" ? "gv" : "mmd").UseTextForParameters(graphFormat);
     }
