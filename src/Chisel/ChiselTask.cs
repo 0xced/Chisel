@@ -96,7 +96,7 @@ public class ChiselTask : Task
     {
         try
         {
-            var resolvedPackages = new HashSet<string>(RuntimeAssemblies.Select(e => e.GetMetadata("NuGetPackageId")).Concat(NativeLibraries.Select(e => e.GetMetadata("NuGetPackageId"))));
+            var resolvedPackages = new HashSet<string>(RuntimeAssemblies.Select(NuGetPackageId).Concat(NativeLibraries.Select(NuGetPackageId)));
             var graph = new DependencyGraph(resolvedPackages, ProjectAssetsFile, TargetFramework, RuntimeIdentifier, ChiselIgnores.Select(e => e.ItemSpec));
             var (removed, notFound, removedRoots) = graph.Remove(ChiselPackages.Select(e => e.ItemSpec));
 
@@ -110,8 +110,8 @@ public class ChiselTask : Task
                 Log.LogWarning($"The package {packageName} (defined in ChiselPackages) can't be removed from the dependency graph because it's a root");
             }
 
-            RemoveRuntimeAssemblies = RuntimeAssemblies.Where(item => removed.Contains(item.GetMetadata("NuGetPackageId"))).ToArray();
-            RemoveNativeLibraries = NativeLibraries.Where(item => removed.Contains(item.GetMetadata("NuGetPackageId"))).ToArray();
+            RemoveRuntimeAssemblies = RuntimeAssemblies.Where(item => removed.Contains(NuGetPackageId(item))).ToArray();
+            RemoveNativeLibraries = NativeLibraries.Where(item => removed.Contains(NuGetPackageId(item))).ToArray();
 
             if (string.IsNullOrEmpty(Graph) || Graph.Equals("false", StringComparison.OrdinalIgnoreCase))
             {
@@ -162,5 +162,16 @@ public class ChiselTask : Task
             Log.LogErrorFromException(exception, showStackTrace: true, showDetail: true, null);
             return false;
         }
+    }
+
+    private string NuGetPackageId(ITaskItem item)
+    {
+        var packageId = item.GetMetadata("NuGetPackageId");
+        if (string.IsNullOrEmpty(packageId))
+        {
+            var metadataNames = string.Join(", ", item.MetadataNames.OfType<string>().Select(e => $"\"{e}\""));
+            Log.LogWarning($"\"{item.ItemSpec}\" should contain \"NuGetPackageId\" metadata but contains {metadataNames}");
+        }
+        return packageId;
     }
 }
