@@ -75,6 +75,11 @@ public class ChiselTask : Task
     public string GraphDirection { get; set; } = nameof(Chisel.GraphDirection.LeftToRight);
 
     /// <summary>
+    /// Writes ignored packages (<c>ChiselIgnores</c>) to the dependency graph in gray. Used for debugging.
+    /// </summary>
+    public string WriteIgnoredPackages { get; set; } = "";
+
+    /// <summary>
     /// The <c>RuntimeCopyLocalItems</c> to remove from the build.
     /// </summary>
     [Output]
@@ -148,10 +153,12 @@ public class ChiselTask : Task
                 {
                     Log.LogWarning($"The ChiselGraphDirection property ({GraphDirection}) must be either {nameof(Chisel.GraphDirection.LeftToRight)} or {nameof(Chisel.GraphDirection.TopToBottom)}");
                 }
+                bool.TryParse(WriteIgnoredPackages, out var writeIgnoredPackages);
+
                 using var graphStream = new FileStream(graphPath, FileMode.Create);
                 using var writer = new StreamWriter(graphStream);
                 var graphWriter = Path.GetExtension(Graph) is ".mmd" or ".mermaid" ? GraphWriter.Mermaid(writer) : GraphWriter.Graphviz(writer);
-                graphWriter.Write(graph, graphDirection, writeIgnoredPackages: false);
+                graphWriter.Write(graph, graphDirection, writeIgnoredPackages);
                 GraphPath = [ new TaskItem(graphPath) ];
             }
             catch (Exception exception)
