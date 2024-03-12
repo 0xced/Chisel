@@ -28,7 +28,7 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <ChiselGraphAlias>SqlClientSample.gv</ChiselGraphAlias>
+    <ChiselGraphAlias>SqlClientSample.mermaid</ChiselGraphAlias>
   </PropertyGroup>
 
 </Project>

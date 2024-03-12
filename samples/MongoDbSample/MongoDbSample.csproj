@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <ChiselGraphAlias>MongoDBSample.gv</ChiselGraphAlias>
+    <ChiselGraphAlias>MongoDBSample.mermaid</ChiselGraphAlias>
   </PropertyGroup>
 
 </Project>
