@@ -50,7 +50,7 @@ public class TestApp : IAsyncLifetime
 
     public string GetExecutablePath(PublishMode publishMode) => _executables[publishMode].FullName;
 
-    public DirectoryInfo IntermediateOutputPath { get; private set; }
+    public DirectoryInfo IntermediateOutputPath { get; private set; } = new(".");
 
     private async Task CreateTestAppAsync()
     {
