@@ -5,20 +5,12 @@ using System.Diagnostics;
 namespace Chisel;
 
 [DebuggerDisplay("{Name}/{Version}")]
-internal sealed class Package : IEquatable<Package>
+internal sealed class Package(string name, string version, PackageType type, IReadOnlyCollection<string> dependencies) : IEquatable<Package>
 {
-    public Package(string name, string version, PackageType type, IReadOnlyCollection<string> dependencies)
-    {
-        Name = name;
-        Version = version;
-        Type = type;
-        Dependencies = dependencies;
-    }
-
-    public string Name { get; }
-    public string Version { get; }
-    public PackageType Type { get; }
-    public IReadOnlyCollection<string> Dependencies { get; }
+    public string Name { get; } = name;
+    public string Version { get; } = version;
+    public PackageType Type { get; } = type;
+    public IReadOnlyCollection<string> Dependencies { get; } = dependencies;
 
     public string Id => $"{Name}/{Version}";
 

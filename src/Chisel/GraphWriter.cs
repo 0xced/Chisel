@@ -3,15 +3,13 @@ using System.Linq;
 
 namespace Chisel;
 
-internal abstract class GraphWriter
+internal abstract class GraphWriter(TextWriter writer)
 {
     public static GraphWriter Graphviz(TextWriter writer) => new GraphvizWriter(writer);
 
     public static GraphWriter Mermaid(TextWriter writer) => new MermaidWriter(writer);
 
-    protected readonly TextWriter Writer;
-
-    protected GraphWriter(TextWriter writer) => Writer = writer;
+    protected readonly TextWriter Writer = writer;
 
     public void Write(DependencyGraph graph, GraphOptions options)
     {
