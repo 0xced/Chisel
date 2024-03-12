@@ -62,6 +62,11 @@ public class ChiselTask : Task
     public string IntermediateOutputPath { get; set; } = "";
 
     /// <summary>
+    /// The name of the project referencing Chisel. Used to produce a high quality warning in case a direct dependency is removed.
+    /// </summary>
+    public string ProjectName { get; set; } = "";
+
+    /// <summary>
     /// The optional dependency graph file name.
     /// If the file name ends with <c>.svg</c> then Graphviz <c>dot</c> command line is used to produce a SVG file.
     /// Otherwise, a Graphviz <a href="https://graphviz.org/doc/info/lang.html">dot file</a> is written.
@@ -113,7 +118,7 @@ public class ChiselTask : Task
 
             foreach (var packageName in removedRoots)
             {
-                Log.LogWarning($"The package {packageName} (defined in ChiselPackages) can't be removed from the dependency graph because it's a root");
+                Log.LogWarning($"The package {packageName} (defined in ChiselPackages) can't be removed because it's a direct dependency of {ProjectName}");
             }
 
             RemoveRuntimeAssemblies = RuntimeAssemblies.Where(item => removed.Contains(NuGetPackageId(item))).ToArray();
