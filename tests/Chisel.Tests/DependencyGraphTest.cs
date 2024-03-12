@@ -50,7 +50,7 @@ public class DependencyGraphTest
         var graph = new DependencyGraph(resolvedPackages, assetsFile, tfm: "net8.0", rid: "", ignores: [ "Testcontainers.MongoDb" ]);
         var (removed, notFound, removedRoots) = graph.Remove([ "MongoDB.Driver", "AWSSDK.SecurityToken", "NonExistentPackage" ]);
         await using var writer = new StringWriter();
-        GraphWriter.Graphviz(writer).Write(graph, GraphDirection.LeftToRight, writeIgnoredPackages);
+        GraphWriter.Graphviz(writer).Write(graph, new GraphOptions { Direction = GraphDirection.LeftToRight, IncludeVersions = false, WriteIgnoredPackages = writeIgnoredPackages });
 
         removed.Should().BeEquivalentTo("AWSSDK.SecurityToken", "AWSSDK.Core");
         notFound.Should().BeEquivalentTo("NonExistentPackage");
@@ -100,7 +100,7 @@ public class DependencyGraphTest
         await using var writer = new StringWriter();
 
         var graphWriter = graphFormat == "graphviz" ? GraphWriter.Graphviz(writer) : GraphWriter.Mermaid(writer);
-        graphWriter.Write(graph, GraphDirection.LeftToRight, writeIgnoredPackages: true);
+        graphWriter.Write(graph, new GraphOptions { Direction = GraphDirection.LeftToRight, IncludeVersions = true, WriteIgnoredPackages = false });
 
         removed.Should().BeEquivalentTo([
             "Azure.Core",

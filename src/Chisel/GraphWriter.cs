@@ -13,37 +13,39 @@ internal abstract class GraphWriter
 
     protected GraphWriter(TextWriter writer) => Writer = writer;
 
-    public void Write(DependencyGraph graph, GraphDirection graphDirection, bool writeIgnoredPackages)
+    public void Write(DependencyGraph graph, GraphOptions options)
     {
-        WriteHeader(graphDirection);
-        WriteEdges(graph, writeIgnoredPackages);
+        WriteHeader(options);
+        WriteEdges(graph, options);
         Writer.WriteLine();
-        WriteNodes(graph, writeIgnoredPackages);
+        WriteNodes(graph, options);
         WriteFooter();
     }
 
-    protected abstract void WriteHeader(GraphDirection graphDirection);
+    protected abstract void WriteHeader(GraphOptions options);
     protected abstract void WriteFooter();
-    protected abstract void WriteNode(Package package);
-    protected abstract void WriteEdge(Package package, Package dependency);
+    protected abstract void WriteNode(Package package, GraphOptions options);
+    protected abstract void WriteEdge(Package package, Package dependency, GraphOptions options);
 
-    private static bool FilterIgnored(Package package, bool writeIgnoredPackages) => writeIgnoredPackages || package.State != PackageState.Ignore;
+    protected static string GetPackageId(Package package, GraphOptions options) => options.IncludeVersions ? package.Id : package.Name;
 
-    private void WriteNodes(DependencyGraph graph, bool writeIgnoredPackages)
+    private static bool FilterIgnored(Package package, GraphOptions options) => options.WriteIgnoredPackages || package.State != PackageState.Ignore;
+
+    private void WriteNodes(DependencyGraph graph, GraphOptions options)
     {
-        foreach (var package in graph.Packages.Where(e => FilterIgnored(e, writeIgnoredPackages)).OrderBy(e => e.Id))
+        foreach (var package in graph.Packages.Where(e => FilterIgnored(e, options)).OrderBy(e => e.Id))
         {
-            WriteNode(package);
+            WriteNode(package, options);
         }
     }
 
-    private void WriteEdges(DependencyGraph graph, bool writeIgnoredPackages)
+    private void WriteEdges(DependencyGraph graph, GraphOptions options)
     {
-        foreach (var (package, dependencies) in graph.Dependencies.Select(e => (e.Key, e.Value)).Where(e => FilterIgnored(e.Key, writeIgnoredPackages)).OrderBy(e => e.Key.Id))
+        foreach (var (package, dependencies) in graph.Dependencies.Select(e => (e.Key, e.Value)).Where(e => FilterIgnored(e.Key, options)).OrderBy(e => e.Key.Id))
         {
-            foreach (var dependency in dependencies.Where(e => FilterIgnored(e, writeIgnoredPackages)).OrderBy(e => e.Id))
+            foreach (var dependency in dependencies.Where(e => FilterIgnored(e, options)).OrderBy(e => e.Id))
             {
-                WriteEdge(package, dependency);
+                WriteEdge(package, dependency, options);
             }
         }
     }
