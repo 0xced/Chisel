@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
+using System.Text;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 
@@ -160,7 +161,7 @@ public class ChiselTask : Task
             try
             {
                 using var graphStream = new FileStream(graphPath, FileMode.Create);
-                using var writer = new StreamWriter(graphStream);
+                using var writer = new StreamWriter(graphStream, new UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
                 var graphWriter = Path.GetExtension(Graph) is ".mmd" or ".mermaid" ? GraphWriter.Mermaid(writer) : GraphWriter.Graphviz(writer);
                 graphWriter.Write(graph, GetGraphOptions());
                 GraphPath = [ new TaskItem(graphPath) ];
