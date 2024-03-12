@@ -32,8 +32,7 @@ catch (Exception exception)
 
 static IEnumerable<string> EnumerateDlls(string appPath)
 {
-    var depsJsonFile = new FileInfo(Path.ChangeExtension(appPath, ".deps.json"));
-    using var depsJsonStream = depsJsonFile.Exists ? depsJsonFile.OpenRead() : GetEmbeddedJsonDepsStream(appPath);
+    using var depsJsonStream = GetJsonDepsStream(appPath);
     using var reader = new DependencyContextJsonReader();
     var dependencyContext = reader.Read(depsJsonStream);
 
@@ -49,7 +48,7 @@ static IEnumerable<string> EnumerateDlls(string appPath)
 }
 
 // See https://github.com/0xced/SingleFileAppDependencyContext
-static Stream GetEmbeddedJsonDepsStream(string appPath)
+static Stream GetJsonDepsStream(string appPath)
 {
     var depsJsonRegex = new Regex(@"DepsJson Offset:\[([0-9a-fA-F]+)\] Size\[([0-9a-fA-F]+)\]", RegexOptions.Compiled | RegexOptions.IgnoreCase);
     var startInfo = new ProcessStartInfo(appPath)
@@ -94,5 +93,5 @@ static Stream GetEmbeddedJsonDepsStream(string appPath)
         return appHostFile.CreateViewStream(depsJsonOffset.Value, depsJsonSize.Value, MemoryMappedFileAccess.Read);
     }
 
-    throw new InvalidOperationException("The .deps.json location was not found in the AppHost logs");
+    return new FileStream(Path.ChangeExtension(appPath, ".deps.json"), FileMode.Open);
 }
