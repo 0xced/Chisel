@@ -114,6 +114,16 @@ public class ChiselTask : Task
             RemoveRuntimeAssemblies = RuntimeAssemblies.Where(item => removed.Contains(NuGetPackageId(item))).ToArray();
             RemoveNativeLibraries = NativeLibraries.Where(item => removed.Contains(NuGetPackageId(item))).ToArray();
 
+            try
+            {
+                var saved = RemoveRuntimeAssemblies.Concat(RemoveNativeLibraries).Sum(e => new FileInfo(e.ItemSpec).Length);
+                Log.LogMessage($"Chisel saved {saved / (1024.0 * 1024):F1} MB");
+            }
+            catch (Exception exception)
+            {
+                Log.LogWarningFromException(exception, showStackTrace: true);
+            }
+
             if (string.IsNullOrEmpty(Graph) || Graph.Equals("false", StringComparison.OrdinalIgnoreCase))
             {
                 return true;
