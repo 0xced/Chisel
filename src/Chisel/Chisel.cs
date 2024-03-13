@@ -16,7 +16,7 @@ namespace Chisel;
 [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global", Justification = "For MSBuild")]
 [SuppressMessage("ReSharper", "MemberCanBePrivate.Global", Justification = "For MSBuild")]
 [SuppressMessage("ReSharper", "UnusedType.Global", Justification = "For MSBuild")]
-public class ChiselTask : Task
+public class Chisel : Task
 {
     /// <summary>
     /// The project assets file path (project.assets.json).
@@ -83,7 +83,7 @@ public class ChiselTask : Task
     /// <summary>
     /// The dependency graph direction. Allowed values are <c>LeftToRight</c> and <c>TopToBottom</c>.
     /// </summary>
-    public string GraphDirection { get; set; } = nameof(Chisel.GraphDirection.LeftToRight);
+    public string GraphDirection { get; set; } = nameof(global::Chisel.GraphDirection.LeftToRight);
 
     /// <summary>
     /// Include the version numbers in the generated dependency graph file.
@@ -222,7 +222,7 @@ public class ChiselTask : Task
     {
         if (!Enum.TryParse<GraphDirection>(GraphDirection, ignoreCase: true, out var direction))
         {
-            Log.LogWarning($"The ChiselGraphDirection property ({GraphDirection}) must be either {nameof(Chisel.GraphDirection.LeftToRight)} or {nameof(Chisel.GraphDirection.TopToBottom)}");
+            Log.LogWarning($"The ChiselGraphDirection property ({GraphDirection}) must be either {nameof(global::Chisel.GraphDirection.LeftToRight)} or {nameof(global::Chisel.GraphDirection.TopToBottom)}");
         }
 
         return new GraphOptions
