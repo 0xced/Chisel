@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="$(IntermediateOutputPath)$(ChiselGraph)" Condition="Exists('$(IntermediateOutputPath)$(ChiselGraph)') AND $(ChiselGraphAlias) != ''">
+    <Content Include="$(IntermediateOutputPath)$(ChiselGraphName)" Condition="Exists('$(IntermediateOutputPath)$(ChiselGraphName)') AND $(ChiselGraphAlias) != ''">
       <Link>$(ChiselGraphAlias)</Link>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>Never</CopyToPublishDirectory>
