@@ -124,78 +124,88 @@ public class ChiselTask : Task
 
         try
         {
-            var resolvedPackages = new HashSet<string>(RuntimeAssemblies.Select(NuGetPackageId).Concat(NativeLibraries.Select(NuGetPackageId)));
-            var graph = new DependencyGraph(resolvedPackages, ProjectAssetsFile, TargetFramework, RuntimeIdentifier, ChiselIgnores.Select(e => e.ItemSpec));
-            var (removed, notFound, removedRoots) = graph.Remove(ChiselPackages.Select(e => e.ItemSpec));
-
-            foreach (var packageName in notFound)
-            {
-                Log.LogWarning($"The package {packageName} (defined in ChiselPackages) was not found in the dependency graph");
-            }
-
-            foreach (var packageName in removedRoots)
-            {
-                Log.LogWarning($"The package {packageName} (defined in ChiselPackages) can't be removed because it's a direct dependency of {ProjectName}");
-            }
-
-            RemoveRuntimeAssemblies = RuntimeAssemblies.Where(item => removed.Contains(NuGetPackageId(item))).ToArray();
-            RemoveNativeLibraries = NativeLibraries.Where(item => removed.Contains(NuGetPackageId(item))).ToArray();
-
-            try
-            {
-                var saved = RemoveRuntimeAssemblies.Concat(RemoveNativeLibraries).Sum(e => new FileInfo(e.ItemSpec).Length);
-                Log.LogMessage($"Chisel saved {saved / (1024.0 * 1024):F1} MB");
-            }
-            catch (Exception exception)
-            {
-                Log.LogWarningFromException(exception, showStackTrace: true);
-            }
-
-            if (string.IsNullOrEmpty(Graph) || Graph.Equals("false", StringComparison.OrdinalIgnoreCase))
-            {
-                return true;
-            }
-
-            if (Graph != Path.GetFileName(Graph))
-            {
-                Log.LogWarning($"The ChiselGraph property ({Graph}) must be a file name that does not include a directory");
-                return true;
-            }
-
-            if (!Directory.Exists(IntermediateOutputPath))
-            {
-                Log.LogWarning($"The IntermediateOutputPath property ({IntermediateOutputPath}) must point to an existing directory");
-                return true;
-            }
-
-            var graphPath = Path.Combine(IntermediateOutputPath, Graph);
-            try
-            {
-                using var graphStream = new FileStream(graphPath, FileMode.Create);
-                using var writer = new StreamWriter(graphStream, new UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
-                var graphWriter = Path.GetExtension(Graph) is ".mmd" or ".mermaid" ? GraphWriter.Mermaid(writer) : GraphWriter.Graphviz(writer);
-                graphWriter.Write(graph, GetGraphOptions());
-                GraphPath = [ new TaskItem(graphPath) ];
-            }
-            catch (Exception exception)
-            {
-                Log.LogWarningFromException(exception, showStackTrace: true);
-                try
-                {
-                    File.Delete(graphPath);
-                }
-                catch (Exception deleteException)
-                {
-                    Log.LogWarningFromException(deleteException, showStackTrace: true);
-                }
-            }
-
+            var graph = ProcessGraph();
+            WriteGraph(graph);
             return true;
         }
         catch (Exception exception)
         {
             Log.LogErrorFromException(exception, showStackTrace: true, showDetail: true, null);
             return false;
+        }
+    }
+
+    private DependencyGraph ProcessGraph()
+    {
+        var resolvedPackages = new HashSet<string>(RuntimeAssemblies.Select(NuGetPackageId).Concat(NativeLibraries.Select(NuGetPackageId)));
+        var graph = new DependencyGraph(resolvedPackages, ProjectAssetsFile, TargetFramework, RuntimeIdentifier, ChiselIgnores.Select(e => e.ItemSpec));
+        var (removed, notFound, removedRoots) = graph.Remove(ChiselPackages.Select(e => e.ItemSpec));
+
+        foreach (var packageName in notFound)
+        {
+            Log.LogWarning($"The package {packageName} (defined in ChiselPackages) was not found in the dependency graph");
+        }
+
+        foreach (var packageName in removedRoots)
+        {
+            Log.LogWarning($"The package {packageName} (defined in ChiselPackages) can't be removed because it's a direct dependency of {ProjectName}");
+        }
+
+        RemoveRuntimeAssemblies = RuntimeAssemblies.Where(item => removed.Contains(NuGetPackageId(item))).ToArray();
+        RemoveNativeLibraries = NativeLibraries.Where(item => removed.Contains(NuGetPackageId(item))).ToArray();
+
+        try
+        {
+            var saved = RemoveRuntimeAssemblies.Concat(RemoveNativeLibraries).Sum(e => new FileInfo(e.ItemSpec).Length);
+            Log.LogMessage($"Chisel saved {saved / (1024.0 * 1024):F1} MB");
+        }
+        catch (Exception exception)
+        {
+            Log.LogWarningFromException(exception, showStackTrace: true);
+        }
+
+        return graph;
+    }
+
+    private void WriteGraph(DependencyGraph graph)
+    {
+        if (string.IsNullOrEmpty(Graph) || Graph.Equals("false", StringComparison.OrdinalIgnoreCase))
+        {
+            return;
+        }
+
+        if (Graph != Path.GetFileName(Graph))
+        {
+            Log.LogWarning($"The ChiselGraph property ({Graph}) must be a file name that does not include a directory");
+            return;
+        }
+
+        if (!Directory.Exists(IntermediateOutputPath))
+        {
+            Log.LogWarning($"The IntermediateOutputPath property ({IntermediateOutputPath}) must point to an existing directory");
+            return;
+        }
+
+        var graphPath = Path.Combine(IntermediateOutputPath, Graph);
+        try
+        {
+            using var graphStream = new FileStream(graphPath, FileMode.Create);
+            using var writer = new StreamWriter(graphStream, new UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
+            var graphWriter = Path.GetExtension(Graph) is ".mmd" or ".mermaid" ? GraphWriter.Mermaid(writer) : GraphWriter.Graphviz(writer);
+            graphWriter.Write(graph, GetGraphOptions());
+            GraphPath = [ new TaskItem(graphPath) ];
+        }
+        catch (Exception exception)
+        {
+            Log.LogWarningFromException(exception, showStackTrace: true);
+            try
+            {
+                File.Delete(graphPath);
+            }
+            catch (Exception deleteException)
+            {
+                Log.LogWarningFromException(deleteException, showStackTrace: true);
+            }
         }
     }
 
