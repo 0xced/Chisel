@@ -88,12 +88,12 @@ public class ChiselTask : Task
     /// <summary>
     /// Include the version numbers in the generated dependency graph file.
     /// </summary>
-    public string GraphIncludeVersions { get; set; } = "";
+    public bool GraphIncludeVersions { get; set; }
 
     /// <summary>
     /// Writes ignored packages (<c>ChiselIgnores</c>) to the dependency graph file in gray. Used for debugging.
     /// </summary>
-    public string GraphWriteIgnoredPackages { get; set; } = "";
+    public bool GraphWriteIgnoredPackages { get; set; }
 
     /// <summary>
     /// The <c>RuntimeCopyLocalItems</c> to remove from the build.
@@ -224,14 +224,12 @@ public class ChiselTask : Task
         {
             Log.LogWarning($"The ChiselGraphDirection property ({GraphDirection}) must be either {nameof(Chisel.GraphDirection.LeftToRight)} or {nameof(Chisel.GraphDirection.TopToBottom)}");
         }
-        bool.TryParse(GraphIncludeVersions, out var includeVersions);
-        bool.TryParse(GraphWriteIgnoredPackages, out var writeIgnoredPackages);
 
         return new GraphOptions
         {
             Direction = direction,
-            IncludeVersions = includeVersions,
-            WriteIgnoredPackages = writeIgnoredPackages,
+            IncludeVersions = GraphIncludeVersions,
+            WriteIgnoredPackages = GraphWriteIgnoredPackages,
         };
     }
 
