@@ -58,7 +58,7 @@ public class ChiselTask : Task
     public ITaskItem[] NativeLibraries { get; set; } = [];
 
     /// <summary>
-    /// The intermediate output path where the <see cref="Graph"/> is saved.
+    /// The intermediate output path where the <see cref="GraphName"/> is saved.
     /// </summary>
     public string IntermediateOutputPath { get; set; } = "";
 
@@ -76,9 +76,9 @@ public class ChiselTask : Task
     /// The optional dependency graph file name.
     /// If the file name ends with <c>.mmd</c> or <c>.mermaid</c> then a <a href="https://mermaid.js.org/syntax/flowchart.html">Mermaid graph</a> is written.
     /// Otherwise, a <a href="https://graphviz.org/doc/info/lang.html">Graphviz dot file</a> is written.
-    /// Use <c>false</c> to disable writing the dependency graph.
+    /// Use <c>none</c> to disable writing the dependency graph file.
     /// </summary>
-    public string Graph { get; set; } = "";
+    public string GraphName { get; set; } = "";
 
     /// <summary>
     /// The dependency graph direction. Allowed values are <c>LeftToRight</c> and <c>TopToBottom</c>.
@@ -111,7 +111,13 @@ public class ChiselTask : Task
     /// The path where the dependency graph was written or an empty array none was written.
     /// </summary>
     [Output]
-    public ITaskItem[] GraphPath { get; private set; } = [];
+    public ITaskItem[] Graph { get; private set; } = [];
+
+    /// <summary>
+    /// The total number of bytes from all the runtime assemblies and native libraries that were removed by Chisel.
+    /// </summary>
+    [Output]
+    public long? BytesSaved { get; private set; }
 
     /// <inheritdoc />
     public override bool Execute()
@@ -156,8 +162,8 @@ public class ChiselTask : Task
 
         try
         {
-            var saved = RemoveRuntimeAssemblies.Concat(RemoveNativeLibraries).Sum(e => new FileInfo(e.ItemSpec).Length);
-            Log.LogMessage($"Chisel saved {saved / (1024.0 * 1024):F1} MB");
+            BytesSaved = RemoveRuntimeAssemblies.Concat(RemoveNativeLibraries).Sum(e => new FileInfo(e.ItemSpec).Length);
+            Log.LogMessage($"Chisel saved {BytesSaved / (1024.0 * 1024):F1} MB");
         }
         catch (Exception exception)
         {
@@ -169,14 +175,14 @@ public class ChiselTask : Task
 
     private void WriteGraph(DependencyGraph graph)
     {
-        if (string.IsNullOrEmpty(Graph) || Graph.Equals("false", StringComparison.OrdinalIgnoreCase))
+        if (string.IsNullOrEmpty(GraphName) || GraphName.Equals("none", StringComparison.OrdinalIgnoreCase))
         {
             return;
         }
 
-        if (Graph != Path.GetFileName(Graph))
+        if (GraphName != Path.GetFileName(GraphName))
         {
-            Log.LogWarning($"The ChiselGraph property ({Graph}) must be a file name that does not include a directory");
+            Log.LogWarning($"The ChiselGraph property ({GraphName}) must be a file name that does not include a directory");
             return;
         }
 
@@ -186,14 +192,17 @@ public class ChiselTask : Task
             return;
         }
 
-        var graphPath = Path.Combine(IntermediateOutputPath, Graph);
+        var graphPath = Path.Combine(IntermediateOutputPath, GraphName);
         try
         {
             using var graphStream = new FileStream(graphPath, FileMode.Create);
             using var writer = new StreamWriter(graphStream, new UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
-            var graphWriter = Path.GetExtension(Graph) is ".mmd" or ".mermaid" ? GraphWriter.Mermaid(writer) : GraphWriter.Graphviz(writer);
+            var isMermaid = Path.GetExtension(GraphName) is ".mmd" or ".mermaid";
+            var graphWriter = isMermaid ? GraphWriter.Mermaid(writer) : GraphWriter.Graphviz(writer);
             graphWriter.Write(graph, GetGraphOptions());
-            GraphPath = [ new TaskItem(graphPath) ];
+            var graphItem = new TaskItem(graphPath);
+            graphItem.SetMetadata("Format", graphWriter.FormatName);
+            Graph = [ graphItem ];
         }
         catch (Exception exception)
         {

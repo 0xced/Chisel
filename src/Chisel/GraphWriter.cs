@@ -20,6 +20,7 @@ internal abstract class GraphWriter(TextWriter writer)
         WriteFooter();
     }
 
+    public abstract string FormatName { get; }
     protected abstract void WriteHeader(GraphOptions options);
     protected abstract void WriteFooter();
     protected abstract void WriteNode(Package package, GraphOptions options);

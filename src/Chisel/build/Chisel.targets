@@ -16,7 +16,7 @@
           IntermediateOutputPath="$(IntermediateOutputPath)"
           ProjectName="$(MSBuildProjectName)"
           OutputType="$(OutputType)"
-          Graph="$(ChiselGraph)"
+          GraphName="$(ChiselGraphName)"
           GraphDirection="$(ChiselGraphDirection)"
           GraphIncludeVersions="$(ChiselGraphIncludeVersions)"
           GraphWriteIgnoredPackages="$(ChiselGraphWriteIgnoredPackages)"
@@ -26,13 +26,14 @@
           NativeLibraries="@(NativeCopyLocalItems)">
       <Output TaskParameter="RemoveRuntimeAssemblies" ItemName="ChiselRemoveRuntimeCopyLocalItems" />
       <Output TaskParameter="RemoveNativeLibraries" ItemName="ChiselRemoveNativeCopyLocalItems" />
-      <Output TaskParameter="GraphPath" ItemName="ChiselGraphPath" />
+      <Output TaskParameter="Graph" ItemName="ChiselGraph" />
+      <Output TaskParameter="BytesSaved" PropertyName="ChiselBytesSaved" />
     </ChiselTask>
 
     <ItemGroup>
       <RuntimeCopyLocalItems Remove="@(ChiselRemoveRuntimeCopyLocalItems)" />
       <NativeCopyLocalItems Remove="@(ChiselRemoveNativeCopyLocalItems)" />
-      <FileWrites Include="@(ChiselGraphPath)" />
+      <FileWrites Include="@(ChiselGraph)" />
     </ItemGroup>
 
   </Target>
