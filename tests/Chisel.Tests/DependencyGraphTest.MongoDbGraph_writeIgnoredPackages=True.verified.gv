@@ -7,12 +7,16 @@ digraph
 
   "AWSSDK.SecurityToken" -> "AWSSDK.Core"
   "DnsClient" -> "Microsoft.Win32.Registry"
-  "Docker.DotNet.X509" -> "Docker.DotNet"
   "Docker.DotNet" -> "Newtonsoft.Json"
+  "Docker.DotNet.X509" -> "Docker.DotNet"
   "Microsoft.Extensions.Logging.Abstractions" -> "Microsoft.Extensions.DependencyInjection.Abstractions"
   "Microsoft.Win32.Registry" -> "System.Security.AccessControl"
   "Microsoft.Win32.Registry" -> "System.Security.Principal.Windows"
   "MongoDB.Bson" -> "System.Runtime.CompilerServices.Unsafe"
+  "MongoDB.Driver" -> "Microsoft.Extensions.Logging.Abstractions"
+  "MongoDB.Driver" -> "MongoDB.Bson"
+  "MongoDB.Driver" -> "MongoDB.Driver.Core"
+  "MongoDB.Driver" -> "MongoDB.Libmongocrypt"
   "MongoDB.Driver.Core" -> "AWSSDK.SecurityToken"
   "MongoDB.Driver.Core" -> "DnsClient"
   "MongoDB.Driver.Core" -> "Microsoft.Extensions.Logging.Abstractions"
@@ -21,38 +25,34 @@ digraph
   "MongoDB.Driver.Core" -> "SharpCompress"
   "MongoDB.Driver.Core" -> "Snappier"
   "MongoDB.Driver.Core" -> "ZstdSharp.Port"
-  "MongoDB.Driver" -> "Microsoft.Extensions.Logging.Abstractions"
-  "MongoDB.Driver" -> "MongoDB.Bson"
-  "MongoDB.Driver" -> "MongoDB.Driver.Core"
-  "MongoDB.Driver" -> "MongoDB.Libmongocrypt"
   "SSH.NET" -> "SshNet.Security.Cryptography"
   "System.Security.AccessControl" -> "System.Security.Principal.Windows"
   "System.Text.Encodings.Web" -> "System.Runtime.CompilerServices.Unsafe"
   "System.Text.Json" -> "System.Runtime.CompilerServices.Unsafe"
   "System.Text.Json" -> "System.Text.Encodings.Web"
-  "Testcontainers.MongoDb" -> "Testcontainers"
   "Testcontainers" -> "BouncyCastle.Cryptography"
-  "Testcontainers" -> "Docker.DotNet.X509"
   "Testcontainers" -> "Docker.DotNet"
+  "Testcontainers" -> "Docker.DotNet.X509"
   "Testcontainers" -> "Microsoft.Bcl.AsyncInterfaces"
   "Testcontainers" -> "Microsoft.Extensions.Logging.Abstractions"
   "Testcontainers" -> "SharpZipLib"
   "Testcontainers" -> "SSH.NET"
   "Testcontainers" -> "System.Text.Json"
+  "Testcontainers.MongoDb" -> "Testcontainers"
 
   "AWSSDK.Core" [ color = lightcoral ]
   "AWSSDK.SecurityToken" [ color = lightcoral ]
   "BouncyCastle.Cryptography" [ color = lightgray ]
   "DnsClient"
-  "Docker.DotNet.X509" [ color = lightgray ]
   "Docker.DotNet" [ color = lightgray ]
+  "Docker.DotNet.X509" [ color = lightgray ]
   "Microsoft.Bcl.AsyncInterfaces" [ color = lightgray ]
   "Microsoft.Extensions.DependencyInjection.Abstractions"
   "Microsoft.Extensions.Logging.Abstractions"
   "Microsoft.Win32.Registry"
   "MongoDB.Bson"
-  "MongoDB.Driver.Core"
   "MongoDB.Driver"
+  "MongoDB.Driver.Core"
   "MongoDB.Libmongocrypt"
   "Newtonsoft.Json" [ color = lightgray ]
   "SharpCompress"
@@ -65,7 +65,7 @@ digraph
   "System.Security.Principal.Windows"
   "System.Text.Encodings.Web" [ color = lightgray ]
   "System.Text.Json" [ color = lightgray ]
-  "Testcontainers.MongoDb" [ color = lightgray ]
   "Testcontainers" [ color = lightgray ]
+  "Testcontainers.MongoDb" [ color = lightgray ]
   "ZstdSharp.Port"
 }

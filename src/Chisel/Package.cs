@@ -12,8 +12,6 @@ internal sealed class Package(string name, string version, PackageType type, IRe
     public PackageType Type { get; } = type;
     public IReadOnlyCollection<string> Dependencies { get; } = dependencies;
 
-    public string Id => $"{Name}/{Version}";
-
     public PackageState State { get; set; } = PackageState.Keep;
 
     public override string ToString() => Name;
