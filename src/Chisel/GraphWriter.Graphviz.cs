@@ -38,13 +38,9 @@ internal sealed class GraphvizWriter(TextWriter writer) : GraphWriter(writer)
         {
             Writer.Write(" [ color = lightcoral ]");
         }
-        else if (package.Type == PackageType.Project)
+        else if (package.IsProjectReference)
         {
             Writer.Write(" [ color = skyblue ]");
-        }
-        else if (package.Type == PackageType.Unknown)
-        {
-            Writer.Write(" [ color = khaki ]");
         }
 
         Writer.WriteLine();

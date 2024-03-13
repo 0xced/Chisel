@@ -31,14 +31,11 @@ internal sealed class DependencyGraph
     {
         var name = library.Name ?? throw new ArgumentException("The library must have a name", nameof(library));
         var version = library.Version?.ToString() ?? throw new ArgumentException($"The library \"{name}\" must have a version", nameof(library));
-        var type = library.Type switch
-        {
-            "package" => PackageType.Package,
-            "project" => PackageType.Project,
-            _ => PackageType.Unknown,
-        };
+        // https://github.com/dotnet/sdk/blob/v8.0.202/documentation/specs/runtime-configuration-file.md#libraries-section-depsjson
+        // > `type` - the type of the library. `package` for NuGet packages. `project` for a project reference. Can be other things as well.
+        var isProjectReference = library.Type == "project";
         var dependencies = library.Dependencies.Select(e => e.Id).ToList();
-        return new Package(name, version, type, dependencies);
+        return new Package(name, version, isProjectReference, dependencies);
     }
 
     public DependencyGraph(HashSet<string> resolvedPackages, string projectAssetsFile, string tfm, string rid, IEnumerable<string> ignores)

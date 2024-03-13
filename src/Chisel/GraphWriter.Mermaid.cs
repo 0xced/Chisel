@@ -20,7 +20,6 @@ internal sealed class MermaidWriter(TextWriter writer) : GraphWriter(writer)
         Writer.WriteLine();
         Writer.WriteLine("classDef default fill:aquamarine,stroke:aquamarine");
         Writer.WriteLine("classDef project fill:skyblue,stroke:skyblue");
-        Writer.WriteLine("classDef unknown fill:khaki,stroke:khaki");
         Writer.WriteLine("classDef ignored fill:lightgray,stroke:lightgray");
         Writer.WriteLine("classDef removed fill:lightcoral,stroke:lightcoral");
         Writer.WriteLine();
@@ -41,11 +40,7 @@ internal sealed class MermaidWriter(TextWriter writer) : GraphWriter(writer)
         {
             Writer.WriteLine("removed");
         }
-        else if (package.Type == PackageType.Unknown)
-        {
-            Writer.WriteLine("unknown");
-        }
-        else if (package.Type == PackageType.Project)
+        else if (package.IsProjectReference)
         {
             Writer.WriteLine("project");
         }

@@ -5,11 +5,11 @@ using System.Diagnostics;
 namespace Chisel;
 
 [DebuggerDisplay("{Name}/{Version}")]
-internal sealed class Package(string name, string version, PackageType type, IReadOnlyCollection<string> dependencies) : IEquatable<Package>
+internal sealed class Package(string name, string version, bool isProjectReference, IReadOnlyCollection<string> dependencies) : IEquatable<Package>
 {
     public string Name { get; } = name;
     public string Version { get; } = version;
-    public PackageType Type { get; } = type;
+    public bool IsProjectReference { get; } = isProjectReference;
     public IReadOnlyCollection<string> Dependencies { get; } = dependencies;
 
     public PackageState State { get; set; } = PackageState.Keep;
