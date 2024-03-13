@@ -18,10 +18,10 @@ internal sealed class MermaidWriter(TextWriter writer) : GraphWriter(writer)
         Writer.WriteLine();
 
         Writer.WriteLine();
-        Writer.WriteLine("classDef default fill:aquamarine,stroke:aquamarine");
-        Writer.WriteLine("classDef project fill:skyblue,stroke:skyblue");
-        Writer.WriteLine("classDef ignored fill:lightgray,stroke:lightgray");
-        Writer.WriteLine("classDef removed fill:lightcoral,stroke:lightcoral");
+        Writer.WriteLine($"classDef default fill:{options.Color.Default.Fill},stroke:{options.Color.Default.Stroke}");
+        Writer.WriteLine($"classDef project fill:{options.Color.Project.Fill},stroke:{options.Color.Project.Stroke}");
+        Writer.WriteLine($"classDef ignored fill:{options.Color.Ignored.Fill},stroke:{options.Color.Ignored.Stroke}");
+        Writer.WriteLine($"classDef removed fill:{options.Color.Removed.Fill},stroke:{options.Color.Removed.Stroke}");
         Writer.WriteLine();
     }
 
@@ -31,23 +31,13 @@ internal sealed class MermaidWriter(TextWriter writer) : GraphWriter(writer)
 
     protected override void WriteNode(Package package, GraphOptions options)
     {
-        Writer.Write($"class {GetPackageId(package, options)} ");
-        if (package.State == PackageState.Ignore)
+        var className = package.State switch
         {
-            Writer.WriteLine("ignored");
-        }
-        else if (package.State == PackageState.Remove)
-        {
-            Writer.WriteLine("removed");
-        }
-        else if (package.IsProjectReference)
-        {
-            Writer.WriteLine("project");
-        }
-        else
-        {
-            Writer.WriteLine("default");
-        }
+            PackageState.Ignore => "ignored",
+            PackageState.Remove => "removed",
+            _ => package.IsProjectReference ? "project" : "default",
+        };
+        Writer.WriteLine($"class {GetPackageId(package, options)} {className}");
     }
 
     protected override void WriteEdge(Package package, Package dependency, GraphOptions options)

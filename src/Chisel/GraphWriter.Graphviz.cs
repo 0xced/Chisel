@@ -18,7 +18,7 @@ internal sealed class GraphvizWriter(TextWriter writer) : GraphWriter(writer)
         else if (options.Direction == GraphDirection.TopToBottom)
             Writer.WriteLine("  rankdir=TB");
 
-        Writer.WriteLine("  node [ fontname = \"Segoe UI, sans-serif\", shape = box, style = filled, color = aquamarine ]");
+        Writer.WriteLine($"  node [ fontname = \"Segoe UI, sans-serif\", shape = box, style = filled, {Color(options.Color.Default)} ]");
         Writer.WriteLine();
     }
 
@@ -30,19 +30,16 @@ internal sealed class GraphvizWriter(TextWriter writer) : GraphWriter(writer)
     protected override void WriteNode(Package package, GraphOptions options)
     {
         Writer.Write($"  \"{GetPackageId(package, options)}\"");
-        if (package.State == PackageState.Ignore)
+        var color = package.State switch
         {
-            Writer.Write(" [ color = lightgray ]");
-        }
-        else if (package.State == PackageState.Remove)
+            PackageState.Ignore => options.Color.Ignored,
+            PackageState.Remove => options.Color.Removed,
+            _ => package.IsProjectReference ? options.Color.Project : (Color?)null,
+        };
+        if (color.HasValue)
         {
-            Writer.Write(" [ color = lightcoral ]");
+            Writer.Write($" [ {Color(color.Value)} ]");
         }
-        else if (package.IsProjectReference)
-        {
-            Writer.Write(" [ color = skyblue ]");
-        }
-
         Writer.WriteLine();
     }
 
@@ -50,4 +47,10 @@ internal sealed class GraphvizWriter(TextWriter writer) : GraphWriter(writer)
     {
         Writer.WriteLine($"  \"{GetPackageId(package, options)}\" -> \"{GetPackageId(dependency, options)}\"");
     }
+
+    private static string Color(Color color) => $"fillcolor = {Fill(color)}, color = {Stroke(color)}";
+
+    private static string Fill(Color color) => color.Fill.StartsWith("#") ? $"\"{color.Fill}\"" : color.Fill;
+
+    private static string Stroke(Color color) => color.Stroke.StartsWith("#") ? $"\"{color.Stroke}\"" : color.Stroke;
 }

@@ -3,7 +3,7 @@
 digraph
 {
   rankdir=LR
-  node [ fontname = "Segoe UI, sans-serif", shape = box, style = filled, color = aquamarine ]
+  node [ fontname = "Segoe UI, sans-serif", shape = box, style = filled, fillcolor = aquamarine, color = "#009061" ]
 
   "AWSSDK.SecurityToken" -> "AWSSDK.Core"
   "DnsClient" -> "Microsoft.Win32.Registry"
@@ -25,8 +25,8 @@ digraph
   "MongoDB.Driver.Core" -> "ZstdSharp.Port"
   "System.Security.AccessControl" -> "System.Security.Principal.Windows"
 
-  "AWSSDK.Core" [ color = lightcoral ]
-  "AWSSDK.SecurityToken" [ color = lightcoral ]
+  "AWSSDK.Core" [ fillcolor = lightcoral, color = "#A42A2A" ]
+  "AWSSDK.SecurityToken" [ fillcolor = lightcoral, color = "#A42A2A" ]
   "DnsClient"
   "Microsoft.Extensions.DependencyInjection.Abstractions"
   "Microsoft.Extensions.Logging.Abstractions"

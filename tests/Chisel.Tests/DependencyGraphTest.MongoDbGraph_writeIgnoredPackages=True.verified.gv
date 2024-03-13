@@ -3,7 +3,7 @@
 digraph
 {
   rankdir=LR
-  node [ fontname = "Segoe UI, sans-serif", shape = box, style = filled, color = aquamarine ]
+  node [ fontname = "Segoe UI, sans-serif", shape = box, style = filled, fillcolor = aquamarine, color = "#009061" ]
 
   "AWSSDK.SecurityToken" -> "AWSSDK.Core"
   "DnsClient" -> "Microsoft.Win32.Registry"
@@ -40,13 +40,13 @@ digraph
   "Testcontainers" -> "System.Text.Json"
   "Testcontainers.MongoDb" -> "Testcontainers"
 
-  "AWSSDK.Core" [ color = lightcoral ]
-  "AWSSDK.SecurityToken" [ color = lightcoral ]
-  "BouncyCastle.Cryptography" [ color = lightgray ]
+  "AWSSDK.Core" [ fillcolor = lightcoral, color = "#A42A2A" ]
+  "AWSSDK.SecurityToken" [ fillcolor = lightcoral, color = "#A42A2A" ]
+  "BouncyCastle.Cryptography" [ fillcolor = lightgray, color = "#7A7A7A" ]
   "DnsClient"
-  "Docker.DotNet" [ color = lightgray ]
-  "Docker.DotNet.X509" [ color = lightgray ]
-  "Microsoft.Bcl.AsyncInterfaces" [ color = lightgray ]
+  "Docker.DotNet" [ fillcolor = lightgray, color = "#7A7A7A" ]
+  "Docker.DotNet.X509" [ fillcolor = lightgray, color = "#7A7A7A" ]
+  "Microsoft.Bcl.AsyncInterfaces" [ fillcolor = lightgray, color = "#7A7A7A" ]
   "Microsoft.Extensions.DependencyInjection.Abstractions"
   "Microsoft.Extensions.Logging.Abstractions"
   "Microsoft.Win32.Registry"
@@ -54,18 +54,18 @@ digraph
   "MongoDB.Driver"
   "MongoDB.Driver.Core"
   "MongoDB.Libmongocrypt"
-  "Newtonsoft.Json" [ color = lightgray ]
+  "Newtonsoft.Json" [ fillcolor = lightgray, color = "#7A7A7A" ]
   "SharpCompress"
-  "SharpZipLib" [ color = lightgray ]
+  "SharpZipLib" [ fillcolor = lightgray, color = "#7A7A7A" ]
   "Snappier"
-  "SSH.NET" [ color = lightgray ]
-  "SshNet.Security.Cryptography" [ color = lightgray ]
+  "SSH.NET" [ fillcolor = lightgray, color = "#7A7A7A" ]
+  "SshNet.Security.Cryptography" [ fillcolor = lightgray, color = "#7A7A7A" ]
   "System.Runtime.CompilerServices.Unsafe"
   "System.Security.AccessControl"
   "System.Security.Principal.Windows"
-  "System.Text.Encodings.Web" [ color = lightgray ]
-  "System.Text.Json" [ color = lightgray ]
-  "Testcontainers" [ color = lightgray ]
-  "Testcontainers.MongoDb" [ color = lightgray ]
+  "System.Text.Encodings.Web" [ fillcolor = lightgray, color = "#7A7A7A" ]
+  "System.Text.Json" [ fillcolor = lightgray, color = "#7A7A7A" ]
+  "Testcontainers" [ fillcolor = lightgray, color = "#7A7A7A" ]
+  "Testcontainers.MongoDb" [ fillcolor = lightgray, color = "#7A7A7A" ]
   "ZstdSharp.Port"
 }
