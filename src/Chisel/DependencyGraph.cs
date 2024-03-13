@@ -8,6 +8,22 @@ namespace Chisel;
 internal sealed class DependencyGraph
 {
     private readonly HashSet<Package> _roots;
+    /*
+     * ┌───────────────────┐
+     * │  Azure.Identity   │───────────────────────────┐
+     * └───────────────────┘                           ▼
+     *           │                         ┌───────────────────────┐
+     *           │           ┌────────────▶│   System.Text.Json    │
+     *           │           │             └───────────────────────┘
+     *           │           │                         ▲
+     *           │           │                         │
+     *           │ ┌───────────────────┐   ┌───────────────────────┐
+     *           └▶│    Azure.Core     │──▶│  System.Memory.Data   │
+     *             └───────────────────┘   └───────────────────────┘
+     *
+     * _graph:        Key = Azure.Identity,   Values = [ Azure.Core, System.Text.Json ]
+     * _reverseGraph: Key = System.Text.Json, Values = [ Azure.Identity, Azure.Core, System.Memory.Data ]
+     */
     private readonly Dictionary<Package, HashSet<Package>> _graph = new();
     private readonly Dictionary<Package, HashSet<Package>> _reverseGraph = new();
 
