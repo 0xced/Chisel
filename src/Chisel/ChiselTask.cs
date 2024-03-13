@@ -74,8 +74,8 @@ public class ChiselTask : Task
 
     /// <summary>
     /// The optional dependency graph file name.
-    /// If the file name ends with <c>.svg</c> then Graphviz <c>dot</c> command line is used to produce a SVG file.
-    /// Otherwise, a Graphviz <a href="https://graphviz.org/doc/info/lang.html">dot file</a> is written.
+    /// If the file name ends with <c>.mmd</c> or <c>.mermaid</c> then a <a href="https://mermaid.js.org/syntax/flowchart.html">Mermaid graph</a> is written.
+    /// Otherwise, a <a href="https://graphviz.org/doc/info/lang.html">Graphviz dot file</a> is written.
     /// Use <c>false</c> to disable writing the dependency graph.
     /// </summary>
     public string Graph { get; set; } = "";
