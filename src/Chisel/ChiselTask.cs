@@ -63,9 +63,14 @@ public class ChiselTask : Task
     public string IntermediateOutputPath { get; set; } = "";
 
     /// <summary>
-    /// The name of the project referencing Chisel. Used to produce a high quality warning in case a direct dependency is removed.
+    /// The name of the project referencing Chisel. Used to produce a high quality warnings.
     /// </summary>
     public string ProjectName { get; set; } = "";
+
+    /// <summary>
+    /// The output type of the project referencing Chisel. Used to ensure Chisel is not used on a class library.
+    /// </summary>
+    public string OutputType { get; set; } = "";
 
     /// <summary>
     /// The optional dependency graph file name.
@@ -111,6 +116,12 @@ public class ChiselTask : Task
     /// <inheritdoc />
     public override bool Execute()
     {
+        if (string.Equals(OutputType, "library", StringComparison.OrdinalIgnoreCase))
+        {
+            Log.LogError($"Chisel can't be used on {ProjectName} because it's a class library (OutputType = {OutputType})");
+            return false;
+        }
+
         try
         {
             var resolvedPackages = new HashSet<string>(RuntimeAssemblies.Select(NuGetPackageId).Concat(NativeLibraries.Select(NuGetPackageId)));

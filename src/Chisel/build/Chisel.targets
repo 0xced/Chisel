@@ -15,6 +15,7 @@
           RuntimeIdentifier="$(RuntimeIdentifier)"
           IntermediateOutputPath="$(IntermediateOutputPath)"
           ProjectName="$(MSBuildProjectName)"
+          OutputType="$(OutputType)"
           Graph="$(ChiselGraph)"
           GraphDirection="$(ChiselGraphDirection)"
           GraphIncludeVersions="$(ChiselGraphIncludeVersions)"
