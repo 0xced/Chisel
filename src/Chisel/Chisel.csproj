@@ -20,9 +20,7 @@
   <PropertyGroup Label="Packaging">
     <DebugType>embedded</DebugType>
     <EmbedAllSources>true</EmbedAllSources>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <!-- https://learn.microsoft.com/en-us/visualstudio/msbuild/tutorial-custom-task-code-generation#bundle-dependencies-into-the-package -->
-    <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
     <BuildOutputTargetFolder>tasks</BuildOutputTargetFolder>
     <OutputPath>$(BuildOutputTargetFolder)</OutputPath>
     <NoWarn>NU5100</NoWarn>
@@ -32,12 +30,6 @@
   <ItemGroup Label="Packaging">
     <Content Include="build/Chisel.props;build/Chisel.targets" Pack="true" PackagePath="build/" />
   </ItemGroup>
-
-  <Target Label="Packaging" Name="CopyProjectReferencesToPackage" DependsOnTargets="ResolveReferences">
-    <ItemGroup>
-      <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths)" TargetPath="%(ReferenceCopyLocalPaths.DestinationSubPath)" />
-    </ItemGroup>
-  </Target>
 
   <PropertyGroup Label="Packaging Metadata">
     <Authors>Cédric Luthi</Authors>
