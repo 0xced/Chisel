@@ -5,14 +5,13 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>true</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <UseCurrentRuntimeIdentifier>true</UseCurrentRuntimeIdentifier>
   </PropertyGroup>
 
   <Import Project="../../src/Chisel/build/Chisel.props" />
   <Import Project="../../src/Chisel/build/Chisel.targets" />
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.1" />
     <PackageReference Include="MongoDB.Driver" Version="2.24.0" />
     <PackageReference Include="Testcontainers.MongoDb" Version="3.7.0" />
   </ItemGroup>
