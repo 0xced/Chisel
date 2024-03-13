@@ -20,6 +20,7 @@
   <PropertyGroup Label="Packaging">
     <DebugType>embedded</DebugType>
     <EmbedAllSources>true</EmbedAllSources>
+    <DevelopmentDependency>true</DevelopmentDependency>
     <!-- https://learn.microsoft.com/en-us/visualstudio/msbuild/tutorial-custom-task-code-generation#bundle-dependencies-into-the-package -->
     <BuildOutputTargetFolder>tasks</BuildOutputTargetFolder>
     <OutputPath>$(BuildOutputTargetFolder)</OutputPath>
