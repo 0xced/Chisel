@@ -30,15 +30,15 @@ internal sealed class DependencyGraph
     private static Package CreatePackage(LockFileTargetLibrary library)
     {
         var name = library.Name ?? throw new ArgumentException("The library must have a name", nameof(library));
-        var version = library.Version?.ToString() ?? throw new ArgumentException($"The library \"{name}\" must have a version", nameof(library));
+        var version = library.Version ?? throw new ArgumentException($"The library \"{name}\" must have a version", nameof(library));
         // https://github.com/dotnet/sdk/blob/v8.0.202/documentation/specs/runtime-configuration-file.md#libraries-section-depsjson
         // > `type` - the type of the library. `package` for NuGet packages. `project` for a project reference. Can be other things as well.
         var isProjectReference = library.Type == "project";
-        var dependencies = library.Dependencies.Select(e => e.Id).ToList();
+        var dependencies = library.Dependencies.Select(e => new Dependency(e.Id, e.VersionRange)).ToList();
         return new Package(name, version, isProjectReference, dependencies);
     }
 
-    public DependencyGraph(HashSet<string> resolvedPackages, string projectAssetsFile, string tfm, string rid, IEnumerable<string> ignores)
+    public DependencyGraph(IEnumerable<string> resolvedPackages, string projectAssetsFile, string tfm, string rid, IEnumerable<string> ignores)
     {
         var assetsLockFile = new LockFileFormat().Read(projectAssetsFile);
         var frameworks = assetsLockFile.PackageSpec?.TargetFrameworks?.Where(e => e.TargetAlias == tfm).ToList() ?? [];
@@ -62,7 +62,7 @@ internal sealed class DependencyGraph
 
         foreach (var package in packages.Values)
         {
-            var dependencies = new HashSet<Package>(package.Dependencies.Where(relevantPackages.Contains).Select(e => packages[e]));
+            var dependencies = new HashSet<Package>(package.Dependencies.Where(e => relevantPackages.Contains(e.Id)).Select(e => packages[e.Id]));
 
             if (dependencies.Count > 0)
             {
@@ -92,7 +92,7 @@ internal sealed class DependencyGraph
         Ignore(ignores);
     }
 
-    internal (HashSet<string> Removed, HashSet<string> NotFound, HashSet<string> RemovedRoots) Remove(IEnumerable<string> packageNames)
+    public (HashSet<string> Removed, HashSet<string> NotFound, HashSet<string> RemovedRoots) Remove(IEnumerable<string> packageNames)
     {
         var notFound = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         var removedRoots = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
@@ -124,6 +124,23 @@ internal sealed class DependencyGraph
         }
 
         return ([.._reverseGraph.Keys.Where(e => e.State == PackageState.Remove).Select(e => e.Name)], notFound, removedRoots);
+    }
+
+    public IEnumerable<(Package Project, Package Dependent, Dependency Dependency)> EnumerateUnsatisfiedProjectDependencies()
+    {
+        foreach (var (project, dependents) in _reverseGraph.Where(e => e.Key.IsProjectReference).Select(e => (e.Key, e.Value)))
+        {
+            foreach (var dependent in dependents)
+            {
+                foreach (var dependency in dependent.Dependencies.Where(e => e.Id == project.Name))
+                {
+                    if (!dependency.VersionRange.Satisfies(project.Version))
+                    {
+                        yield return (project, dependent, dependency);
+                    }
+                }
+            }
+        }
     }
 
     private void Ignore(IEnumerable<string> packageNames)

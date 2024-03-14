@@ -19,12 +19,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="NuGet.Frameworks">
-      <HintPath>$([MSBuild]::NormalizePath('$(MSBuildExtensionsPath)', 'NuGet.Frameworks.dll'))</HintPath>
-    </Reference>
-    <Reference Include="NuGet.ProjectModel">
-      <HintPath>$([MSBuild]::NormalizePath('$(MSBuildExtensionsPath)', 'NuGet.ProjectModel.dll'))</HintPath>
-    </Reference>
+    <Reference Include="NuGet.Frameworks" HintPath="$([MSBuild]::NormalizePath('$(MSBuildExtensionsPath)', 'NuGet.Frameworks.dll'))" />
+    <Reference Include="NuGet.ProjectModel" HintPath="$([MSBuild]::NormalizePath('$(MSBuildExtensionsPath)', 'NuGet.ProjectModel.dll'))" />
+    <Reference Include="NuGet.Versioning" HintPath="$([MSBuild]::NormalizePath('$(MSBuildExtensionsPath)', 'NuGet.Versioning.dll'))" />
   </ItemGroup>
 
   <ItemGroup>

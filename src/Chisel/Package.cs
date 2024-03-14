@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using NuGet.Versioning;
 
 namespace Chisel;
 
 [DebuggerDisplay("{Name}/{Version}")]
-internal sealed class Package(string name, string version, bool isProjectReference, IReadOnlyCollection<string> dependencies) : IEquatable<Package>
+internal sealed class Package(string name, NuGetVersion version, bool isProjectReference, IReadOnlyCollection<Dependency> dependencies) : IEquatable<Package>
 {
     public string Name { get; } = name;
-    public string Version { get; } = version;
+    public NuGetVersion Version { get; } = version;
     public bool IsProjectReference { get; } = isProjectReference;
-    public IReadOnlyCollection<string> Dependencies { get; } = dependencies;
+    public IReadOnlyCollection<Dependency> Dependencies { get; } = dependencies;
 
     public PackageState State { get; set; } = PackageState.Keep;
 
@@ -27,3 +28,5 @@ internal sealed class Package(string name, string version, bool isProjectReferen
 
     public override int GetHashCode() => Name.GetHashCode();
 }
+
+internal record Dependency(string Id, VersionRange VersionRange);

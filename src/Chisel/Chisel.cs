@@ -131,6 +131,12 @@ public class Chisel : Task
         try
         {
             var graph = ProcessGraph();
+
+            foreach (var (project, dependent, dependency) in graph.EnumerateUnsatisfiedProjectDependencies())
+            {
+                Log.LogWarning($"Chisel noticed that {dependent.Name}/{dependent.Version} requires {dependency.Id} to satisfy {dependency.VersionRange} but {project.Version} does not");
+            }
+
             WriteGraph(graph);
             return true;
         }
