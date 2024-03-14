@@ -25,10 +25,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <VSTestLogger Include="GitHubActions" Visible="false" Condition="$(ContinuousIntegrationBuild) == 'true'" />
-    <VSTestLogger Include="trx%3BLogFileName=TestResults-$(TargetFramework).trx" Visible="false" Condition="$(ContinuousIntegrationBuild) == 'true'" />
+    <VSTestLogger Include="GitHubActions" Visible="false"  />
+    <VSTestLogger Include="trx%3BLogFileName=TestResults-$(TargetFramework).trx" Visible="false" />
     <VSTestLogger Include="html%3BLogFileName=TestResults-$(TargetFramework).html" Visible="false" />
   </ItemGroup>
+
+  <PropertyGroup Condition="$(ContinuousIntegrationBuild) == 'true'">
+    <VSTestResultsDirectory>$([MSBuild]::NormalizePath('$(MSBuildProjectDirectory)', '..', '..'))</VSTestResultsDirectory>
+    <VSTestLogger>@(VSTestLogger)</VSTestLogger>
+  </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="../../src/Chisel/Chisel.csproj" />
