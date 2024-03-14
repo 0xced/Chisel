@@ -39,9 +39,7 @@ jobs:
       - name: Restore NuGet packages
         run: dotnet restore
       - name: Build solution
-        run: |
-          dotnet build --no-restore src/Chisel/Chisel.csproj
-          dotnet build --no-restore
+        run: dotnet build --no-restore
       - name: Run tests
         run: dotnet test --no-build
       - name: Upload received files from failing tests
