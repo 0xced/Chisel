@@ -16,11 +16,12 @@
     <PackageReference Include="Testcontainers.MongoDb" Version="3.7.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ChiselPackage Include="AWSSDK.SecurityToken" />
-  </ItemGroup>
+  <PropertyGroup>
+    <ChiselPackage>AWSSDK.SecurityToken</ChiselPackage>
+  </PropertyGroup>
 
   <PropertyGroup>
+    <ChiselGraphIgnore>Testcontainers.MongoDb</ChiselGraphIgnore>
     <ChiselGraphAlias>MongoDBSample.mermaid</ChiselGraphAlias>
   </PropertyGroup>
 
