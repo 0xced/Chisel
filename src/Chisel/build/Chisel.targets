@@ -5,8 +5,8 @@
   <Target Name="Chisel" AfterTargets="ResolvePackageAssets" Condition="$(ChiselEnabled) == 'true'">
 
     <ItemGroup>
-      <ChiselPackages Include="$(ChiselPackages)" />
-      <ChiselIgnores Include="$(ChiselIgnores)" />
+      <ChiselPackage Include="$(ChiselPackage)" />
+      <ChiselGraphIgnore Include="$(ChiselGraphIgnore)" />
     </ItemGroup>
 
     <Chisel
@@ -16,14 +16,14 @@
           IntermediateOutputPath="$(IntermediateOutputPath)"
           ProjectName="$(MSBuildProjectName)"
           OutputType="$(OutputType)"
+          RuntimeAssemblies="@(RuntimeCopyLocalItems)"
+          NativeLibraries="@(NativeCopyLocalItems)"
           GraphName="$(ChiselGraphName)"
           GraphDirection="$(ChiselGraphDirection)"
           GraphIncludeVersions="$(ChiselGraphIncludeVersions)"
           GraphWriteIgnoredPackages="$(ChiselGraphWriteIgnoredPackages)"
-          ChiselPackages="@(ChiselPackages)"
-          ChiselIgnores="@(ChiselIgnores)"
-          RuntimeAssemblies="@(RuntimeCopyLocalItems)"
-          NativeLibraries="@(NativeCopyLocalItems)">
+          GraphIgnores="@(ChiselGraphIgnore)"
+          ChiselPackages="@(ChiselPackage)">
       <Output TaskParameter="RemoveRuntimeAssemblies" ItemName="ChiselRemoveRuntimeCopyLocalItems" />
       <Output TaskParameter="RemoveNativeLibraries" ItemName="ChiselRemoveNativeCopyLocalItems" />
       <Output TaskParameter="Graph" ItemName="ChiselGraph" />

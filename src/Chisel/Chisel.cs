@@ -36,28 +36,6 @@ public class Chisel : Task
     public string RuntimeIdentifier { get; set; } = "";
 
     /// <summary>
-    /// The package references to remove from the build.
-    /// </summary>
-    public ITaskItem[] ChiselPackages { get; set; } = [];
-
-    /// <summary>
-    /// The package references to ignore when building the dependency graph.
-    /// </summary>
-    public ITaskItem[] ChiselIgnores { get; set; } = [];
-
-    /// <summary>
-    /// The list of resolved runtime assemblies (<c>RuntimeCopyLocalItems</c>).
-    /// </summary>
-    [Required]
-    public ITaskItem[] RuntimeAssemblies { get; set; } = [];
-
-    /// <summary>
-    /// The list of resolved native libraries (<c>NativeCopyLocalItems</c>).
-    /// </summary>
-    [Required]
-    public ITaskItem[] NativeLibraries { get; set; } = [];
-
-    /// <summary>
     /// The intermediate output path where the <see cref="GraphName"/> is saved.
     /// </summary>
     public string IntermediateOutputPath { get; set; } = "";
@@ -71,6 +49,18 @@ public class Chisel : Task
     /// The output type of the project referencing Chisel. Used to ensure Chisel is not used on a class library.
     /// </summary>
     public string OutputType { get; set; } = "";
+
+    /// <summary>
+    /// The list of resolved runtime assemblies (<c>RuntimeCopyLocalItems</c>).
+    /// </summary>
+    [Required]
+    public ITaskItem[] RuntimeAssemblies { get; set; } = [];
+
+    /// <summary>
+    /// The list of resolved native libraries (<c>NativeCopyLocalItems</c>).
+    /// </summary>
+    [Required]
+    public ITaskItem[] NativeLibraries { get; set; } = [];
 
     /// <summary>
     /// The optional dependency graph file name.
@@ -91,9 +81,19 @@ public class Chisel : Task
     public bool GraphIncludeVersions { get; set; }
 
     /// <summary>
-    /// Writes ignored packages (<c>ChiselIgnores</c>) to the dependency graph file in gray. Used for debugging.
+    /// Writes ignored packages (<c>ChiselGraphIgnore</c>) to the dependency graph file in gray. Used for debugging.
     /// </summary>
     public bool GraphWriteIgnoredPackages { get; set; }
+
+    /// <summary>
+    /// The package references to ignore when building the dependency graph.
+    /// </summary>
+    public ITaskItem[] GraphIgnores { get; set; } = [];
+
+    /// <summary>
+    /// The package references to remove from the build.
+    /// </summary>
+    public ITaskItem[] ChiselPackages { get; set; } = [];
 
     /// <summary>
     /// The <c>RuntimeCopyLocalItems</c> to remove from the build.
@@ -144,17 +144,17 @@ public class Chisel : Task
     private DependencyGraph ProcessGraph()
     {
         var resolvedPackages = new HashSet<string>(RuntimeAssemblies.Select(NuGetPackageId).Concat(NativeLibraries.Select(NuGetPackageId)));
-        var graph = new DependencyGraph(resolvedPackages, ProjectAssetsFile, TargetFramework, RuntimeIdentifier, ChiselIgnores.Select(e => e.ItemSpec));
+        var graph = new DependencyGraph(resolvedPackages, ProjectAssetsFile, TargetFramework, RuntimeIdentifier, GraphIgnores.Select(e => e.ItemSpec));
         var (removed, notFound, removedRoots) = graph.Remove(ChiselPackages.Select(e => e.ItemSpec));
 
         foreach (var packageName in notFound)
         {
-            Log.LogWarning($"The package {packageName} (defined in ChiselPackages) was not found in the dependency graph");
+            Log.LogWarning($"The package {packageName} (defined in ChiselPackage) was not found in the dependency graph");
         }
 
         foreach (var packageName in removedRoots)
         {
-            Log.LogWarning($"The package {packageName} (defined in ChiselPackages) can't be removed because it's a direct dependency of {ProjectName}");
+            Log.LogWarning($"The package {packageName} (defined in ChiselPackage) can't be removed because it's a direct dependency of {ProjectName}");
         }
 
         RemoveRuntimeAssemblies = RuntimeAssemblies.Where(item => removed.Contains(NuGetPackageId(item))).ToArray();

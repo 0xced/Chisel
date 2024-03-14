@@ -16,9 +16,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ChiselPackages Include="Azure.Identity" />
-    <ChiselPackages Include="Microsoft.IdentityModel.JsonWebTokens" />
-    <ChiselPackages Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" />
+    <ChiselPackage Include="Azure.Identity" />
+    <ChiselPackage Include="Microsoft.IdentityModel.JsonWebTokens" />
+    <ChiselPackage Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" />
   </ItemGroup>
 
   <ItemGroup>

@@ -16,19 +16,19 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ChiselIgnores Include="NETStandard.Library" />
+    <ChiselGraphIgnore Include="NETStandard.Library" />
   </ItemGroup>
 
   <ItemDefinitionGroup>
-    <ChiselPackages>
+    <ChiselPackage>
       <Visible>false</Visible>
-    </ChiselPackages>
+    </ChiselPackage>
   </ItemDefinitionGroup>
 
   <ItemDefinitionGroup>
-    <ChiselIgnores>
+    <ChiselGraphIgnore>
       <Visible>false</Visible>
-    </ChiselIgnores>
+    </ChiselGraphIgnore>
   </ItemDefinitionGroup>
 
 </Project>
