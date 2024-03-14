@@ -44,7 +44,7 @@ public sealed class ChiseledAppTests(ITestOutputHelper outputHelper, TestApp tes
         ]).ToHashSet();
         actualDlls.Except(expectedDlls).Should().BeEmpty();
         expectedDlls.Except(actualDlls).Should().BeEmpty();
-        stdOut.Should().Contain("✅");
+        stdOut.Should().Contain("[OK] ");
         stdErr.Should().BeEmpty();
 
         await Verifier.VerifyFile(testApp.IntermediateOutputPath.File("TestApp.Chisel.mermaid"))

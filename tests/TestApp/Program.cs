@@ -21,12 +21,12 @@ try
     await using var command = dataSource.CreateCommand("Select @@version");
     var result = await command.ExecuteScalarAsync();
 
-    Console.WriteLine($"✅ {result}");
+    Console.WriteLine($"[OK] {result}");
     return 0;
 }
 catch (Exception exception)
 {
-    Console.Error.WriteLine($"❌ {exception}");
+    Console.Error.WriteLine($"[ERROR] {exception}");
     return 1;
 }
 
