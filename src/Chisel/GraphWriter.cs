@@ -13,7 +13,10 @@ internal abstract class GraphWriter(TextWriter writer)
 
     public void Write(DependencyGraph graph, GraphOptions options)
     {
-        WriteHeader(options);
+        var hasProject = graph.Packages.Any(e => e.IsProjectReference);
+        var hasIgnored = graph.Packages.Any(e => e.State == PackageState.Ignore);
+        var hasRemoved = graph.Packages.Any(e => e.State == PackageState.Remove);
+        WriteHeader(hasProject: hasProject, hasIgnored: hasIgnored, hasRemoved: hasRemoved, options);
         WriteEdges(graph, options);
         Writer.WriteLine();
         WriteNodes(graph, options);
@@ -21,7 +24,7 @@ internal abstract class GraphWriter(TextWriter writer)
     }
 
     public abstract string FormatName { get; }
-    protected abstract void WriteHeader(GraphOptions options);
+    protected abstract void WriteHeader(bool hasProject, bool hasIgnored, bool hasRemoved, GraphOptions options);
     protected abstract void WriteFooter();
     protected abstract void WriteNode(Package package, GraphOptions options);
     protected abstract void WriteEdge(Package package, Package dependency, GraphOptions options);
