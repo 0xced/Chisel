@@ -1,12 +1,12 @@
-﻿using System.Diagnostics;
-using Microsoft.Data.SqlClient;
+﻿using Microsoft.Data.SqlClient;
 
 try
 {
-    var connectionString = args.Length > 0 && !args[^1].StartsWith("--") ? args[^1] : "Server=sqlprosample.database.windows.net;Database=sqlprosample;user=sqlproro;password=nh{Zd?*8ZU@Y}Bb#";
-    await using var dataSource = SqlClientFactory.Instance.CreateDataSource(connectionString);
-    await using var command = dataSource.CreateCommand("Select @@version");
-    var result = await command.ExecuteScalarAsync();
+    var connectionString = args.Length > 0 ? args[1] : "Server=sqlprosample.database.windows.net;Database=sqlprosample;user=sqlproro;password=nh{Zd?*8ZU@Y}Bb#";
+    using var connection = new SqlConnection(connectionString);
+    connection.Open();
+    using var command = new SqlCommand("Select @@version", connection);
+    var result = command.ExecuteScalar();
 
     if (BinaryData.Empty.IsEmpty)
     {
@@ -14,7 +14,7 @@ try
     }
     else
     {
-        throw new UnreachableException();
+        throw new InvalidOperationException("BinaryData.Empty.IsEmpty returned false");
     }
     return 0;
 }
