@@ -130,6 +130,10 @@ public class Chisel : Task
 
         try
         {
+            Log.LogMessage(MessageImportance.Low, $"Chisel is using NuGet.ProjectModel from {typeof(NuGet.ProjectModel.LockFile).Assembly.Location}");
+            Log.LogMessage(MessageImportance.Low, $"Chisel is using NuGet.LibraryModel from {typeof(NuGet.LibraryModel.Library).Assembly.Location}");
+            Log.LogMessage(MessageImportance.Low, $"Chisel is using NuGet.Versioning from {typeof(NuGet.Versioning.NuGetVersion).Assembly.Location}");
+
             var graph = ProcessGraph();
 
             foreach (var (project, dependent, dependency) in graph.EnumerateUnsatisfiedProjectDependencies())
