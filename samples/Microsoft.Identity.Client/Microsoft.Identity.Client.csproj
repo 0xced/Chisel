@@ -1,9 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <DebugType>none</DebugType>
     <Version>4.56.0</Version>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>$(BaseIntermediateOutputPath)MSAL.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
+
+  <Target Name="DownloadMsalKey" BeforeTargets="ResolveKeySource" Condition="!Exists($(AssemblyOriginatorKeyFile))">
+    <DownloadFile SourceUrl="https://github.com/AzureAD/microsoft-authentication-library-for-dotnet/raw/$(Version)/build/MSAL.snk" DestinationFolder="$(BaseIntermediateOutputPath)" />
+  </Target>
 
 </Project>
