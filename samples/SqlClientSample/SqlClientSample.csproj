@@ -15,6 +15,11 @@
   <Import Project="../../src/Chisel/build/Chisel.targets" />
 
   <ItemGroup>
+    <ProjectReference Include="../../src/Chisel/Chisel.csproj" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="../Microsoft.Identity.Client/Microsoft.Identity.Client.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.0" />
     <PackageReference Include="System.Memory.Data" Version="8.0.0" />
   </ItemGroup>
@@ -23,10 +28,6 @@
     <ChiselPackage Include="Azure.Identity" />
     <ChiselPackage Include="Microsoft.IdentityModel.JsonWebTokens" />
     <ChiselPackage Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Microsoft.Identity.Client\Microsoft.Identity.Client.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
