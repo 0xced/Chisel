@@ -61,19 +61,6 @@ jobs:
           name: Test Results (${{ runner.os }})
           path: TestResults-*.trx
           reporter: dotnet-trx
-      - name: Upload coverage report to Codecov
-        if: matrix.os == 'ubuntu-latest'
-        uses: codecov/codecov-action@v3
-        with:
-          files: coverage/*/coverage.cobertura.xml
-      - name: Upload coverage report to Codacy
-        env:
-          CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
-        if: matrix.os == 'ubuntu-latest' && env.CODACY_PROJECT_TOKEN != ''
-        uses: codacy/codacy-coverage-reporter-action@v1
-        with:
-          project-token: ${{ env.CODACY_PROJECT_TOKEN }}
-          coverage-reports: coverage/*/coverage.cobertura.xml
       - name: Create NuGet package
         run: dotnet pack --no-build --output .
       - name: Upload NuGet package artifact
@@ -82,13 +69,6 @@ jobs:
         with:
           name: NuGet package
           path: "*.nupkg"
-      - name: Run mutation tests and upload report to Stryker dashboard
-        env:
-          STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
-        if: matrix.os == 'ubuntu-latest' && env.STRYKER_DASHBOARD_API_KEY != ''
-        run: |
-          dotnet tool restore
-          dotnet tool run dotnet-stryker --reporter dashboard --version ${GITHUB_REF_NAME} --dashboard-api-key ${{ env.STRYKER_DASHBOARD_API_KEY }}
       - name: Retrieve release notes from tag
         if: matrix.os == 'ubuntu-latest' && startsWith(github.ref, 'refs/tags/')
         run: |
