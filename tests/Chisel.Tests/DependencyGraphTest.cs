@@ -76,34 +76,34 @@ public class DependencyGraphTest
     ];
 
     [Theory]
-    [InlineData(true)]
-    [InlineData(false)]
-    public async Task MongoDbGraph(bool writeIgnoredPackages)
+    [CombinatorialData]
+    public async Task MongoDbGraph(bool writeIgnoredPackages, [CombinatorialValues("graphviz", "mermaid")] string format)
     {
         var assetsFile = GetAssetsPath("MongoDbGraph.json");
         var graph = new DependencyGraph(MongoDbResolvedPackages, assetsFile, tfm: "net8.0", rid: "", ignores: [ "Testcontainers.MongoDb" ]);
         var (removed, notFound, removedRoots) = graph.Remove([ "MongoDB.Driver", "AWSSDK.SecurityToken", "NonExistentPackage" ]);
         await using var writer = new StringWriter();
-        GraphWriter.Graphviz(writer).Write(graph, new GraphOptions { Direction = GraphDirection.LeftToRight, IncludeVersions = false, WriteIgnoredPackages = writeIgnoredPackages });
+        var graphWriter = format == "graphviz" ? GraphWriter.Graphviz(writer) : GraphWriter.Mermaid(writer);
+        graphWriter.Write(graph, new GraphOptions { Direction = GraphDirection.LeftToRight, IncludeVersions = false, WriteIgnoredPackages = writeIgnoredPackages });
 
         removed.Should().BeEquivalentTo("AWSSDK.SecurityToken", "AWSSDK.Core");
         notFound.Should().BeEquivalentTo("NonExistentPackage");
         removedRoots.Should().BeEquivalentTo("MongoDB.Driver");
 
-        await Verify(writer.ToString(), "gv").UseParameters(writeIgnoredPackages);
+        await Verify(writer.ToString(), format == "graphviz" ? "gv" : "mmd").UseParameters(writeIgnoredPackages, format);
     }
 
     [Theory]
     [InlineData("graphviz")]
     [InlineData("mermaid")]
-    public async Task SqlClientGraph(string graphFormat)
+    public async Task SqlClientGraph(string format)
     {
         var assetsFile = GetAssetsPath("SqlClientGraph.json");
         var graph = new DependencyGraph(SqlClientResolvedPackages, assetsFile, tfm: "net8.0-windows", rid: "win-x64", ignores: []);
         var (removed, notFound, removedRoots) = graph.Remove([ "Azure.Identity", "Microsoft.IdentityModel.JsonWebTokens", "Microsoft.IdentityModel.Protocols.OpenIdConnect", "System.Memory.Data" ]);
         await using var writer = new StringWriter();
 
-        var graphWriter = graphFormat == "graphviz" ? GraphWriter.Graphviz(writer) : GraphWriter.Mermaid(writer);
+        var graphWriter = format == "graphviz" ? GraphWriter.Graphviz(writer) : GraphWriter.Mermaid(writer);
         graphWriter.Write(graph, new GraphOptions { Direction = GraphDirection.LeftToRight, IncludeVersions = true, WriteIgnoredPackages = false });
 
         removed.Should().BeEquivalentTo([
@@ -128,7 +128,7 @@ public class DependencyGraphTest
         notFound.Should().BeEmpty();
         removedRoots.Should().BeEquivalentTo(["System.Memory.Data"]);
 
-        await Verify(writer.ToString(), graphFormat == "graphviz" ? "gv" : "mmd").UseTextForParameters(graphFormat);
+        await Verify(writer.ToString(), format == "graphviz" ? "gv" : "mmd").UseTextForParameters(format);
     }
 
     [Fact]
