@@ -173,7 +173,7 @@ public class Chisel : Task
         try
         {
             BytesSaved = RemoveRuntimeAssemblies.Concat(RemoveNativeLibraries).Sum(e => new FileInfo(e.ItemSpec).Length);
-            Log.LogMessage($"Chisel saved {BytesSaved / (1024.0 * 1024):F1} MB");
+            Log.LogMessage($"Chisel saved {BytesSaved / (1024.0 * 1024):F1} MiB");
         }
         catch (Exception exception)
         {
