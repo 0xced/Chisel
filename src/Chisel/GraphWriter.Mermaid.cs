@@ -18,7 +18,7 @@ internal sealed class MermaidWriter(TextWriter writer) : GraphWriter(writer)
         Writer.WriteLine();
 
         Writer.WriteLine();
-        Writer.WriteLine($"classDef default fill:{options.Color.Default.Fill},stroke:{options.Color.Default.Stroke}");
+        Writer.WriteLine($"classDef default fill:{options.Color.Default.Fill},stroke:{options.Color.Default.Stroke},color:#333");
         if (hasProject)
             Writer.WriteLine($"classDef project fill:{options.Color.Project.Fill},stroke:{options.Color.Project.Stroke}");
         if (hasIgnored)

@@ -27,7 +27,7 @@ For a project referencing `Hangfire.PostgreSql` and `Npgsql.EntityFrameworkCore.
 ```mermaid
 graph LR
 
-classDef default fill:aquamarine,stroke:#009061
+classDef default fill:aquamarine,stroke:#009061,color:#333
 
 Hangfire.Core --> Newtonsoft.Json
 Hangfire.PostgreSql --> Dapper
@@ -86,7 +86,7 @@ Specifying the _direct_ dependencies is enough. Looking at the produced graph co
 ```mermaid
 graph LR
 
-classDef default fill:aquamarine,stroke:#009061
+classDef default fill:aquamarine,stroke:#009061,color:#333
 classDef removed fill:lightcoral,stroke:#A42A2A
 
 AWSSDK.SecurityToken/3.7.100.14 --> AWSSDK.Core/3.7.100.14
