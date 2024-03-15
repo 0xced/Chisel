@@ -27,6 +27,7 @@ digraph
 
   "AWSSDK.Core" [ fillcolor = lightcoral, color = "#A42A2A" ]
   "AWSSDK.SecurityToken" [ fillcolor = lightcoral, color = "#A42A2A" ]
+  "ByteSize"
   "DnsClient"
   "Microsoft.Extensions.DependencyInjection.Abstractions"
   "Microsoft.Extensions.Logging.Abstractions"

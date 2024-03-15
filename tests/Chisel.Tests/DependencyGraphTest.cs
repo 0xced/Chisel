@@ -15,6 +15,7 @@ public class DependencyGraphTest
     [
         "AWSSDK.Core",
         "AWSSDK.SecurityToken",
+        "ByteSize",
         "BouncyCastle.Cryptography",
         "DnsClient",
         "Docker.DotNet",

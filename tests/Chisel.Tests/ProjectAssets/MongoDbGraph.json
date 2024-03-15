@@ -44,6 +44,19 @@
           }
         }
       },
+      "ByteSize/2.1.2": {
+        "type": "package",
+        "compile": {
+          "lib/net5.0/ByteSize.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net5.0/ByteSize.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "DnsClient/1.6.1": {
         "type": "package",
         "dependencies": {
@@ -599,6 +612,27 @@
         "lib/netstandard2.0/BouncyCastle.Cryptography.dll",
         "lib/netstandard2.0/BouncyCastle.Cryptography.xml",
         "packageIcon.png"
+      ]
+    },
+    "ByteSize/2.1.2": {
+      "sha512": "dSiH9B0apNU5abV3OVUs3eTfHiidEAa8IMOLGW0eEl5tB8Ba1ngkGC7RT/RGy61ifGcPzCe7DMP78KB8pA5kNg==",
+      "type": "package",
+      "path": "bytesize/2.1.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "bytesize.2.1.2.nupkg.sha512",
+        "bytesize.nuspec",
+        "lib/net45/ByteSize.dll",
+        "lib/net45/ByteSize.xml",
+        "lib/net5.0/ByteSize.dll",
+        "lib/net5.0/ByteSize.xml",
+        "lib/netstandard1.0/ByteSize.dll",
+        "lib/netstandard1.0/ByteSize.xml",
+        "lib/netstandard2.0/ByteSize.dll",
+        "lib/netstandard2.0/ByteSize.xml",
+        "lib/netstandard2.1/ByteSize.dll",
+        "lib/netstandard2.1/ByteSize.xml"
       ]
     },
     "DnsClient/1.6.1": {
@@ -1430,6 +1464,7 @@
   },
   "projectFileDependencyGroups": {
     "net8.0": [
+      "ByteSize >= 2.1.2",
       "Microsoft.Extensions.Logging.Abstractions >= 8.0.1",
       "MongoDB.Driver >= 2.24.0",
       "Testcontainers.MongoDb >= 3.7.0"
@@ -1441,6 +1476,10 @@
       "net8.0": {
         "targetAlias": "net8.0",
         "dependencies": {
+          "ByteSize": {
+            "target": "Package",
+            "version": "[2.1.2, )"
+          },
           "Microsoft.Extensions.Logging.Abstractions": {
             "target": "Package",
             "version": "[8.0.1, )"

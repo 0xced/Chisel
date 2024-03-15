@@ -43,6 +43,7 @@ digraph
   "AWSSDK.Core" [ fillcolor = lightcoral, color = "#A42A2A" ]
   "AWSSDK.SecurityToken" [ fillcolor = lightcoral, color = "#A42A2A" ]
   "BouncyCastle.Cryptography" [ fillcolor = lightgray, color = "#7A7A7A" ]
+  "ByteSize"
   "DnsClient"
   "Docker.DotNet" [ fillcolor = lightgray, color = "#7A7A7A" ]
   "Docker.DotNet.X509" [ fillcolor = lightgray, color = "#7A7A7A" ]
