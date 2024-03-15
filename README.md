@@ -276,7 +276,7 @@ namespace Microsoft.Identity.Client
 
 And that's enough for the dotnet build system to pick the **project** reference instead of the **package** reference of the same name, thus reducing the size of `Microsoft.Identity.Client.dll` from 1 MB to 5 KB.
 
-On macOS, removing the Azure authentication libraries and its dependencies reduces the size of the dlls from 6 MB down to 2.8 MB. In other words, the Azure librarires are responsible fore more than 50% of the size of the `Microsoft.Data.SqlClient` package.
+On macOS, removing the Azure authentication libraries and its dependencies reduces the size of the dlls from 6 MB down to 2.8 MB. In other words, the Azure librarires are responsible fore more than 50% of the size of the `Microsoft.Data.SqlClient` package.
 
 ```mermaid
 %%{ init: { 'theme': 'base', 'themeVariables': { 'pie1': 'lightcoral', 'pie2': 'aquamarine' } } }%%
