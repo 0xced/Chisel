@@ -1,4 +1,6 @@
-<img src="resources/icon.svg" alt="Chisel icon" width="100"/>
+<div style="text-align:center">
+  <img src="https://raw.githubusercontent.com/0xced/Chisel/main/resources/icon.svg" alt="Chisel icon" width="64"/>
+</div>
 
 **Chisel** provides a way to remove unwanted dependencies from your dotnet projects.
 
