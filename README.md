@@ -1,5 +1,5 @@
 <div style="text-align:center">
-  <img src="https://raw.githubusercontent.com/0xced/Chisel/main/resources/icon.svg" alt="Chisel icon" width="64"/>
+  <img src="resources/icon.svg" alt="Chisel icon" width="64"/>
 </div>
 
 **Chisel** provides a way to remove unwanted dependencies from your dotnet projects.
@@ -165,7 +165,7 @@ no default value
 
 Setting the `ChiselGraphAlias` property adds an alias (link) under the project. This is useful to see the graph directly into the IDE. A very good combination with the Rider [Mermaid plugin](https://plugins.jetbrains.com/plugin/20146-mermaid). 
 
-![Screenshot of the SqlClientSample project with the Mermaid graph](https://raw.githubusercontent.com/0xced/Chisel/main/resources/ChiselGraphAlias.png)
+![Screenshot of the SqlClientSample project with the Mermaid graph](resources/ChiselGraphAlias.png)
 
 ```xml
 <PropertyGroup>
