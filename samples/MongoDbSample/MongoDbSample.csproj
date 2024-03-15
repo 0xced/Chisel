@@ -7,11 +7,11 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <Import Project="../../src/Chisel/build/Chisel.props" />
-  <Import Project="../../src/Chisel/build/Chisel.targets" />
+  <Import Project="../../src/Chisel/build/Chisel.props" Condition="$(Configuration) == 'Debug'" />
+  <Import Project="../../src/Chisel/build/Chisel.targets" Condition="$(Configuration) == 'Debug'" />
 
-  <ItemGroup>
-    <ProjectReference Include="../../src/Chisel/Chisel.csproj" ReferenceOutputAssembly="false" />
+  <ItemGroup Condition="$(Configuration) != 'Debug'">
+    <PackageReference Include="Chisel" Version="1.0.0-rc.1" PrivateAssets="all" />
   </ItemGroup>
 
   <ItemGroup>

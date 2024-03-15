@@ -11,11 +11,14 @@
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
   </PropertyGroup>
 
-  <Import Project="../../src/Chisel/build/Chisel.props" />
-  <Import Project="../../src/Chisel/build/Chisel.targets" />
+  <Import Project="../../src/Chisel/build/Chisel.props" Condition="$(Configuration) == 'Debug'" />
+  <Import Project="../../src/Chisel/build/Chisel.targets" Condition="$(Configuration) == 'Debug'" />
+
+  <ItemGroup Condition="$(Configuration) != 'Debug'">
+    <PackageReference Include="Chisel" Version="1.0.0-rc.1" PrivateAssets="all" />
+  </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../../src/Chisel/Chisel.csproj" ReferenceOutputAssembly="false" />
     <ProjectReference Include="../Microsoft.Identity.Client/Microsoft.Identity.Client.csproj" />
   </ItemGroup>
 
