@@ -2,15 +2,16 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "meta", "meta", "{13D33453-8FDA-4FBC-863A-24383232D951}"
 ProjectSection(SolutionItems) = preProject
-	global.json = global.json
-	NuGet.config = NuGet.config
-	.github\workflows\continuous-integration.yml = .github\workflows\continuous-integration.yml
-	src\packages.lock.json = src\Chisel\packages.lock.json
-	.github\dependabot.yml = .github\dependabot.yml
-	MAINTENANCE.md = MAINTENANCE.md
 	CHANGELOG.md = CHANGELOG.md
 	CODE_OF_CONDUCT.md = CODE_OF_CONDUCT.md
+	.github\workflows\continuous-integration.yml = .github\workflows\continuous-integration.yml
+	.github\dependabot.yml = .github\dependabot.yml
+	global.json = global.json
 	LICENSE = LICENSE
+	MAINTENANCE.md = MAINTENANCE.md
+	NuGet.config = NuGet.config
+	src\packages.lock.json = src\Chisel\packages.lock.json
+	README.md = README.md
 EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chisel", "src\Chisel\Chisel.csproj", "{F4CAEC64-3B0C-4ACD-BF87-760A838A5D86}"
