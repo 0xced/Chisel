@@ -14,8 +14,6 @@ Enter Chisel to remove those dependencies and save some precious megabytes.
 
 Add the [Chisel](https://www.nuget.org/packages/Chisel/) NuGet package to your project using the NuGet Package Manager or run the following command:
 
-⚠️ The NuGet package is not yet published.
-
 ```sh
 dotnet add package Chisel
 ```
