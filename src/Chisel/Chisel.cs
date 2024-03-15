@@ -138,7 +138,7 @@ public class Chisel : Task
 
             foreach (var (project, dependent, dependency) in graph.EnumerateUnsatisfiedProjectDependencies())
             {
-                Log.LogWarning($"Chisel noticed that {dependent.Name}/{dependent.Version} requires {dependency.Id} to satisfy {dependency.VersionRange} but {project.Version} does not");
+                LogWarning("CHISEL007", $"{dependent.Name}/{dependent.Version} requires {dependency.Id} to satisfy {dependency.VersionRange} but {project.Version} does not");
             }
 
             WriteGraph(graph);
@@ -159,12 +159,12 @@ public class Chisel : Task
 
         foreach (var packageName in notFound)
         {
-            Log.LogWarning($"The package {packageName} (defined in ChiselPackage) was not found in the dependency graph");
+            LogWarning("CHISEL002", $"The package {packageName} (defined in ChiselPackage) was not found in the dependency graph");
         }
 
         foreach (var packageName in removedRoots)
         {
-            Log.LogWarning($"The package {packageName} (defined in ChiselPackage) can't be removed because it's a direct dependency of {ProjectName}");
+            LogWarning("CHISEL003", $"The package {packageName} (defined in ChiselPackage) can't be removed because it's a direct dependency of {ProjectName}");
         }
 
         RemoveRuntimeAssemblies = RuntimeAssemblies.Where(item => removed.Contains(NuGetPackageId(item))).ToArray();
@@ -192,13 +192,13 @@ public class Chisel : Task
 
         if (GraphName != Path.GetFileName(GraphName))
         {
-            Log.LogWarning($"The ChiselGraph property ({GraphName}) must be a file name that does not include a directory");
+            LogWarning("CHISEL020", $"The ChiselGraph property ({GraphName}) must be a file name that does not include a directory");
             return;
         }
 
         if (!Directory.Exists(IntermediateOutputPath))
         {
-            Log.LogWarning($"The IntermediateOutputPath property ({IntermediateOutputPath}) must point to an existing directory");
+            LogWarning("CHISEL021", $"The IntermediateOutputPath property ({IntermediateOutputPath}) must point to an existing directory");
             return;
         }
 
@@ -232,7 +232,7 @@ public class Chisel : Task
     {
         if (!Enum.TryParse<GraphDirection>(GraphDirection, ignoreCase: true, out var direction))
         {
-            Log.LogWarning($"The ChiselGraphDirection property ({GraphDirection}) must be either {nameof(global::Chisel.GraphDirection.LeftToRight)} or {nameof(global::Chisel.GraphDirection.TopToBottom)}");
+            LogWarning("CHISEL022", $"The ChiselGraphDirection property ({GraphDirection}) must be either {nameof(global::Chisel.GraphDirection.LeftToRight)} or {nameof(global::Chisel.GraphDirection.TopToBottom)}");
         }
 
         return new GraphOptions
@@ -249,8 +249,23 @@ public class Chisel : Task
         if (string.IsNullOrEmpty(packageId))
         {
             var metadataNames = string.Join(", ", item.MetadataNames.OfType<string>().Select(e => $"\"{e}\""));
-            Log.LogWarning($"\"{item.ItemSpec}\" should contain \"NuGetPackageId\" metadata but contains {metadataNames}");
+            LogWarning("CHISEL001", $"\"{item.ItemSpec}\" should contain \"NuGetPackageId\" metadata but contains {metadataNames}");
         }
         return packageId;
+    }
+
+    private void LogWarning(string warningCode, string message)
+    {
+        Log.LogWarning(
+            subcategory: default,
+            warningCode: warningCode,
+            helpKeyword: default,
+            file: default,
+            lineNumber: default,
+            columnNumber: default,
+            endLineNumber: default,
+            endColumnNumber: default,
+            message: message
+        );
     }
 }
