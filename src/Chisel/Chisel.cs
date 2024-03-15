@@ -159,7 +159,7 @@ public class Chisel : Task
 
         foreach (var packageName in notFound)
         {
-            LogWarning("CHISEL002", $"The package {packageName} (defined in ChiselPackage) was not found in the dependency graph");
+            LogWarning("CHISEL002", $"The package {packageName} (defined in ChiselPackage) was not found in the dependency graph of {ProjectName}");
         }
 
         foreach (var packageName in removedRoots)
