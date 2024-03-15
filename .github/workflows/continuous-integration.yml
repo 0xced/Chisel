@@ -97,7 +97,7 @@ jobs:
         with:
           name: Release Notes
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           name: Version ${{ github.ref_name }}
           body_path: ReleaseNotes.md
