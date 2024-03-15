@@ -7,14 +7,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <Import Project="../../src/Chisel/build/Chisel.props" Condition="$(Configuration) == 'Debug'" />
-  <Import Project="../../src/Chisel/build/Chisel.targets" Condition="$(Configuration) == 'Debug'" />
-
-  <ItemGroup Condition="$(Configuration) != 'Debug'">
-    <PackageReference Include="Chisel" Version="1.0.0-rc.1" PrivateAssets="all" />
-  </ItemGroup>
-
   <ItemGroup>
+    <PackageReference Include="Chisel" Version="1.0.0-rc.1" PrivateAssets="all" />
     <PackageReference Include="ByteSize" Version="2.1.2" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.1" />
     <PackageReference Include="MongoDB.Driver" Version="2.24.0" />
