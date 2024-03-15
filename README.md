@@ -181,25 +181,23 @@ This defines how the dependency graph is laid out. Possible values are `LeftToRi
 
 ### `ChiselGraphIncludeVersions`
 
-defaults to `true`
+defaults to `false`
 
-The dependency graph nodes are named `{package}/{version}`. Setting `ChiselGraphIncludeVersions` to `false` removes the version.
+Controls whether the dependency graph nodes are named `{package}` or `{package}/{version}`.
 
-With `ChiselGraphIncludeVersions` set to `true`
-
-```mermaid
-graph LR
-Serilog.Sinks.File/5.0.0 --> Serilog/2.10.0
-```
-
-With `ChiselGraphIncludeVersions` set to `false`
+Example with `ChiselGraphIncludeVersions` set to `false`
 
 ```mermaid
 graph LR
 Serilog.Sinks.File --> Serilog
 ```
 
-Removing versions may help with the readability of the graph since all the nodes will all be a little bit smaller.
+Example with `ChiselGraphIncludeVersions` set to `true`
+
+```mermaid
+graph LR
+Serilog.Sinks.File/5.0.0 --> Serilog/2.10.0
+```
 
 ### `ChiselGraphIgnore`
 

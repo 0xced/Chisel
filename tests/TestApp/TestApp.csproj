@@ -15,6 +15,10 @@
     <PackageReference Include="Chisel" Version="[0.0.0-IntegrationTest.0]" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <ChiselGraphIncludeVersions>true</ChiselGraphIncludeVersions>
+  </PropertyGroup>
+
   <ItemGroup>
     <ChiselPackage Include="Azure.Identity" />
     <ChiselPackage Include="Microsoft.IdentityModel.JsonWebTokens" />

@@ -4,7 +4,7 @@
     <ChiselEnabled Condition="$(ChiselEnabled) == ''">true</ChiselEnabled>
     <ChiselGraphName Condition="$(ChiselGraphName) == ''">$(MSBuildProjectName).Chisel.mermaid</ChiselGraphName>
     <ChiselGraphDirection Condition="$(ChiselGraphDirection) == ''">LeftToRight</ChiselGraphDirection>
-    <ChiselGraphIncludeVersions Condition="$(ChiselGraphIncludeVersions) == ''">true</ChiselGraphIncludeVersions>
+    <ChiselGraphIncludeVersions Condition="$(ChiselGraphIncludeVersions) == ''">false</ChiselGraphIncludeVersions>
   </PropertyGroup>
 
   <ItemGroup>
