@@ -165,7 +165,7 @@ no default value
 
 Setting the `ChiselGraphAlias` property adds an alias (link) under the project. This is useful to see the graph directly into the IDE. A very good combination with the Rider [Mermaid plugin](https://plugins.jetbrains.com/plugin/20146-mermaid). 
 
-<img src="resources/ChiselGraphAlias.png" alt="Screenshot of the SqlClientSample project with the Mermaid graph">
+![Screenshot of the SqlClientSample project with the Mermaid graph](https://raw.githubusercontent.com/0xced/Chisel/main/resources/ChiselGraphAlias.png)
 
 ```xml
 <PropertyGroup>
