@@ -15,10 +15,6 @@
     </Content>
   </ItemGroup>
 
-  <ItemGroup>
-    <ChiselGraphIgnore Include="NETStandard.Library" />
-  </ItemGroup>
-
   <ItemDefinitionGroup>
     <ChiselPackage>
       <Visible>false</Visible>
