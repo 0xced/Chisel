@@ -26,6 +26,7 @@ internal abstract class GraphWriter(TextWriter writer)
     public abstract string FormatName { get; }
     protected abstract void WriteHeader(bool hasProject, bool hasIgnored, bool hasRemoved, GraphOptions options);
     protected abstract void WriteFooter();
+    protected abstract void WriteRoot(Package package, GraphOptions options);
     protected abstract void WriteNode(Package package, GraphOptions options);
     protected abstract void WriteEdge(Package package, Package dependency, GraphOptions options);
 
@@ -45,6 +46,10 @@ internal abstract class GraphWriter(TextWriter writer)
     {
         foreach (var (package, dependencies) in graph.Dependencies.Select(e => (e.Key, e.Value)).Where(e => FilterIgnored(e.Key, options)).OrderBy(e => e.Key.Name))
         {
+            if (dependencies.Count == 0)
+            {
+                WriteRoot(package, options);
+            }
             foreach (var dependency in dependencies.Where(e => FilterIgnored(e, options)).OrderBy(e => e.Name))
             {
                 WriteEdge(package, dependency, options);

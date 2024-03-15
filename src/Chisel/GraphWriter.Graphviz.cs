@@ -27,6 +27,10 @@ internal sealed class GraphvizWriter(TextWriter writer) : GraphWriter(writer)
         Writer.WriteLine("}");
     }
 
+    protected override void WriteRoot(Package package, GraphOptions options)
+    {
+    }
+
     protected override void WriteNode(Package package, GraphOptions options)
     {
         Writer.Write($"  \"{GetPackageId(package, options)}\"");

@@ -188,5 +188,16 @@ internal sealed class DependencyGraph
 
     public IEnumerable<Package> Packages => _reverseGraph.Keys;
 
-    public IReadOnlyDictionary<Package, HashSet<Package>> Dependencies => _graph;
+    public IReadOnlyDictionary<Package, HashSet<Package>> Dependencies
+    {
+        get
+        {
+            var graph = new Dictionary<Package, HashSet<Package>>(_graph);
+            foreach (var root in _roots.Where(root => !graph.ContainsKey(root)))
+            {
+                graph.Add(root, []);
+            }
+            return graph;
+        }
+    }
 }

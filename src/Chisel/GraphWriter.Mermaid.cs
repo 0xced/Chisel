@@ -32,6 +32,11 @@ internal sealed class MermaidWriter(TextWriter writer) : GraphWriter(writer)
     {
     }
 
+    protected override void WriteRoot(Package package, GraphOptions options)
+    {
+        Writer.WriteLine($"{GetPackageId(package, options)}");
+    }
+
     protected override void WriteNode(Package package, GraphOptions options)
     {
         var className = package.State switch
