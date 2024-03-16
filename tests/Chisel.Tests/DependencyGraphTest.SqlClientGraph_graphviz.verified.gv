@@ -3,7 +3,7 @@
 digraph
 {
   rankdir=LR
-  node [ fontname = "Segoe UI, sans-serif", shape = box, style = filled, fillcolor = aquamarine, color = "#009061" ]
+  node [ fontname = "Segoe UI, sans-serif", shape = box, style = filled, fillcolor = aquamarine, color = "#009061", fontcolor = "#333333" ]
 
   "Azure.Core/1.35.0" -> "Microsoft.Bcl.AsyncInterfaces/1.1.1"
   "Azure.Core/1.35.0" -> "System.Diagnostics.DiagnosticSource/6.0.1"

@@ -52,9 +52,15 @@ internal sealed class GraphvizWriter(TextWriter writer) : GraphWriter(writer)
         Writer.WriteLine($"  \"{GetPackageId(package, options)}\" -> \"{GetPackageId(dependency, options)}\"");
     }
 
-    private static string Color(Color color) => $"fillcolor = {Fill(color)}, color = {Stroke(color)}";
+    private static string Color(Color color)
+    {
+        var colorDefinition = $"fillcolor = {Fill(color)}, color = {Stroke(color)}";
+        return string.IsNullOrEmpty(color.Text) ? colorDefinition : colorDefinition + $", fontcolor = {Text(color)}";
+    }
 
     private static string Fill(Color color) => color.Fill.StartsWith("#") ? $"\"{color.Fill}\"" : color.Fill;
 
     private static string Stroke(Color color) => color.Stroke.StartsWith("#") ? $"\"{color.Stroke}\"" : color.Stroke;
+
+    private static string Text(Color color) => color.Text?.StartsWith("#") == true ? $"\"{color.Text}\"" : color.Stroke;
 }
