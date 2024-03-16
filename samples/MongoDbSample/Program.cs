@@ -1,6 +1,4 @@
-﻿using DotNet.Testcontainers.Configurations;
-using Microsoft.Extensions.Logging;
-using MongoDB.Bson;
+﻿using MongoDB.Bson;
 using MongoDB.Driver;
 using Testcontainers.MongoDb;
 
@@ -14,7 +12,6 @@ using Testcontainers.MongoDb;
  * [1]: https://www.mongodb.com/docs/drivers/csharp/current/fundamentals/authentication/#std-label-csharp-mongodb-aws
  */
 
-TestcontainersSettings.Logger = new DockerLogger();
 await using var mongoContainer = new MongoDbBuilder().Build();
 try
 {
@@ -34,11 +31,4 @@ catch (Exception exception)
 {
     Console.Error.WriteLine($"❌ {exception}");
     return 1;
-}
-
-internal class DockerLogger : ILogger
-{
-    public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter) => Console.WriteLine($"🐳 {formatter(state, exception)}");
-    public bool IsEnabled(LogLevel logLevel) => true;
-    public IDisposable? BeginScope<TState>(TState state) where TState : notnull => null;
 }
