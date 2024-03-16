@@ -280,8 +280,8 @@ On macOS, removing the Azure authentication libraries and its dependencies reduc
 
 ```mermaid
 %%{ init: { 'theme': 'base', 'themeVariables': { 'pie1': 'lightcoral', 'pie2': 'aquamarine' } } }%%
-pie
-  "Azure libraries" : 3.217
+pie title Microsoft.Data.SqlClient composition
+  "Azure/authentication libraries" : 3.217
   "SqlClient core libraries" : 2.764
 ```
 
@@ -329,7 +329,7 @@ Setting the `ChiselGraphAlias` property adds an alias (link) under the project. 
 
 defaults to `LeftToRight`
 
-This defines how the dependency graph is laid out. Possible values are `LeftToRight` and `TopToBottom`. Except for shallow graphs, left to right usually produce a more readable graph.
+This defines how the dependency graph is laid out. Possible values are `LeftToRight` and `TopToBottom`. Except for shallow graphs, left to right usually produces a more readable graph.
 
 ### `ChiselGraphIncludeVersions`
 
