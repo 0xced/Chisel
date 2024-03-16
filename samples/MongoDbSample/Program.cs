@@ -4,6 +4,16 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using Testcontainers.MongoDb;
 
+/*
+ * This program demonstrates that a MongoDB connection can be successfully established when authenticating with a user and a password.
+ *
+ * Passing the --aws argument changes the authentication mechanism to [MONGODB-AWS][1] which actually requires the removed AWS package.
+ * Since the package was removed with <ChiselPackage>AWSSDK.SecurityToken</ChiselPackage> a `FileNotFoundException` will be thrown:
+ * > Could not load file or assembly 'AWSSDK.Core, Version=3.3.0.0, Culture=neutral, PublicKeyToken=885c28607f98e604'
+ *
+ * [1]: https://www.mongodb.com/docs/drivers/csharp/current/fundamentals/authentication/#std-label-csharp-mongodb-aws
+ */
+
 TestcontainersSettings.Logger = new DockerLogger();
 await using var mongoContainer = new MongoDbBuilder().Build();
 try
