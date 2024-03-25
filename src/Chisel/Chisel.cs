@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
@@ -118,6 +118,8 @@ public class Chisel : Task
     /// </summary>
     [Output]
     public long? BytesSaved { get; private set; }
+
+    static Chisel() => AppDomain.CurrentDomain.AssemblyResolve += SdkAssemblyResolver.ResolveAssembly;
 
     /// <inheritdoc />
     public override bool Execute()
