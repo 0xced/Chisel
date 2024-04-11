@@ -43,7 +43,16 @@ public class TestApp : IAsyncLifetime
 
     Task IAsyncLifetime.DisposeAsync()
     {
-        _workingDirectory.Delete(recursive: true);
+        try
+        {
+            _workingDirectory.Delete(recursive: true);
+        }
+        catch (UnauthorizedAccessException exception)
+        {
+            // This sometimes happen on the Windows runner in GitHub actions
+            // > [Test Class Cleanup Failure (Chisel.Tests.ChiseledAppTests)]: System.UnauthorizedAccessException : Access to the path 'TestApp.dll' is denied.
+            _messageSink.OnMessage(new DiagnosticMessage($"Deleting {_workingDirectory} failed: {exception}"));
+        }
         return Task.CompletedTask;
     }
 
