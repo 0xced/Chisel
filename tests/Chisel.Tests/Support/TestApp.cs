@@ -22,6 +22,7 @@ public class TestApp : IAsyncLifetime
     private readonly IMessageSink _messageSink;
     private readonly DirectoryInfo _workingDirectory;
     private readonly Dictionary<PublishMode, FileInfo> _executables;
+    private string _packageVersion = "N/A";
 
     public TestApp(IMessageSink messageSink)
     {
@@ -43,6 +44,15 @@ public class TestApp : IAsyncLifetime
 
     Task IAsyncLifetime.DisposeAsync()
     {
+        if (Environment.GetEnvironmentVariable("ContinuousIntegrationBuild") == "true")
+        {
+            // The NuGet package was already built as part of the tests (PackAsync),
+            // so move it to the root of the repository for the "Upload NuGet package artifact" step to pick it.
+            var packageName = $"Chisel.{_packageVersion}.nupkg";
+            var packageFile = _workingDirectory.File(packageName);
+            packageFile.MoveTo(GetFullPath(packageName), overwrite: false);
+        }
+
         try
         {
             _workingDirectory.Delete(recursive: true);
@@ -79,12 +89,12 @@ public class TestApp : IAsyncLifetime
         var projectFile = GetFile("src", "Chisel", "Chisel.csproj");
         var packArgs = new[] {
             "pack", projectFile.FullName,
-            "--configuration", "Release",
+            "--no-build",
             "--output", _workingDirectory.FullName,
-            "-p:MinVerSkip=true",
-            "-p:Version=0.0.0-IntegrationTest.0",
+            "--getProperty:PackageVersion",
         };
-        await RunDotnetAsync(_workingDirectory, packArgs);
+        var packageVersion = await RunDotnetAsync(_workingDirectory, packArgs);
+        _packageVersion = packageVersion.TrimEnd();
     }
 
     private async Task RestoreAsync()
@@ -94,12 +104,9 @@ public class TestApp : IAsyncLifetime
         var restoreArgs = new[] {
             "restore",
             "--configfile", "nuget.config",
-            "-p:Configuration=Release",
+            $"-p:ChiselPackageVersion={_packageVersion}",
         };
         await RunDotnetAsync(_workingDirectory, restoreArgs);
-
-        var intermediateOutputPath = await RunDotnetAsync(_workingDirectory, "build", "--getProperty:IntermediateOutputPath", "--configuration", "Release");
-        IntermediateOutputPath = _workingDirectory.SubDirectory(intermediateOutputPath.TrimEnd());
     }
 
     private async Task PublishAsync(PublishMode publishMode)
@@ -111,11 +118,12 @@ public class TestApp : IAsyncLifetime
         var publishArgs = new[] {
             "publish",
             "--no-restore",
-            "--configuration", "Release",
             "--output", outputDirectory.FullName,
             $"-p:PublishSingleFile={publishMode is PublishMode.SingleFile}",
+            "--getProperty:IntermediateOutputPath",
         };
-        await RunDotnetAsync(_workingDirectory, publishArgs);
+        var intermediateOutputPath = await RunDotnetAsync(_workingDirectory, publishArgs);
+        IntermediateOutputPath = _workingDirectory.SubDirectory(intermediateOutputPath.TrimEnd());
 
         var executableFileName = OperatingSystem.IsWindows() ? "TestApp.exe" : "TestApp";
         var executableFile = outputDirectory.File(executableFileName);
