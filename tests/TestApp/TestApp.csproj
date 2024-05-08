@@ -12,7 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Chisel" Version="[$(ChiselPackageVersion)]" />
+    <PackageReference Include="Chisel" Version="[$(ChiselPackageVersion)]" PrivateAssets="all" />
   </ItemGroup>
 
   <PropertyGroup>
