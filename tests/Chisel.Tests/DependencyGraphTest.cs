@@ -3,6 +3,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using FluentAssertions;
+using NuGet.ProjectModel;
 using NuGet.Versioning;
 using Xunit;
 using static VerifyXunit.Verifier;
@@ -11,7 +12,7 @@ namespace Chisel.Tests;
 
 public class DependencyGraphTest
 {
-    private static readonly string[] MongoDbResolvedPackages =
+    private static readonly string[] MongoDbCopyLocalPackages =
     [
         "AWSSDK.Core",
         "AWSSDK.SecurityToken",
@@ -44,7 +45,7 @@ public class DependencyGraphTest
         "ZstdSharp.Port",
     ];
 
-    private static readonly string[] SqlClientResolvedPackages =
+    private static readonly string[] SqlClientCopyLocalPackages =
     [
         "Azure.Core",
         "Azure.Identity",
@@ -79,8 +80,9 @@ public class DependencyGraphTest
     [CombinatorialData]
     public async Task MongoDbGraph(bool writeIgnoredPackages, [CombinatorialValues("graphviz", "mermaid")] string format)
     {
-        var assetsFile = GetAssetsPath("MongoDbGraph.json");
-        var graph = new DependencyGraph(MongoDbResolvedPackages, assetsFile, tfm: "net8.0", rid: "", ignores: [ "Testcontainers.MongoDb" ]);
+        var lockFile = new LockFileFormat().Read(GetAssetsPath("MongoDbGraph.json"));
+        var (packages, roots) = lockFile.ReadPackages(tfm: "net8.0", rid: null, package => package.IsProjectReference || MongoDbCopyLocalPackages.Contains(package.Name));
+        var graph = new DependencyGraph(packages, roots, ignores: [ "Testcontainers.MongoDb" ]);
         var (removed, notFound, removedRoots) = graph.Remove([ "MongoDB.Driver", "AWSSDK.SecurityToken", "NonExistentPackage" ]);
         await using var writer = new StringWriter();
         var graphWriter = format == "graphviz" ? GraphWriter.Graphviz(writer) : GraphWriter.Mermaid(writer);
@@ -98,8 +100,9 @@ public class DependencyGraphTest
     [InlineData("mermaid")]
     public async Task SqlClientGraph(string format)
     {
-        var assetsFile = GetAssetsPath("SqlClientGraph.json");
-        var graph = new DependencyGraph(SqlClientResolvedPackages, assetsFile, tfm: "net8.0-windows", rid: "win-x64", ignores: []);
+        var lockFile = new LockFileFormat().Read(GetAssetsPath("SqlClientGraph.json"));
+        var (packages, roots) = lockFile.ReadPackages(tfm: "net8.0-windows", rid: "win-x64", package => package.IsProjectReference || SqlClientCopyLocalPackages.Contains(package.Name));
+        var graph = new DependencyGraph(packages, roots, ignores: []);
         var (removed, notFound, removedRoots) = graph.Remove([ "Azure.Identity", "Microsoft.IdentityModel.JsonWebTokens", "Microsoft.IdentityModel.Protocols.OpenIdConnect", "System.Memory.Data" ]);
         await using var writer = new StringWriter();
 
@@ -134,8 +137,9 @@ public class DependencyGraphTest
     [Fact]
     public void ValidProjectVersion()
     {
-        var assetsFile = GetAssetsPath("SqlClientGraph.json");
-        var graph = new DependencyGraph(SqlClientResolvedPackages, assetsFile, tfm: "net8.0-windows", rid: "win-x64", ignores: []);
+        var lockFile = new LockFileFormat().Read(GetAssetsPath("SqlClientGraph.json"));
+        var (packages, roots) = lockFile.ReadPackages(tfm: "net8.0-windows", rid: "win-x64", package => package.IsProjectReference || SqlClientCopyLocalPackages.Contains(package.Name));
+        var graph = new DependencyGraph(packages, roots, ignores: []);
 
         graph.EnumerateUnsatisfiedProjectDependencies().Should().BeEmpty();
     }
@@ -143,8 +147,9 @@ public class DependencyGraphTest
     [Fact]
     public void InvalidProjectVersion()
     {
-        var assetsFile = GetAssetsPath("SqlClientGraph-InvalidProjectVersion.json");
-        var graph = new DependencyGraph(SqlClientResolvedPackages, assetsFile, tfm: "net8.0-windows", rid: "win-x64", ignores: []);
+        var lockFile = new LockFileFormat().Read(GetAssetsPath("SqlClientGraph-InvalidProjectVersion.json"));
+        var (packages, roots) = lockFile.ReadPackages(tfm: "net8.0-windows", rid: "win-x64", package => package.IsProjectReference || SqlClientCopyLocalPackages.Contains(package.Name));
+        var graph = new DependencyGraph(packages, roots, ignores: []);
 
         var result = graph.EnumerateUnsatisfiedProjectDependencies().ToList();
 

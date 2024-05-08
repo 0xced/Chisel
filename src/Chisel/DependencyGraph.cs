@@ -1,13 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NuGet.ProjectModel;
 
 namespace Chisel;
 
 internal sealed class DependencyGraph
 {
-    private readonly HashSet<Package> _roots;
+    private readonly IReadOnlyCollection<Package> _roots;
     /*
      * ┌───────────────────┐
      * │  Azure.Identity   │───────────────────────────┐
@@ -27,42 +26,11 @@ internal sealed class DependencyGraph
     private readonly Dictionary<Package, HashSet<Package>> _graph = new();
     private readonly Dictionary<Package, HashSet<Package>> _reverseGraph = new();
 
-    private static Package CreatePackage(LockFileTargetLibrary library)
+    public DependencyGraph(IReadOnlyDictionary<string, Package> packages, IReadOnlyCollection<Package> roots, IEnumerable<string> ignores)
     {
-        var name = library.Name ?? throw new ArgumentException("The library must have a name", nameof(library));
-        var version = library.Version ?? throw new ArgumentException($"The library \"{name}\" must have a version", nameof(library));
-        // https://github.com/dotnet/sdk/blob/v8.0.202/documentation/specs/runtime-configuration-file.md#libraries-section-depsjson
-        // > `type` - the type of the library. `package` for NuGet packages. `project` for a project reference. Can be other things as well.
-        var isProjectReference = library.Type == "project";
-        var dependencies = library.Dependencies.Select(e => new Dependency(e.Id, e.VersionRange)).ToList();
-        return new Package(name, version, isProjectReference, dependencies);
-    }
-
-    public DependencyGraph(IEnumerable<string> resolvedPackages, string projectAssetsFile, string tfm, string rid, IEnumerable<string> ignores)
-    {
-        var assetsLockFile = new LockFileFormat().Read(projectAssetsFile);
-        var frameworks = assetsLockFile.PackageSpec?.TargetFrameworks?.Where(e => e.TargetAlias == tfm).ToList() ?? [];
-        var framework = frameworks.Count switch
-        {
-            0 => throw new ArgumentException($"Target framework \"{tfm}\" is not available in assets at \"{projectAssetsFile}\" (JSON path: project.frameworks.*.targetAlias)", nameof(tfm)),
-            1 => frameworks[0],
-            _ => throw new ArgumentException($"Multiple target frameworks are matching \"{tfm}\" in assets at \"{projectAssetsFile}\" (JSON path: project.frameworks.*.targetAlias)", nameof(tfm)),
-        };
-        var targets = assetsLockFile.Targets.Where(e => e.TargetFramework == framework.FrameworkName && (string.IsNullOrEmpty(rid) || e.RuntimeIdentifier == rid)).ToList();
-        // https://github.com/NuGet/NuGet.Client/blob/6.10.0.52/src/NuGet.Core/NuGet.ProjectModel/LockFile/LockFileTarget.cs#L17
-        var targetId = framework.FrameworkName + (string.IsNullOrEmpty(rid) ? "" : $"/{rid}");
-        var target = targets.Count switch
-        {
-            0 => throw new ArgumentException($"Target \"{targetId}\" is not available in assets at \"{projectAssetsFile}\" (JSON path: targets)", nameof(rid)),
-            1 => targets[0],
-            _ => throw new ArgumentException($"Multiple targets are matching \"{targetId}\" in assets at \"{projectAssetsFile}\" (JSON path: targets)", nameof(rid)),
-        };
-        var relevantPackages = new HashSet<string>(resolvedPackages.Union(target.Libraries.Where(e => e.Type == "project").Select(e => e.Name ?? "")), StringComparer.OrdinalIgnoreCase);
-        var packages = target.Libraries.Where(e => relevantPackages.Contains(e.Name ?? "")).ToDictionary(e => e.Name ?? "", CreatePackage, StringComparer.OrdinalIgnoreCase);
-
         foreach (var package in packages.Values)
         {
-            var dependencies = new HashSet<Package>(package.Dependencies.Where(e => relevantPackages.Contains(e.Id)).Select(e => packages[e.Id]));
+            var dependencies = new HashSet<Package>(package.Dependencies.Where(e => packages.ContainsKey(e.Id)).Select(e => packages[e.Id]));
 
             if (dependencies.Count > 0)
             {
@@ -82,7 +50,7 @@ internal sealed class DependencyGraph
             }
         }
 
-        _roots = new HashSet<Package>(framework.Dependencies.Where(e => relevantPackages.Contains(e.Name)).Select(e => packages[e.Name]));
+        _roots = roots;
 
         foreach (var root in _roots)
         {
