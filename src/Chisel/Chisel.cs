@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
+using NuGet.ProjectModel;
 
 namespace Chisel;
 
@@ -155,8 +156,10 @@ public class Chisel : Task
 
     private DependencyGraph ProcessGraph()
     {
-        var resolvedPackages = new HashSet<string>(RuntimeAssemblies.Select(NuGetPackageId).Concat(NativeLibraries.Select(NuGetPackageId)));
-        var graph = new DependencyGraph(resolvedPackages, ProjectAssetsFile, TargetFramework, RuntimeIdentifier, GraphIgnores.Select(e => e.ItemSpec));
+        var lockFile = new LockFileFormat().Read(ProjectAssetsFile);
+        var copyLocalPackages = new HashSet<string>(RuntimeAssemblies.Select(NuGetPackageId).Concat(NativeLibraries.Select(NuGetPackageId)));
+        var (packages, roots) = lockFile.ReadPackages(TargetFramework, RuntimeIdentifier, package => package.IsProjectReference || copyLocalPackages.Contains(package.Name));
+        var graph = new DependencyGraph(packages, roots, GraphIgnores.Select(e => e.ItemSpec));
         var (removed, notFound, removedRoots) = graph.Remove(ChiselPackages.Select(e => e.ItemSpec));
 
         foreach (var packageName in notFound)
