@@ -54,7 +54,14 @@ internal sealed class DependencyGraph
 
         foreach (var root in _roots)
         {
-            _reverseGraph[root] = [ root ];
+            if (_reverseGraph.TryGetValue(root, out var reverseDependencies))
+            {
+                reverseDependencies.Add(root);
+            }
+            else
+            {
+                _reverseGraph[root] = [root];
+            }
         }
 
         Ignore(ignores);

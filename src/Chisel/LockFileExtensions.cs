@@ -27,7 +27,10 @@ internal static class LockFileExtensions
             _ => throw new ArgumentException($"Multiple targets are matching \"{targetId}\" in assets at \"{lockFile.Path}\" (JSON path: targets)", nameof(rid)),
         };
         var packages = target.Libraries.Where(e => e.Name != null && e.Version != null).Select(CreatePackage).Where(e => filter == null || filter(e)).ToDictionary(e => e.Name, StringComparer.OrdinalIgnoreCase);
-        var roots = new HashSet<Package>(framework.Dependencies.Where(e => packages.ContainsKey(e.Name)).Select(e => packages[e.Name]));
+        var frameworkName = framework.FrameworkName.GetShortFolderName();
+        var projectDependencies = lockFile.ProjectFileDependencyGroups.Where(e => e.FrameworkName == frameworkName).SelectMany(e => e.Dependencies).Select(ParseProjectFileDependency);
+        var packageDependencies = framework.Dependencies.Select(e => e.Name);
+        var roots = new HashSet<Package>(projectDependencies.Concat(packageDependencies).Where(e => packages.ContainsKey(e)).Select(e => packages[e]));
         return (packages, roots);
     }
 
@@ -40,5 +43,13 @@ internal static class LockFileExtensions
         var isProjectReference = library.Type == LibraryType.Project;
         var dependencies = library.Dependencies.Select(e => new Dependency(e.Id, e.VersionRange)).ToList();
         return new Package(name, version, isProjectReference, dependencies);
+    }
+
+    private static string ParseProjectFileDependency(string dependency)
+    {
+        // Extract the dependency name by "reversing" NuGet.LibraryModel.LibraryRange.ToLockFileDependencyGroupString()
+        // See https://github.com/NuGet/NuGet.Client/blob/6.9.1.3/src/NuGet.Core/NuGet.LibraryModel/LibraryRange.cs#L76-L115
+        var spaceIndex = dependency.IndexOf(' ');
+        return spaceIndex != -1 ? dependency[..spaceIndex] : dependency;
     }
 }
