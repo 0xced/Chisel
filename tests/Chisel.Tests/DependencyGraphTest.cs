@@ -134,6 +134,22 @@ public class DependencyGraphTest
         await Verify(writer.ToString(), format == "graphviz" ? "gv" : "mmd").UseTextForParameters(format);
     }
 
+    [Theory]
+    [InlineData("graphviz")]
+    [InlineData("mermaid")]
+    public async Task PollyGraphIgnoreGlob(string format)
+    {
+        var lockFile = new LockFileFormat().Read(GetAssetsPath("PollyGraph.json"));
+        var (packages, roots) = lockFile.ReadPackages(tfm: "netstandard2.0", rid: "");
+        var graph = new DependencyGraph(packages, roots, ignores: [ "System.*" ]);
+        await using var writer = new StringWriter();
+
+        var graphWriter = format == "graphviz" ? GraphWriter.Graphviz(writer) : GraphWriter.Mermaid(writer);
+        graphWriter.Write(graph, new GraphOptions { Direction = GraphDirection.LeftToRight, IncludeVersions = true, WriteIgnoredPackages = false });
+
+        await Verify(writer.ToString(), format == "graphviz" ? "gv" : "mmd").UseTextForParameters(format);
+    }
+
     [Fact]
     public void ValidProjectVersion()
     {

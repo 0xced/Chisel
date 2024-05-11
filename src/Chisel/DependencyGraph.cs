@@ -120,8 +120,26 @@ internal sealed class DependencyGraph
 
     private void Ignore(IEnumerable<string> packageNames)
     {
-        var packages = new HashSet<Package>(packageNames.Intersect(_reverseGraph.Keys.Select(p => p.Name), StringComparer.OrdinalIgnoreCase)
-            .Select(e => _reverseGraph.Keys.Single(p => p.Name.Equals(e, StringComparison.OrdinalIgnoreCase))));
+        var packages = new HashSet<Package>();
+
+        foreach (var packageName in packageNames)
+        {
+            if (packageName.EndsWith("*", StringComparison.OrdinalIgnoreCase))
+            {
+                var packagePrefix = packageName[..^1];
+                foreach (var package in _reverseGraph.Keys.Where(e => e.Name.StartsWith(packagePrefix, StringComparison.OrdinalIgnoreCase)))
+                {
+                    packages.Add(package);
+                }
+            }
+            else
+            {
+                foreach (var package in _reverseGraph.Keys.Where(e => e.Name.Equals(packageName, StringComparison.OrdinalIgnoreCase)))
+                {
+                    packages.Add(package);
+                }
+            }
+        }
 
         foreach (var package in packages)
         {
