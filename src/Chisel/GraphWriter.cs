@@ -14,7 +14,7 @@ internal abstract class GraphWriter(TextWriter writer)
     public void Write(DependencyGraph graph, GraphOptions options)
     {
         var hasProject = graph.Packages.Any(e => e.IsProjectReference);
-        var hasIgnored = graph.Packages.Any(e => e.State == PackageState.Ignore);
+        var hasIgnored = graph.Packages.Any(e => e.State == PackageState.Ignore) && options.WriteIgnoredPackages;
         var hasRemoved = graph.Packages.Any(e => e.State == PackageState.Remove);
         WriteHeader(hasProject: hasProject, hasIgnored: hasIgnored, hasRemoved: hasRemoved, options);
         WriteEdges(graph, options);
