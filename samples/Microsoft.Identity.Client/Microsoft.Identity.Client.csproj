@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <DebugType>none</DebugType>
-    <Version>4.56.0</Version>
+    <Version>4.60.3</Version>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>$(BaseIntermediateOutputPath)MSAL.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>

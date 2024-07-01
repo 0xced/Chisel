@@ -10,8 +10,8 @@
   <ItemGroup>
     <PackageReference Include="Chisel" Version="1.0.0" PrivateAssets="all" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.1" />
-    <PackageReference Include="MongoDB.Driver" Version="2.25.0" />
-    <PackageReference Include="Testcontainers.MongoDb" Version="3.8.0" />
+    <PackageReference Include="MongoDB.Driver" Version="2.27.0" />
+    <PackageReference Include="Testcontainers.MongoDb" Version="3.9.0" />
   </ItemGroup>
 
   <PropertyGroup>
