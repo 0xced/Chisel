@@ -12,7 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Chisel" Version="[$(ChiselPackageVersion)]" />
+    <PackageReference Include="Chisel" Version="[$(ChiselPackageVersion)]" PrivateAssets="all" />
   </ItemGroup>
 
   <PropertyGroup>
@@ -27,7 +27,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.1" />
-    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="8.0.1" />
   </ItemGroup>
 
 </Project>
