@@ -74,7 +74,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.10.4" PrivateAssets="all" ExcludeAssets="runtime" />
     <PackageReference Include="MinVer" Version="5.0.0" PrivateAssets="all" />
-    <PackageReference Include="NuGet.ProjectModel" Version="6.10.1" PrivateAssets="all" />
+    <PackageReference Include="NuGet.ProjectModel" Version="6.11.0" PrivateAssets="all" />
     <PackageReference Include="PolySharp" Version="1.14.1" PrivateAssets="all" />
   </ItemGroup>
 
