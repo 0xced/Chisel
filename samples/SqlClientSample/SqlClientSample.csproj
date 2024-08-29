@@ -9,15 +9,16 @@
     <Nullable>enable</Nullable>
     <UseCurrentRuntimeIdentifier>true</UseCurrentRuntimeIdentifier>
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    <MicrosoftDataSqlClientVersion>5.2.2</MicrosoftDataSqlClientVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Chisel" Version="1.0.0" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.1" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="$(MicrosoftDataSqlClientVersion)" />
     <PackageReference Include="System.Memory.Data" Version="8.0.0" />
   </ItemGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition="$([MSBuild]::VersionLessThan('$(MicrosoftDataSqlClientVersion)', '6.0'))">
     <ProjectReference Include="../Microsoft.Identity.Client/Microsoft.Identity.Client.csproj" />
   </ItemGroup>
 
