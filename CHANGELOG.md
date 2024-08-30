@@ -14,6 +14,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 </ItemGroup>
 ```
 
+* The dependency graph roots (i.e. direct package and project references) are now identified with an hexagon shape and stronger borders.
+
+```mermaid
+graph
+
+classDef root stroke-width:4px
+classDef default fill:aquamarine,stroke:#009061,color:#333333
+classDef removed fill:lightcoral,stroke:#A42A2A
+
+Azure.Identity --> Azure.Core
+Microsoft.Data.SqlClient{{Microsoft.Data.SqlClient}} --> Azure.Identity
+
+class Azure.Core removed
+class Azure.Identity removed
+class Microsoft.Data.SqlClient root
+class Microsoft.Data.SqlClient default
+```
+
 ## [1.0.0][1.0.0] - 2024-04-12
 
 * Fix a crash when MSBuild is running on the desktop .NET Framework
