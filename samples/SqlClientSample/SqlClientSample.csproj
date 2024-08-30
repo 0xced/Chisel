@@ -12,8 +12,14 @@
     <MicrosoftDataSqlClientVersion>5.2.2</MicrosoftDataSqlClientVersion>
   </PropertyGroup>
 
-  <ItemGroup>
+  <Import Project="../../src/Chisel/build/Chisel.props" Condition="$(Configuration) == 'Debug'" />
+  <Import Project="../../src/Chisel/build/Chisel.targets" Condition="$(Configuration) == 'Debug'" />
+
+  <ItemGroup Condition="$(Configuration) != 'Debug'">
     <PackageReference Include="Chisel" Version="1.0.0" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.Data.SqlClient" Version="$(MicrosoftDataSqlClientVersion)" />
     <PackageReference Include="System.Memory.Data" Version="8.0.0" />
   </ItemGroup>
