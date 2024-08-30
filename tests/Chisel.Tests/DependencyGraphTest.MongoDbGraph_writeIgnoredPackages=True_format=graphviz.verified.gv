@@ -43,16 +43,16 @@ digraph
   "AWSSDK.Core" [ fillcolor = lightcoral, color = "#A42A2A" ]
   "AWSSDK.SecurityToken" [ fillcolor = lightcoral, color = "#A42A2A" ]
   "BouncyCastle.Cryptography" [ fillcolor = lightgray, color = "#7A7A7A" ]
-  "ByteSize"
+  "ByteSize" [ shape = hexagon, penwidth = 4 ]
   "DnsClient"
   "Docker.DotNet" [ fillcolor = lightgray, color = "#7A7A7A" ]
   "Docker.DotNet.X509" [ fillcolor = lightgray, color = "#7A7A7A" ]
   "Microsoft.Bcl.AsyncInterfaces" [ fillcolor = lightgray, color = "#7A7A7A" ]
   "Microsoft.Extensions.DependencyInjection.Abstractions"
-  "Microsoft.Extensions.Logging.Abstractions"
+  "Microsoft.Extensions.Logging.Abstractions" [ shape = hexagon, penwidth = 4 ]
   "Microsoft.Win32.Registry"
   "MongoDB.Bson"
-  "MongoDB.Driver"
+  "MongoDB.Driver" [ shape = hexagon, penwidth = 4 ]
   "MongoDB.Driver.Core"
   "MongoDB.Libmongocrypt"
   "Newtonsoft.Json" [ fillcolor = lightgray, color = "#7A7A7A" ]
@@ -67,6 +67,6 @@ digraph
   "System.Text.Encodings.Web" [ fillcolor = lightgray, color = "#7A7A7A" ]
   "System.Text.Json" [ fillcolor = lightgray, color = "#7A7A7A" ]
   "Testcontainers" [ fillcolor = lightgray, color = "#7A7A7A" ]
-  "Testcontainers.MongoDb" [ fillcolor = lightgray, color = "#7A7A7A" ]
+  "Testcontainers.MongoDb" [ shape = hexagon, penwidth = 4, fillcolor = lightgray, color = "#7A7A7A" ]
   "ZstdSharp.Port"
 }

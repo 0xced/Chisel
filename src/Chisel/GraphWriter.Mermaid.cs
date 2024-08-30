@@ -24,6 +24,7 @@ internal sealed class MermaidWriter(TextWriter writer) : GraphWriter(writer)
         Writer.WriteLine();
 
         Writer.WriteLine();
+        Writer.WriteLine("classDef root stroke-width:4px");
         Writer.WriteLine(ClassDef("default", options.Color.Default));
         if (hasProject)
             Writer.WriteLine(ClassDef("project", options.Color.Project));
@@ -40,11 +41,16 @@ internal sealed class MermaidWriter(TextWriter writer) : GraphWriter(writer)
 
     protected override void WriteRoot(Package package, GraphOptions options)
     {
-        Writer.WriteLine($"{GetPackageId(package, options)}");
+        var packageId = GetPackageId(package, options);
+        Writer.WriteLine($"{packageId}{{{{{packageId}}}}}");
     }
 
     protected override void WriteNode(Package package, GraphOptions options)
     {
+        if (package.IsRoot)
+        {
+            Writer.WriteLine($"class {GetPackageId(package, options)} root");
+        }
         var className = package.State switch
         {
             PackageState.Ignore => "ignored",
@@ -56,6 +62,8 @@ internal sealed class MermaidWriter(TextWriter writer) : GraphWriter(writer)
 
     protected override void WriteEdge(Package package, Package dependency, GraphOptions options)
     {
-        Writer.WriteLine($"{GetPackageId(package, options)} --> {GetPackageId(dependency, options)}");
+        var packageId = GetPackageId(package, options);
+        var source = package.IsRoot ? $"{packageId}{{{{{packageId}}}}}" : packageId;
+        Writer.WriteLine($"{source} --> {GetPackageId(dependency, options)}");
     }
 }

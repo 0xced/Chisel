@@ -13,6 +13,8 @@ internal sealed class Package(string name, NuGetVersion version, bool isProjectR
     public bool IsProjectReference { get; } = isProjectReference;
     public IReadOnlyCollection<Dependency> Dependencies { get; } = dependencies;
 
+    public bool IsRoot { get; set; }
+
     public PackageState State { get; set; } = PackageState.Keep;
 
     public override string ToString() => Name;

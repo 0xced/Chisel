@@ -51,9 +51,9 @@ digraph
   "Azure.Core/1.35.0" [ fillcolor = lightcoral, color = "#A42A2A" ]
   "Azure.Identity/1.10.3" [ fillcolor = lightcoral, color = "#A42A2A" ]
   "Microsoft.Bcl.AsyncInterfaces/1.1.1" [ fillcolor = lightcoral, color = "#A42A2A" ]
-  "Microsoft.Data.SqlClient/5.2.0"
+  "Microsoft.Data.SqlClient/5.2.0" [ shape = hexagon, penwidth = 4 ]
   "Microsoft.Data.SqlClient.SNI.runtime/5.2.0"
-  "Microsoft.Identity.Client/4.56.0" [ fillcolor = skyblue, color = "#05587C" ]
+  "Microsoft.Identity.Client/4.56.0" [ shape = hexagon, penwidth = 4, fillcolor = skyblue, color = "#05587C" ]
   "Microsoft.Identity.Client.Extensions.Msal/4.56.0" [ fillcolor = lightcoral, color = "#A42A2A" ]
   "Microsoft.IdentityModel.Abstractions/6.35.0" [ fillcolor = lightcoral, color = "#A42A2A" ]
   "Microsoft.IdentityModel.JsonWebTokens/6.35.0" [ fillcolor = lightcoral, color = "#A42A2A" ]
@@ -67,7 +67,7 @@ digraph
   "System.Diagnostics.EventLog/8.0.0"
   "System.IdentityModel.Tokens.Jwt/6.35.0" [ fillcolor = lightcoral, color = "#A42A2A" ]
   "System.IO.FileSystem.AccessControl/5.0.0" [ fillcolor = lightcoral, color = "#A42A2A" ]
-  "System.Memory.Data/8.0.0"
+  "System.Memory.Data/8.0.0" [ shape = hexagon, penwidth = 4 ]
   "System.Runtime.Caching/8.0.0"
   "System.Runtime.CompilerServices.Unsafe/6.0.0" [ fillcolor = lightcoral, color = "#A42A2A" ]
   "System.Security.AccessControl/5.0.0" [ fillcolor = lightcoral, color = "#A42A2A" ]
