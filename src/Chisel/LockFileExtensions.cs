@@ -31,6 +31,10 @@ internal static class LockFileExtensions
         var projectDependencies = lockFile.ProjectFileDependencyGroups.Where(e => e.FrameworkName == frameworkName).SelectMany(e => e.Dependencies).Select(ParseProjectFileDependency);
         var packageDependencies = framework.Dependencies.Select(e => e.Name);
         var roots = new HashSet<Package>(projectDependencies.Concat(packageDependencies).Where(e => packages.ContainsKey(e)).Select(e => packages[e]));
+        foreach (var root in roots)
+        {
+            root.IsRoot = true;
+        }
         return (packages, roots);
     }
 

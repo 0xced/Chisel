@@ -40,10 +40,25 @@ internal sealed class GraphvizWriter(TextWriter writer) : GraphWriter(writer)
             PackageState.Remove => options.Color.Removed,
             _ => package.IsProjectReference ? options.Color.Project : (Color?)null,
         };
-        if (color.HasValue)
+
+        if (package.IsRoot || color.HasValue)
         {
-            Writer.Write($" [ {Color(color.Value)} ]");
+            Writer.Write(" [");
+            if (package.IsRoot)
+            {
+                Writer.Write(" shape = hexagon, penwidth = 4");
+            }
+            if (color.HasValue)
+            {
+                if (package.IsRoot)
+                {
+                    Writer.Write(',');
+                }
+                Writer.Write($" {Color(color.Value)}");
+            }
+            Writer.Write(" ]");
         }
+
         Writer.WriteLine();
     }
 

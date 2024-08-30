@@ -27,13 +27,13 @@ digraph
 
   "AWSSDK.Core" [ fillcolor = lightcoral, color = "#A42A2A" ]
   "AWSSDK.SecurityToken" [ fillcolor = lightcoral, color = "#A42A2A" ]
-  "ByteSize"
+  "ByteSize" [ shape = hexagon, penwidth = 4 ]
   "DnsClient"
   "Microsoft.Extensions.DependencyInjection.Abstractions"
-  "Microsoft.Extensions.Logging.Abstractions"
+  "Microsoft.Extensions.Logging.Abstractions" [ shape = hexagon, penwidth = 4 ]
   "Microsoft.Win32.Registry"
   "MongoDB.Bson"
-  "MongoDB.Driver"
+  "MongoDB.Driver" [ shape = hexagon, penwidth = 4 ]
   "MongoDB.Driver.Core"
   "MongoDB.Libmongocrypt"
   "SharpCompress"

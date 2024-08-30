@@ -2,20 +2,21 @@
 
 graph LR
 
+classDef root stroke-width:4px
 classDef default fill:aquamarine,stroke:#009061,color:#333333
 classDef removed fill:lightcoral,stroke:#A42A2A
 
 AWSSDK.SecurityToken --> AWSSDK.Core
-ByteSize
+ByteSize{{ByteSize}}
 DnsClient --> Microsoft.Win32.Registry
-Microsoft.Extensions.Logging.Abstractions --> Microsoft.Extensions.DependencyInjection.Abstractions
+Microsoft.Extensions.Logging.Abstractions{{Microsoft.Extensions.Logging.Abstractions}} --> Microsoft.Extensions.DependencyInjection.Abstractions
 Microsoft.Win32.Registry --> System.Security.AccessControl
 Microsoft.Win32.Registry --> System.Security.Principal.Windows
 MongoDB.Bson --> System.Runtime.CompilerServices.Unsafe
-MongoDB.Driver --> Microsoft.Extensions.Logging.Abstractions
-MongoDB.Driver --> MongoDB.Bson
-MongoDB.Driver --> MongoDB.Driver.Core
-MongoDB.Driver --> MongoDB.Libmongocrypt
+MongoDB.Driver{{MongoDB.Driver}} --> Microsoft.Extensions.Logging.Abstractions
+MongoDB.Driver{{MongoDB.Driver}} --> MongoDB.Bson
+MongoDB.Driver{{MongoDB.Driver}} --> MongoDB.Driver.Core
+MongoDB.Driver{{MongoDB.Driver}} --> MongoDB.Libmongocrypt
 MongoDB.Driver.Core --> AWSSDK.SecurityToken
 MongoDB.Driver.Core --> DnsClient
 MongoDB.Driver.Core --> Microsoft.Extensions.Logging.Abstractions
@@ -28,12 +29,15 @@ System.Security.AccessControl --> System.Security.Principal.Windows
 
 class AWSSDK.Core removed
 class AWSSDK.SecurityToken removed
+class ByteSize root
 class ByteSize default
 class DnsClient default
 class Microsoft.Extensions.DependencyInjection.Abstractions default
+class Microsoft.Extensions.Logging.Abstractions root
 class Microsoft.Extensions.Logging.Abstractions default
 class Microsoft.Win32.Registry default
 class MongoDB.Bson default
+class MongoDB.Driver root
 class MongoDB.Driver default
 class MongoDB.Driver.Core default
 class MongoDB.Libmongocrypt default
