@@ -150,6 +150,15 @@ public class TestApp : IAsyncLifetime
             .WithValidation(CommandResultValidation.None)
             .WithWorkingDirectory(workingDirectory.FullName)
             .WithArguments(arguments)
+            .WithEnvironmentVariables(env =>
+            {
+                var path = Environment.GetEnvironmentVariable("PATH");
+                var dotnetInstallDir = Environment.GetEnvironmentVariable("DOTNET_INSTALL_DIR");
+                if (path != null && dotnetInstallDir != null && !path.Contains(dotnetInstallDir))
+                {
+                    env.Set("PATH", $"{path}{Path.PathSeparator}{dotnetInstallDir}");
+                }
+            })
             .WithStandardOutputPipe(PipeTarget.ToDelegate(line =>
             {
                 outBuilder.AppendLine(line);
