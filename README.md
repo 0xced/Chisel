@@ -30,12 +30,13 @@ For a project referencing `Hangfire.PostgreSql` and `Npgsql.EntityFrameworkCore.
 ```mermaid
 graph LR
 
+classDef root stroke-width:4px
 classDef default fill:aquamarine,stroke:#009061,color:#333333
 
 Hangfire.Core --> Newtonsoft.Json
-Hangfire.PostgreSql --> Dapper
-Hangfire.PostgreSql --> Hangfire.Core
-Hangfire.PostgreSql --> Npgsql
+Hangfire.PostgreSql{{Hangfire.PostgreSql}} --> Dapper
+Hangfire.PostgreSql{{Hangfire.PostgreSql}} --> Hangfire.Core
+Hangfire.PostgreSql{{Hangfire.PostgreSql}} --> Npgsql
 Microsoft.EntityFrameworkCore --> Microsoft.EntityFrameworkCore.Abstractions
 Microsoft.EntityFrameworkCore --> Microsoft.Extensions.Caching.Memory
 Microsoft.EntityFrameworkCore --> Microsoft.Extensions.Logging
@@ -56,10 +57,13 @@ Microsoft.Extensions.Logging.Abstractions --> Microsoft.Extensions.DependencyInj
 Microsoft.Extensions.Options --> Microsoft.Extensions.DependencyInjection.Abstractions
 Microsoft.Extensions.Options --> Microsoft.Extensions.Primitives
 Npgsql --> Microsoft.Extensions.Logging.Abstractions
-Npgsql.EntityFrameworkCore.PostgreSQL --> Microsoft.EntityFrameworkCore
-Npgsql.EntityFrameworkCore.PostgreSQL --> Microsoft.EntityFrameworkCore.Abstractions
-Npgsql.EntityFrameworkCore.PostgreSQL --> Microsoft.EntityFrameworkCore.Relational
-Npgsql.EntityFrameworkCore.PostgreSQL --> Npgsql
+Npgsql.EntityFrameworkCore.PostgreSQL{{Npgsql.EntityFrameworkCore.PostgreSQL}} --> Microsoft.EntityFrameworkCore
+Npgsql.EntityFrameworkCore.PostgreSQL{{Npgsql.EntityFrameworkCore.PostgreSQL}} --> Microsoft.EntityFrameworkCore.Abstractions
+Npgsql.EntityFrameworkCore.PostgreSQL{{Npgsql.EntityFrameworkCore.PostgreSQL}} --> Microsoft.EntityFrameworkCore.Relational
+Npgsql.EntityFrameworkCore.PostgreSQL{{Npgsql.EntityFrameworkCore.PostgreSQL}} --> Npgsql
+
+class Hangfire.PostgreSql root
+class Npgsql.EntityFrameworkCore.PostgreSQL root
 ```
 
 Mermaid graphs can be used directly in [markdown files on GitHub](https://github.blog/2022-02-14-include-diagrams-markdown-files-mermaid/) and are rendered as graphs, just like the one just above. Or they can also be edited, previewed and shared with the [Mermaid live editor](https://mermaid.live/).
