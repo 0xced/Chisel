@@ -92,6 +92,7 @@ Specifying the _direct_ dependencies is enough. Looking at the produced graph co
 ```mermaid
 graph LR
 
+classDef root stroke-width:4px
 classDef default fill:aquamarine,stroke:#009061,color:#333333
 classDef removed fill:lightcoral,stroke:#A42A2A
 
@@ -100,19 +101,19 @@ DnsClient/1.6.1 --> Microsoft.Win32.Registry/5.0.0
 Microsoft.Extensions.Logging.Abstractions/8.0.1 --> Microsoft.Extensions.DependencyInjection.Abstractions/8.0.1
 Microsoft.Win32.Registry/5.0.0 --> System.Security.AccessControl/5.0.0
 Microsoft.Win32.Registry/5.0.0 --> System.Security.Principal.Windows/5.0.0
-MongoDB.Bson/2.24.0 --> System.Runtime.CompilerServices.Unsafe/6.0.0
-MongoDB.Driver/2.24.0 --> Microsoft.Extensions.Logging.Abstractions/8.0.1
-MongoDB.Driver/2.24.0 --> MongoDB.Bson/2.24.0
-MongoDB.Driver/2.24.0 --> MongoDB.Driver.Core/2.24.0
-MongoDB.Driver/2.24.0 --> MongoDB.Libmongocrypt/1.8.2
-MongoDB.Driver.Core/2.24.0 --> AWSSDK.SecurityToken/3.7.100.14
-MongoDB.Driver.Core/2.24.0 --> DnsClient/1.6.1
-MongoDB.Driver.Core/2.24.0 --> Microsoft.Extensions.Logging.Abstractions/8.0.1
-MongoDB.Driver.Core/2.24.0 --> MongoDB.Bson/2.24.0
-MongoDB.Driver.Core/2.24.0 --> MongoDB.Libmongocrypt/1.8.2
-MongoDB.Driver.Core/2.24.0 --> SharpCompress/0.30.1
-MongoDB.Driver.Core/2.24.0 --> Snappier/1.0.0
-MongoDB.Driver.Core/2.24.0 --> ZstdSharp.Port/0.7.3
+MongoDB.Bson/2.28.0 --> System.Runtime.CompilerServices.Unsafe/5.0.0
+MongoDB.Driver/2.28.0{{MongoDB.Driver/2.28.0}} --> Microsoft.Extensions.Logging.Abstractions/8.0.1
+MongoDB.Driver/2.28.0{{MongoDB.Driver/2.28.0}} --> MongoDB.Bson/2.28.0
+MongoDB.Driver/2.28.0{{MongoDB.Driver/2.28.0}} --> MongoDB.Driver.Core/2.28.0
+MongoDB.Driver/2.28.0{{MongoDB.Driver/2.28.0}} --> MongoDB.Libmongocrypt/1.11.0
+MongoDB.Driver.Core/2.28.0 --> AWSSDK.SecurityToken/3.7.100.14
+MongoDB.Driver.Core/2.28.0 --> DnsClient/1.6.1
+MongoDB.Driver.Core/2.28.0 --> Microsoft.Extensions.Logging.Abstractions/8.0.1
+MongoDB.Driver.Core/2.28.0 --> MongoDB.Bson/2.28.0
+MongoDB.Driver.Core/2.28.0 --> MongoDB.Libmongocrypt/1.11.0
+MongoDB.Driver.Core/2.28.0 --> SharpCompress/0.30.1
+MongoDB.Driver.Core/2.28.0 --> Snappier/1.0.0
+MongoDB.Driver.Core/2.28.0 --> ZstdSharp.Port/0.7.3
 System.Security.AccessControl/5.0.0 --> System.Security.Principal.Windows/5.0.0
 
 class AWSSDK.Core/3.7.100.14 removed
@@ -121,13 +122,14 @@ class DnsClient/1.6.1 default
 class Microsoft.Extensions.DependencyInjection.Abstractions/8.0.1 default
 class Microsoft.Extensions.Logging.Abstractions/8.0.1 default
 class Microsoft.Win32.Registry/5.0.0 default
-class MongoDB.Bson/2.24.0 default
-class MongoDB.Driver/2.24.0 default
-class MongoDB.Driver.Core/2.24.0 default
-class MongoDB.Libmongocrypt/1.8.2 default
+class MongoDB.Bson/2.28.0 default
+class MongoDB.Driver/2.28.0 root
+class MongoDB.Driver/2.28.0 default
+class MongoDB.Driver.Core/2.28.0 default
+class MongoDB.Libmongocrypt/1.11.0 default
 class SharpCompress/0.30.1 default
 class Snappier/1.0.0 default
-class System.Runtime.CompilerServices.Unsafe/6.0.0 default
+class System.Runtime.CompilerServices.Unsafe/5.0.0 default
 class System.Security.AccessControl/5.0.0 default
 class System.Security.Principal.Windows/5.0.0 default
 class ZstdSharp.Port/0.7.3 default
@@ -154,11 +156,13 @@ As with the MongoDB driver, specifying the three _direct_ dependencies is enough
 ```mermaid
 graph LR
 
+classDef root stroke-width:4px
 classDef default fill:aquamarine,stroke:#009061,color:#333333
 classDef project fill:skyblue,stroke:#05587C
 classDef removed fill:lightcoral,stroke:#A42A2A
 
 Azure.Core --> Microsoft.Bcl.AsyncInterfaces
+Azure.Core --> System.ClientModel
 Azure.Core --> System.Diagnostics.DiagnosticSource
 Azure.Core --> System.Memory.Data
 Azure.Core --> System.Text.Encodings.Web
@@ -168,15 +172,15 @@ Azure.Identity --> Microsoft.Identity.Client
 Azure.Identity --> Microsoft.Identity.Client.Extensions.Msal
 Azure.Identity --> System.Security.Cryptography.ProtectedData
 Azure.Identity --> System.Text.Json
-Microsoft.Data.SqlClient --> Azure.Identity
-Microsoft.Data.SqlClient --> Microsoft.Identity.Client
-Microsoft.Data.SqlClient --> Microsoft.IdentityModel.JsonWebTokens
-Microsoft.Data.SqlClient --> Microsoft.IdentityModel.Protocols.OpenIdConnect
-Microsoft.Data.SqlClient --> Microsoft.SqlServer.Server
-Microsoft.Data.SqlClient --> System.Configuration.ConfigurationManager
-Microsoft.Data.SqlClient --> System.Runtime.Caching
+Microsoft.Data.SqlClient{{Microsoft.Data.SqlClient}} --> Azure.Identity
+Microsoft.Data.SqlClient{{Microsoft.Data.SqlClient}} --> Microsoft.Identity.Client
+Microsoft.Data.SqlClient{{Microsoft.Data.SqlClient}} --> Microsoft.IdentityModel.JsonWebTokens
+Microsoft.Data.SqlClient{{Microsoft.Data.SqlClient}} --> Microsoft.IdentityModel.Protocols.OpenIdConnect
+Microsoft.Data.SqlClient{{Microsoft.Data.SqlClient}} --> Microsoft.SqlServer.Server
+Microsoft.Data.SqlClient{{Microsoft.Data.SqlClient}} --> System.Configuration.ConfigurationManager
+Microsoft.Data.SqlClient{{Microsoft.Data.SqlClient}} --> System.Runtime.Caching
+Microsoft.Identity.Client{{Microsoft.Identity.Client}}
 Microsoft.Identity.Client.Extensions.Msal --> Microsoft.Identity.Client
-Microsoft.Identity.Client.Extensions.Msal --> System.IO.FileSystem.AccessControl
 Microsoft.Identity.Client.Extensions.Msal --> System.Security.Cryptography.ProtectedData
 Microsoft.IdentityModel.JsonWebTokens --> Microsoft.IdentityModel.Tokens
 Microsoft.IdentityModel.JsonWebTokens --> System.Text.Encodings.Web
@@ -188,22 +192,23 @@ Microsoft.IdentityModel.Protocols.OpenIdConnect --> Microsoft.IdentityModel.Prot
 Microsoft.IdentityModel.Protocols.OpenIdConnect --> System.IdentityModel.Tokens.Jwt
 Microsoft.IdentityModel.Tokens --> Microsoft.IdentityModel.Logging
 Microsoft.IdentityModel.Tokens --> System.Security.Cryptography.Cng
+System.ClientModel --> System.Memory.Data
+System.ClientModel --> System.Text.Json
 System.Configuration.ConfigurationManager --> System.Diagnostics.EventLog
 System.Configuration.ConfigurationManager --> System.Security.Cryptography.ProtectedData
 System.Diagnostics.DiagnosticSource --> System.Runtime.CompilerServices.Unsafe
 System.IdentityModel.Tokens.Jwt --> Microsoft.IdentityModel.JsonWebTokens
 System.IdentityModel.Tokens.Jwt --> Microsoft.IdentityModel.Tokens
-System.IO.FileSystem.AccessControl --> System.Security.AccessControl
-System.IO.FileSystem.AccessControl --> System.Security.Principal.Windows
 System.Memory.Data --> System.Text.Encodings.Web
 System.Memory.Data --> System.Text.Json
 System.Runtime.Caching --> System.Configuration.ConfigurationManager
-System.Security.AccessControl --> System.Security.Principal.Windows
 
 class Azure.Core removed
 class Azure.Identity removed
 class Microsoft.Bcl.AsyncInterfaces removed
+class Microsoft.Data.SqlClient root
 class Microsoft.Data.SqlClient default
+class Microsoft.Identity.Client root
 class Microsoft.Identity.Client project
 class Microsoft.Identity.Client.Extensions.Msal removed
 class Microsoft.IdentityModel.Abstractions removed
@@ -213,18 +218,16 @@ class Microsoft.IdentityModel.Protocols removed
 class Microsoft.IdentityModel.Protocols.OpenIdConnect removed
 class Microsoft.IdentityModel.Tokens removed
 class Microsoft.SqlServer.Server default
+class System.ClientModel removed
 class System.Configuration.ConfigurationManager default
 class System.Diagnostics.DiagnosticSource removed
 class System.Diagnostics.EventLog default
 class System.IdentityModel.Tokens.Jwt removed
-class System.IO.FileSystem.AccessControl removed
 class System.Memory.Data removed
 class System.Runtime.Caching default
 class System.Runtime.CompilerServices.Unsafe removed
-class System.Security.AccessControl removed
 class System.Security.Cryptography.Cng removed
 class System.Security.Cryptography.ProtectedData default
-class System.Security.Principal.Windows removed
 class System.Text.Encodings.Web removed
 class System.Text.Json removed
 ```
