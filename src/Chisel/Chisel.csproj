@@ -35,7 +35,7 @@
   <PropertyGroup Label="Packaging Metadata">
     <Authors>Cédric Luthi</Authors>
     <Copyright>Copyright © Cédric Luthi</Copyright>
-    <Description>Remove unwanted dependencies from your builds</Description>
+    <Description>Remove unwanted dependencies from your dotnet projects</Description>
     <PackageIcon>icon.png</PackageIcon>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>nuget;package;dependencies</PackageTags>
