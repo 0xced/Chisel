@@ -7,7 +7,6 @@ env:
   ContinuousIntegrationBuild: true
   DOTNET_CLI_TELEMETRY_OPTOUT: true
   DOTNET_NOLOGO: true
-  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION: true
   TERM: xterm
 
@@ -20,59 +19,60 @@ jobs:
     runs-on: ${{ matrix.os }}
     permissions:
       checks: write
-    name: Run tests and create NuGet package
+    name: 🛠 Build, test and pack
     steps:
-      - name: Checkout git repository
+      - name: 🧑‍💻 Checkout git repository
         uses: actions/checkout@v4
         with:
-          # to fetch all history for all branches and tags so that MinVer
           fetch-depth: 0
-      - name: Install .NET SDK
+      - name: 🧑‍🔧 Install .NET SDK
         uses: actions/setup-dotnet@v4
-      - name: Retrieve cached NuGet packages
+      - name: ℹ️ Show .NET info
+        run: dotnet --info
+      - name: 💾 Retrieve cached NuGet packages
         uses: actions/cache@v4
         with:
           path: ~/.nuget/packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
           restore-keys: |
             ${{ runner.os }}-nuget-
-      - name: Restore NuGet packages
+      - name: ⚙️ Restore NuGet packages
         run: dotnet restore
-      - name: Build solution
+      - name: 🏗 Build solution
         run: dotnet build --no-restore
-      - name: Run tests
+      - name: 🧪 Run tests
         run: dotnet test --no-build
-      - name: Upload received files from failing tests
+      - name: 📤 Upload received files from failing tests
         uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: Received-${{ runner.os }}
           path: "**/*.received.*"
-      - name: Upload test results
+      - name: 📤 Upload test results
         uses: actions/upload-artifact@v4
         if: always()
         with:
           name: TestResults (${{ runner.os }})
           path: TestResults-*.html
-      - name: Test Report
+      - name: 📊 Test Report
         uses: dorny/test-reporter@v1
         if: always()
         with:
           name: Test Results (${{ runner.os }})
           path: TestResults-*.trx
           reporter: dotnet-trx
-      - name: Upload NuGet package artifact
+      - name: 📤 Upload NuGet package artifact
         if: matrix.os == 'ubuntu-latest'
         uses: actions/upload-artifact@v4
         with:
           name: NuGet package
           path: "*.nupkg"
-      - name: Retrieve release notes from tag
+      - name: 📝 Retrieve release notes from tag
         if: matrix.os == 'ubuntu-latest' && startsWith(github.ref, 'refs/tags/')
         run: |
           git fetch --tags --force
           git tag --list ${{ github.ref_name }} --format='%(contents)' > ReleaseNotes.md
-      - name: Upload release notes
+      - name: 📤 Upload release notes
         if: matrix.os == 'ubuntu-latest' && startsWith(github.ref, 'refs/tags/')
         uses: actions/upload-artifact@v4
         with:
@@ -84,21 +84,22 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/')
     permissions:
       contents: write
-    name: Publish NuGet package and create GitHub release
+    name: 🐿 Publish
     steps:
-      - name: Download NuGet package artifact
+      - name: 📥 Download NuGet package artifact
         uses: actions/download-artifact@v4
         with:
           name: NuGet package
-      - name: Download release notes artifact
+      - name: 📥 Download release notes artifact
         uses: actions/download-artifact@v4
         with:
           name: Release Notes
-      - name: Create GitHub Release
+      - name: 🚢 Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           name: Version ${{ github.ref_name }}
           body_path: ReleaseNotes.md
           prerelease: ${{ contains(github.ref_name, '-') }}
-      - name: Publish NuGet package on nuget.org
+          files: "*.nupkg"
+      - name: 🚀 Publish NuGet package on nuget.org
         run: dotnet nuget push "*.nupkg" --source https://api.nuget.org/v3/index.json --api-key "${{ secrets.NUGET_API_KEY }}"
