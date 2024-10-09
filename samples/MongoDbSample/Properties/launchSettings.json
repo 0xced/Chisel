@@ -1,0 +1,12 @@
+{
+  "$schema": "http://json.schemastore.org/launchsettings.json",
+  "profiles": {
+    "MongoDbSample (works without AWS authentication)": {
+      "commandName": "Project"
+    },
+    "MongoDbSample (crashes when using AWS authentication)": {
+      "commandName": "Project",
+      "commandLineArgs": "--aws"
+    }
+  }
+}
