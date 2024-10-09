@@ -149,6 +149,7 @@ public class TestApp : IAsyncLifetime
         var command = Cli.Wrap("dotnet")
             .WithValidation(CommandResultValidation.None)
             .WithWorkingDirectory(workingDirectory.FullName)
+            .WithEnvironmentVariables(env => env.Set("DOTNET_NOLOGO", "1"))
             .WithArguments(arguments)
             .WithStandardOutputPipe(PipeTarget.ToDelegate(line =>
             {
