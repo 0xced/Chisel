@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.1][1.1.1] - 2024-11-07
+
+* Fixed a bug where Chisel could fail in Visual Studio with a `MissingMethodException`.
+```
+Method not found: 'NuGet.Frameworks.NuGetFramework NuGet.ProjectModel.TargetFrameworkInformation.get_FrameworkName()'.
+   at Chisel.LockFileExtensions.ReadPackages(LockFile lockFile, String tfm, String rid, Predicate`1 filter)
+   at Chisel.Chisel.ProcessGraph() in /_/src/Chisel/Chisel.cs:line 161
+   at Chisel.Chisel.Execute() in /_/src/Chisel/Chisel.cs:line 140
+```
+
+This issue was only affecting Visual Studio. Rider and the `dotnet` command line interface were not affected.
+
 ## [1.1.0][1.1.0] - 2024-09-13
 
 * The `ChiselGraphIgnore` items now support simple globbing. For example to ignore all packages starting with `System.` in the graph, use the following syntax:
@@ -46,6 +58,7 @@ class Microsoft.Data.SqlClient default
 
 Initial release on NuGet
 
+[1.1.1]: https://github.com/0xced/Chisel/compare/1.1.0...1.1.1
 [1.1.0]: https://github.com/0xced/Chisel/compare/1.0.0...1.1.0
 [1.0.0]: https://github.com/0xced/Chisel/compare/1.0.0-rc.2...1.0.0
 [1.0.0-rc.2]: https://github.com/0xced/Chisel/compare/1.0.0-rc.1...1.0.0-rc.2
