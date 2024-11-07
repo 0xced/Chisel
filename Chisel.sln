@@ -10,7 +10,7 @@ ProjectSection(SolutionItems) = preProject
 	LICENSE = LICENSE
 	MAINTENANCE.md = MAINTENANCE.md
 	NuGet.config = NuGet.config
-	src\packages.lock.json = src\Chisel\packages.lock.json
+	src\Chisel\packages.lock.json = src\Chisel\packages.lock.json
 	README.md = README.md
 EndProjectSection
 EndProject
