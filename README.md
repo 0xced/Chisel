@@ -6,12 +6,12 @@
 
 [![NuGet](https://img.shields.io/nuget/v/Chisel.svg?label=NuGet&logo=NuGet)](https://www.nuget.org/packages/Chisel/) [![Continuous Integration](https://img.shields.io/github/actions/workflow/status/0xced/Chisel/continuous-integration.yml?branch=main&label=Continuous%20Integration&logo=GitHub)](https://github.com/0xced/Chisel/actions/workflows/continuous-integration.yml)
 
-Chisel was born because some database drivers can't resist taking dependencies on cloud libraries. The [MongoDB driver](https://www.nuget.org/packages/MongoDB.Driver) depends on the ASW SDK for authentication with Identity and Access Management (IAM) and [Microsoft's SQL Server driver](https://www.nuget.org/packages/Microsoft.Data.SqlClient) depends on the Azure SDK for authentication with the Microsoft identity platform (formerly Azure AD).
+Chisel was born because some database drivers can't resist taking dependencies on cloud libraries. The [MongoDB driver](https://www.nuget.org/packages/MongoDB.Driver) (version 2.*) depends on the ASW SDK for authentication with Identity and Access Management (IAM) and [Microsoft's SQL Server driver](https://www.nuget.org/packages/Microsoft.Data.SqlClient) depends on the Azure SDK for authentication with the Microsoft identity platform (formerly Azure AD).
 
 Users have asked for separate NuGet packages for both MongoDB ([issue #4635](https://jira.mongodb.org/browse/CSHARP-4635)) and SqlClient ([issue #1108](https://github.com/dotnet/SqlClient/issues/1108)) but as of `MongoDB.Driver` 2.* and `Microsoft.Data.SqlClient` 5.* the cloud dependencies are unavoidable, even if MongoDB or SQL Server is used on premises (where cloud authentication is obviously not needed).
 
 > [!NOTE]  
-> MongoDB should have the [AWS auth library in a separate package](https://jira.mongodb.org/browse/CSHARP-4911) for the 3.0 release of the driver.
+> Chisel is no longer needed starting with version 3.0.0 of the `MongoDB.Driver` package since AWS authentication has been moved into a new optional [MongoDB.Driver.Authentication.AWS](https://www.nuget.org/packages/MongoDB.Driver.Authentication.AWS) package. See [Version 3.0 Breaking Changes](https://www.mongodb.com/docs/drivers/csharp/current/upgrade/v3/#version-3.0-breaking-changes) for more information.
 
 Enter Chisel to remove those dependencies and save some precious megabytes.
 
@@ -81,7 +81,7 @@ Graphviz files can be visualized and shared online with [Edotor](https://edotor.
 > [!WARNING]  
 > While this technique has been sucessfully tested with the MongDB driver and the SQL Server driver, removing dependencies from a package might lead to exceptions at runtime. Make sure to properly test your application.
 
-## Removing the AWS SDK from `MongoDB.Driver`
+## Removing the AWS SDK from `MongoDB.Driver` version 2.*
 
 After adding the `Chisel` package to your project, tell it to remove the `AWSSDK.SecurityToken` dependency with the `ChiselPackage` property.
 
@@ -102,35 +102,33 @@ classDef removed fill:lightcoral,stroke:#A42A2A
 
 AWSSDK.SecurityToken/3.7.100.14 --> AWSSDK.Core/3.7.100.14
 DnsClient/1.6.1 --> Microsoft.Win32.Registry/5.0.0
-Microsoft.Extensions.Logging.Abstractions/8.0.1 --> Microsoft.Extensions.DependencyInjection.Abstractions/8.0.1
 Microsoft.Win32.Registry/5.0.0 --> System.Security.AccessControl/5.0.0
 Microsoft.Win32.Registry/5.0.0 --> System.Security.Principal.Windows/5.0.0
-MongoDB.Bson/2.28.0 --> System.Runtime.CompilerServices.Unsafe/5.0.0
-MongoDB.Driver/2.28.0{{MongoDB.Driver/2.28.0}} --> Microsoft.Extensions.Logging.Abstractions/8.0.1
-MongoDB.Driver/2.28.0{{MongoDB.Driver/2.28.0}} --> MongoDB.Bson/2.28.0
-MongoDB.Driver/2.28.0{{MongoDB.Driver/2.28.0}} --> MongoDB.Driver.Core/2.28.0
-MongoDB.Driver/2.28.0{{MongoDB.Driver/2.28.0}} --> MongoDB.Libmongocrypt/1.11.0
-MongoDB.Driver.Core/2.28.0 --> AWSSDK.SecurityToken/3.7.100.14
-MongoDB.Driver.Core/2.28.0 --> DnsClient/1.6.1
-MongoDB.Driver.Core/2.28.0 --> Microsoft.Extensions.Logging.Abstractions/8.0.1
-MongoDB.Driver.Core/2.28.0 --> MongoDB.Bson/2.28.0
-MongoDB.Driver.Core/2.28.0 --> MongoDB.Libmongocrypt/1.11.0
-MongoDB.Driver.Core/2.28.0 --> SharpCompress/0.30.1
-MongoDB.Driver.Core/2.28.0 --> Snappier/1.0.0
-MongoDB.Driver.Core/2.28.0 --> ZstdSharp.Port/0.7.3
+MongoDB.Bson/2.30.0 --> System.Runtime.CompilerServices.Unsafe/5.0.0
+MongoDB.Driver/2.30.0{{MongoDB.Driver/2.30.0}} --> Microsoft.Extensions.Logging.Abstractions/6.0.4
+MongoDB.Driver/2.30.0{{MongoDB.Driver/2.30.0}} --> MongoDB.Bson/2.30.0
+MongoDB.Driver/2.30.0{{MongoDB.Driver/2.30.0}} --> MongoDB.Driver.Core/2.30.0
+MongoDB.Driver/2.30.0{{MongoDB.Driver/2.30.0}} --> MongoDB.Libmongocrypt/1.12.0
+MongoDB.Driver.Core/2.30.0 --> AWSSDK.SecurityToken/3.7.100.14
+MongoDB.Driver.Core/2.30.0 --> DnsClient/1.6.1
+MongoDB.Driver.Core/2.30.0 --> Microsoft.Extensions.Logging.Abstractions/6.0.4
+MongoDB.Driver.Core/2.30.0 --> MongoDB.Bson/2.30.0
+MongoDB.Driver.Core/2.30.0 --> MongoDB.Libmongocrypt/1.12.0
+MongoDB.Driver.Core/2.30.0 --> SharpCompress/0.30.1
+MongoDB.Driver.Core/2.30.0 --> Snappier/1.0.0
+MongoDB.Driver.Core/2.30.0 --> ZstdSharp.Port/0.7.3
 System.Security.AccessControl/5.0.0 --> System.Security.Principal.Windows/5.0.0
 
 class AWSSDK.Core/3.7.100.14 removed
 class AWSSDK.SecurityToken/3.7.100.14 removed
 class DnsClient/1.6.1 default
-class Microsoft.Extensions.DependencyInjection.Abstractions/8.0.1 default
-class Microsoft.Extensions.Logging.Abstractions/8.0.1 default
+class Microsoft.Extensions.Logging.Abstractions/6.0.4 default
 class Microsoft.Win32.Registry/5.0.0 default
-class MongoDB.Bson/2.28.0 default
-class MongoDB.Driver/2.28.0 root
-class MongoDB.Driver/2.28.0 default
-class MongoDB.Driver.Core/2.28.0 default
-class MongoDB.Libmongocrypt/1.11.0 default
+class MongoDB.Bson/2.30.0 default
+class MongoDB.Driver/2.30.0 root
+class MongoDB.Driver/2.30.0 default
+class MongoDB.Driver.Core/2.30.0 default
+class MongoDB.Libmongocrypt/1.12.0 default
 class SharpCompress/0.30.1 default
 class Snappier/1.0.0 default
 class System.Runtime.CompilerServices.Unsafe/5.0.0 default
