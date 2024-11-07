@@ -13,7 +13,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Chisel" Version="1.1.0" PrivateAssets="all" />
+    <PackageReference Include="Chisel" Version="1.1.1" PrivateAssets="all" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="$(MicrosoftDataSqlClientVersion)" />
     <PackageReference Include="System.Memory.Data" Version="8.0.1" />
   </ItemGroup>
