@@ -76,7 +76,7 @@ internal static class SdkAssemblyResolver
             log($"Already loaded NuGet assembly from \"{appDomain?.FriendlyName}\" ({i}/{loadedAssemblies.Count}): {assembly} @ {assembly.Location}");
         }
 
-        var loadedDirectories = loadedAssemblies.Select(e => Path.GetDirectoryName(e.Location)).Distinct().ToList();
+        var loadedDirectories = loadedAssemblies.OrderBy(e => e.GetName().Name == "NuGet.ProjectModel" ? 0 : 1).Select(e => Path.GetDirectoryName(e.Location)).Distinct().ToList();
         foreach (var (directory, i) in loadedDirectories.Select((e, i) => (e, i + 1)))
         {
             nugetDirectories.Add(directory);
