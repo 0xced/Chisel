@@ -73,14 +73,14 @@ internal static class SdkAssemblyResolver
         var loadedAssemblies = appDomain?.GetAssemblies().Where(e => e.GetName().Name.StartsWith("NuGet.")).ToList() ?? [];
         foreach (var (assembly, i) in loadedAssemblies.Select((e, i) => (e, i + 1)))
         {
-            log($"Loaded NuGet assembly ({i}/{loadedAssemblies.Count}): {assembly} @ {assembly.Location}");
+            log($"Already loaded NuGet assembly from \"{appDomain?.FriendlyName}\" ({i}/{loadedAssemblies.Count}): {assembly} @ {assembly.Location}");
         }
 
         var loadedDirectories = loadedAssemblies.Select(e => Path.GetDirectoryName(e.Location)).Distinct().ToList();
         foreach (var (directory, i) in loadedDirectories.Select((e, i) => (e, i + 1)))
         {
             nugetDirectories.Add(directory);
-            log($"Loaded NuGet directory ({i}/{loadedDirectories.Count}): {directory}");
+            log($"NuGet directory from already loaded assembly ({i}/{loadedDirectories.Count}): {directory}");
         }
 
         if (nugetDirectories.Count > 0)
@@ -109,7 +109,7 @@ internal static class SdkAssemblyResolver
 
         foreach (var (directory, i) in nugetDirectories.Select((e, i) => (e, i + 1)))
         {
-            log($"NuGet directory ({i}/{nugetDirectories.Count}): {directory}");
+            log($"NuGet directory from SDK ({i}/{nugetDirectories.Count}): {directory}");
         }
 
         if (nugetDirectories.Count == 0)
@@ -159,7 +159,7 @@ internal static class SdkAssemblyResolver
         return dotnetSdkDirectory;
     }
 
-    private static void DebugLog(string message)
+    internal static void DebugLog(string message)
     {
         var debugFile = Environment.GetEnvironmentVariable("CHISEL_DEBUG_FILE");
         if (debugFile != null)

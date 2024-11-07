@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
-using NuGet.ProjectModel;
 
 namespace Chisel;
 
@@ -133,9 +132,7 @@ public class Chisel : Task
 
         try
         {
-            Log.LogMessage(MessageImportance.Low, $"Chisel is using NuGet.ProjectModel from {typeof(NuGet.ProjectModel.LockFile).Assembly.Location}");
-            Log.LogMessage(MessageImportance.Low, $"Chisel is using NuGet.LibraryModel from {typeof(NuGet.LibraryModel.Library).Assembly.Location}");
-            Log.LogMessage(MessageImportance.Low, $"Chisel is using NuGet.Versioning from {typeof(NuGet.Versioning.NuGetVersion).Assembly.Location}");
+            LogNuGetAssemblies();
 
             var graph = ProcessGraph();
 
@@ -154,9 +151,29 @@ public class Chisel : Task
         }
     }
 
+    private void LogNuGetAssemblies()
+    {
+        var assemblyDescriptions = new[]
+        {
+            ("NuGet.ProjectModel", typeof(NuGet.ProjectModel.LockFile)),
+            ("NuGet.LibraryModel", typeof(NuGet.LibraryModel.Library)),
+            ("NuGet.Versioning", typeof(NuGet.Versioning.NuGetVersion)),
+        };
+        foreach (var (assemblyName, assemblyType) in assemblyDescriptions)
+        {
+            var message = $"Chisel is using {assemblyName} from {assemblyType.Assembly.Location}";
+            SdkAssemblyResolver.DebugLog(message);
+            if (Environment.GetEnvironmentVariable("CHISEL_DEBUG_FILE") != null)
+            {
+                LogWarning("CHISEL000", message);
+            }
+            Log.LogMessage(MessageImportance.Low, message);
+        }
+    }
+
     private DependencyGraph ProcessGraph()
     {
-        var lockFile = new LockFileFormat().Read(ProjectAssetsFile);
+        var lockFile = new NuGet.ProjectModel.LockFileFormat().Read(ProjectAssetsFile);
         var copyLocalPackages = new HashSet<string>(RuntimeAssemblies.Select(NuGetPackageId).Concat(NativeLibraries.Select(NuGetPackageId)));
         var (packages, roots) = lockFile.ReadPackages(TargetFramework, RuntimeIdentifier, package => package.IsProjectReference || copyLocalPackages.Contains(package.Name));
         var graph = new DependencyGraph(packages, roots, GraphIgnores.Select(e => e.ItemSpec));
