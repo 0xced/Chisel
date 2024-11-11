@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="CliWrap" Version="3.6.7" />
-    <PackageReference Include="FluentAssertions" Version="6.12.1" />
+    <PackageReference Include="FluentAssertions" Version="6.12.2" />
     <PackageReference Include="GitHubActionsTestLogger" Version="2.4.1" PrivateAssets="all" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
     <PackageReference Include="NuGet.ProjectModel" Version="6.11.1" />
