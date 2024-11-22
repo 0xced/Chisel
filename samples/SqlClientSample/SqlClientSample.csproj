@@ -15,7 +15,7 @@
   <ItemGroup>
     <PackageReference Include="Chisel" Version="1.1.1" PrivateAssets="all" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="$(MicrosoftDataSqlClientVersion)" />
-    <PackageReference Include="System.Memory.Data" Version="8.0.1" />
+    <PackageReference Include="System.Memory.Data" Version="9.0.0" />
   </ItemGroup>
 
   <ItemGroup Condition="$([MSBuild]::VersionLessThan('$(MicrosoftDataSqlClientVersion)', '6.0'))">
