@@ -370,3 +370,11 @@ On real projects, the dependency graph may become huge. Adding packages to `Chis
   <ChiselGraphIgnore Include="Microsoft.Extensions.Hosting" />
 </ItemGroup>
 ```
+
+Globbing is supported since version 1.1.0. For example to ignore all packages starting with `System.` in the graph, use the following syntax:
+
+```xml
+<ItemGroup>
+  <ChiselGraphIgnore Include="System.*" />
+</ItemGroup>
+```
