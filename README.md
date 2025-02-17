@@ -143,7 +143,7 @@ As long as the [MONGODB-AWS authentication mechanism](https://www.mongodb.com/do
 
 ## Removing the Azure SDK from `Microsoft.Data.SqlClient`
 
-Getting rid of the Azure/Microsoft Identity bits requires defining three packages to remove plus an additional trick. In the previous example, `<ChiselPackage>` was used as an MSBuild property. Here, it's used as an MSBuild item (i.e. with the `Include` attribute) to specify multiple packages.
+Getting rid of the Azure/Microsoft Identity bits requires defining three packages to remove. In the previous example, `<ChiselPackage>` was used as an MSBuild property. Here, it's used as an MSBuild item (i.e. with the `Include` attribute) to specify multiple packages.
 
 ```xml
 <ItemGroup>
@@ -160,7 +160,6 @@ graph LR
 
 classDef root stroke-width:4px
 classDef default fill:aquamarine,stroke:#009061,color:#333333
-classDef project fill:skyblue,stroke:#05587C
 classDef removed fill:lightcoral,stroke:#A42A2A
 
 Azure.Core --> Microsoft.Bcl.AsyncInterfaces
@@ -175,25 +174,32 @@ Azure.Identity --> Microsoft.Identity.Client.Extensions.Msal
 Azure.Identity --> System.Security.Cryptography.ProtectedData
 Azure.Identity --> System.Text.Json
 Microsoft.Data.SqlClient{{Microsoft.Data.SqlClient}} --> Azure.Identity
-Microsoft.Data.SqlClient{{Microsoft.Data.SqlClient}} --> Microsoft.Identity.Client
+Microsoft.Data.SqlClient{{Microsoft.Data.SqlClient}} --> Microsoft.Bcl.Cryptography
+Microsoft.Data.SqlClient{{Microsoft.Data.SqlClient}} --> Microsoft.Extensions.Caching.Memory
 Microsoft.Data.SqlClient{{Microsoft.Data.SqlClient}} --> Microsoft.IdentityModel.JsonWebTokens
 Microsoft.Data.SqlClient{{Microsoft.Data.SqlClient}} --> Microsoft.IdentityModel.Protocols.OpenIdConnect
 Microsoft.Data.SqlClient{{Microsoft.Data.SqlClient}} --> Microsoft.SqlServer.Server
 Microsoft.Data.SqlClient{{Microsoft.Data.SqlClient}} --> System.Configuration.ConfigurationManager
-Microsoft.Data.SqlClient{{Microsoft.Data.SqlClient}} --> System.Runtime.Caching
-Microsoft.Identity.Client{{Microsoft.Identity.Client}}
+Microsoft.Data.SqlClient{{Microsoft.Data.SqlClient}} --> System.Security.Cryptography.Pkcs
+Microsoft.Extensions.Caching.Abstractions --> Microsoft.Extensions.Primitives
+Microsoft.Extensions.Caching.Memory --> Microsoft.Extensions.Caching.Abstractions
+Microsoft.Extensions.Caching.Memory --> Microsoft.Extensions.DependencyInjection.Abstractions
+Microsoft.Extensions.Caching.Memory --> Microsoft.Extensions.Logging.Abstractions
+Microsoft.Extensions.Caching.Memory --> Microsoft.Extensions.Options
+Microsoft.Extensions.Caching.Memory --> Microsoft.Extensions.Primitives
+Microsoft.Extensions.Logging.Abstractions --> Microsoft.Extensions.DependencyInjection.Abstractions
+Microsoft.Extensions.Options --> Microsoft.Extensions.DependencyInjection.Abstractions
+Microsoft.Extensions.Options --> Microsoft.Extensions.Primitives
+Microsoft.Identity.Client --> Microsoft.IdentityModel.Abstractions
+Microsoft.Identity.Client --> System.Diagnostics.DiagnosticSource
 Microsoft.Identity.Client.Extensions.Msal --> Microsoft.Identity.Client
 Microsoft.Identity.Client.Extensions.Msal --> System.Security.Cryptography.ProtectedData
 Microsoft.IdentityModel.JsonWebTokens --> Microsoft.IdentityModel.Tokens
-Microsoft.IdentityModel.JsonWebTokens --> System.Text.Encodings.Web
-Microsoft.IdentityModel.JsonWebTokens --> System.Text.Json
 Microsoft.IdentityModel.Logging --> Microsoft.IdentityModel.Abstractions
-Microsoft.IdentityModel.Protocols --> Microsoft.IdentityModel.Logging
 Microsoft.IdentityModel.Protocols --> Microsoft.IdentityModel.Tokens
 Microsoft.IdentityModel.Protocols.OpenIdConnect --> Microsoft.IdentityModel.Protocols
 Microsoft.IdentityModel.Protocols.OpenIdConnect --> System.IdentityModel.Tokens.Jwt
 Microsoft.IdentityModel.Tokens --> Microsoft.IdentityModel.Logging
-Microsoft.IdentityModel.Tokens --> System.Security.Cryptography.Cng
 System.ClientModel --> System.Memory.Data
 System.ClientModel --> System.Text.Json
 System.Configuration.ConfigurationManager --> System.Diagnostics.EventLog
@@ -203,15 +209,20 @@ System.IdentityModel.Tokens.Jwt --> Microsoft.IdentityModel.JsonWebTokens
 System.IdentityModel.Tokens.Jwt --> Microsoft.IdentityModel.Tokens
 System.Memory.Data --> System.Text.Encodings.Web
 System.Memory.Data --> System.Text.Json
-System.Runtime.Caching --> System.Configuration.ConfigurationManager
 
 class Azure.Core removed
 class Azure.Identity removed
 class Microsoft.Bcl.AsyncInterfaces removed
+class Microsoft.Bcl.Cryptography default
 class Microsoft.Data.SqlClient root
 class Microsoft.Data.SqlClient default
-class Microsoft.Identity.Client root
-class Microsoft.Identity.Client project
+class Microsoft.Extensions.Caching.Abstractions default
+class Microsoft.Extensions.Caching.Memory default
+class Microsoft.Extensions.DependencyInjection.Abstractions default
+class Microsoft.Extensions.Logging.Abstractions default
+class Microsoft.Extensions.Options default
+class Microsoft.Extensions.Primitives default
+class Microsoft.Identity.Client removed
 class Microsoft.Identity.Client.Extensions.Msal removed
 class Microsoft.IdentityModel.Abstractions removed
 class Microsoft.IdentityModel.JsonWebTokens removed
@@ -226,71 +237,22 @@ class System.Diagnostics.DiagnosticSource removed
 class System.Diagnostics.EventLog default
 class System.IdentityModel.Tokens.Jwt removed
 class System.Memory.Data removed
-class System.Runtime.Caching default
 class System.Runtime.CompilerServices.Unsafe removed
-class System.Security.Cryptography.Cng removed
+class System.Security.Cryptography.Pkcs default
 class System.Security.Cryptography.ProtectedData default
 class System.Text.Encodings.Web removed
 class System.Text.Json removed
 ```
 
-Notice how `Microsoft.Identity.Client` is in blue (meaning it's a project reference instead of a package reference). That's because the `Microsoft.Identity.Client` package can't be easily removed, else the following exception would be thrown at runtime when opening a connection.
+For `Microsoft.Data.SqlClient` prior to version 6, an additional trick is required to get rid of the `Microsoft.Identity.Client` dependency. See a [previous version](https://github.com/0xced/Chisel/blob/1.1.1/README.md#removing-the-azure-sdk-from-microsoftdatasqlclient) of the README for more information.
 
-```
-System.TypeInitializationException: The type initializer for 'Microsoft.Data.SqlClient.SqlAuthenticationProviderManager' threw an exception.
- ---> System.IO.FileNotFoundException: Could not load file or assembly 'Microsoft.Identity.Client, Version=4.56.0.0, Culture=neutral, PublicKeyToken=0a613f4dd989e8ae'. The system cannot find the file specified.
-```
-
-But it's possible to workaround this problem! Since the `Microsoft.Identity.Client` dll is required, we can create one with the absolute minimum required for the `SqlAuthenticationProviderManager` class to be happy.
-
-1. Create a project named `Microsoft.Identity.Client` with the following content (also available in the `samples` directory):
-
-```xml
-<Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <DebugType>none</DebugType>
-    <Version>4.56.0</Version>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>$(BaseIntermediateOutputPath)MSAL.snk</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
-
-  <Target Name="DownloadMsalKey" BeforeTargets="ResolveKeySource" Condition="!Exists($(AssemblyOriginatorKeyFile))">
-    <DownloadFile SourceUrl="https://github.com/AzureAD/microsoft-authentication-library-for-dotnet/raw/$(Version)/build/MSAL.snk" DestinationFolder="$(BaseIntermediateOutputPath)" />
-  </Target>
-
-</Project>
-```
-
-2. Add a single C# file with the following content:
-
-```csharp
-namespace Microsoft.Identity.Client
-{
-    public class DeviceCodeResult
-    {
-    }
-}
-```
-
-3. Add a reference in your project:
-
-```xml
-<ItemGroup>
-  <ProjectReference Include="../Microsoft.Identity.Client/Microsoft.Identity.Client.csproj" />
-</ItemGroup>
-```
-
-And that's enough for the dotnet build system to pick the **project** reference instead of the **package** reference of the same name, thus reducing the size of `Microsoft.Identity.Client.dll` from 1 MB to 5 KB.
-
-On macOS, removing the Azure authentication libraries and its dependencies reduces the size of the dlls from 6 MB down to 2.8 MB. In other words, the Azure librarires are responsible fore more than 50% of the size of the `Microsoft.Data.SqlClient` package.
+On macOS, removing the Azure authentication libraries and its dependencies reduces the size of the dlls from 5.6 MiB down to 3.1 MiB. In other words, the Azure librarires are responsible fore almost 50% of the size of the `Microsoft.Data.SqlClient` (6.0.1) package.
 
 ```mermaid
 %%{ init: { 'theme': 'base', 'themeVariables': { 'pie1': 'lightcoral', 'pie2': 'aquamarine' } } }%%
 pie title Microsoft.Data.SqlClient composition
-  "Azure/authentication libraries" : 3.217
-  "SqlClient core libraries" : 2.764
+  "Azure/authentication libraries" : 2544
+  "SqlClient core libraries" : 3170
 ```
 
 Have a look at the `SqlClientSample` project in the `samples` directory for a concrete example.
