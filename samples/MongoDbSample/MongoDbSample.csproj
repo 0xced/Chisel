@@ -9,9 +9,9 @@
 
   <ItemGroup>
     <PackageReference Include="Chisel" Version="1.1.1" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.0" />
-    <PackageReference Include="MongoDB.Driver" Version="2.30.0" />
-    <PackageReference Include="Testcontainers.MongoDb" Version="4.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.2" />
+    <PackageReference Include="MongoDB.Driver" Version="[2.30.0,3.0.0)" />
+    <PackageReference Include="Testcontainers.MongoDb" Version="4.2.0" />
   </ItemGroup>
 
   <PropertyGroup>

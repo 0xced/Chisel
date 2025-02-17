@@ -9,7 +9,6 @@ using FluentAssertions;
 using FluentAssertions.Execution;
 using VerifyXunit;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace Chisel.Tests;
 
@@ -31,15 +30,23 @@ public sealed class ChiseledAppTests(ITestOutputHelper outputHelper, TestApp tes
         var platformDlls = OperatingSystem.IsWindows() ? ["Microsoft.Data.SqlClient.SNI.dll", "System.Diagnostics.EventLog.Messages.dll"] : Array.Empty<string>();
         var expectedDlls = platformDlls.Concat(
         [
+            "Microsoft.Bcl.Cryptography.dll",
             "Microsoft.Data.SqlClient.dll",
+            "Microsoft.Extensions.Caching.Abstractions.dll",
+            "Microsoft.Extensions.Caching.Memory.dll",
+            "Microsoft.Extensions.DependencyInjection.Abstractions.dll",
             "Microsoft.Extensions.DependencyModel.dll",
-            "Microsoft.Identity.Client.dll",
-            "Microsoft.IdentityModel.Abstractions.dll",
+            "Microsoft.Extensions.Logging.Abstractions.dll",
+            "Microsoft.Extensions.Options.dll",
+            "Microsoft.Extensions.Primitives.dll",
             "Microsoft.SqlServer.Server.dll",
             "System.Configuration.ConfigurationManager.dll",
             "System.Diagnostics.EventLog.dll",
-            "System.Runtime.Caching.dll",
+            "System.IO.Pipelines.dll",
+            "System.Security.Cryptography.Pkcs.dll",
             "System.Security.Cryptography.ProtectedData.dll",
+            "System.Text.Encodings.Web.dll",
+            "System.Text.Json.dll",
             "TestApp.dll",
         ]).ToHashSet();
         actualDlls.Except(expectedDlls).Should().BeEmpty();

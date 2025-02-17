@@ -12,21 +12,17 @@ using CliWrap.Exceptions;
 using FluentAssertions;
 using NuGet.Frameworks;
 using Xunit;
-using Xunit.Abstractions;
-using Xunit.Sdk;
 
 namespace Chisel.Tests;
 
-public class TestApp : IAsyncLifetime
+public sealed class TestApp : IAsyncLifetime
 {
-    private readonly IMessageSink _messageSink;
     private readonly DirectoryInfo _workingDirectory;
     private readonly Dictionary<PublishMode, FileInfo> _executables;
     private string _packageVersion = "N/A";
 
-    public TestApp(IMessageSink messageSink)
+    public TestApp()
     {
-        _messageSink = messageSink;
         var tfm = NuGetFramework.Parse(typeof(TestApp).Assembly.GetCustomAttribute<TargetFrameworkAttribute>()?.FrameworkName ?? throw new InvalidOperationException("TargetFrameworkAttribute not found"));
         _workingDirectory = GetDirectory("tests", $"TestApp-{tfm}");
         _workingDirectory.Create();
@@ -37,12 +33,12 @@ public class TestApp : IAsyncLifetime
         _executables = new Dictionary<PublishMode, FileInfo>();
     }
 
-    async Task IAsyncLifetime.InitializeAsync()
+    async ValueTask IAsyncLifetime.InitializeAsync()
     {
         await CreateTestAppAsync();
     }
 
-    Task IAsyncLifetime.DisposeAsync()
+    ValueTask IAsyncDisposable.DisposeAsync()
     {
         if (Environment.GetEnvironmentVariable("ContinuousIntegrationBuild") == "true")
         {
@@ -61,9 +57,9 @@ public class TestApp : IAsyncLifetime
         {
             // This sometimes happen on the Windows runner in GitHub actions
             // > [Test Class Cleanup Failure (Chisel.Tests.ChiseledAppTests)]: System.UnauthorizedAccessException : Access to the path 'TestApp.dll' is denied.
-            _messageSink.OnMessage(new DiagnosticMessage($"Deleting {_workingDirectory} failed: {exception}"));
+            TestContext.Current.SendDiagnosticMessage($"Deleting {_workingDirectory} failed: {exception}");
         }
-        return Task.CompletedTask;
+        return ValueTask.CompletedTask;
     }
 
     public string GetExecutablePath(PublishMode publishMode) => _executables[publishMode].FullName;
@@ -154,15 +150,15 @@ public class TestApp : IAsyncLifetime
             .WithStandardOutputPipe(PipeTarget.ToDelegate(line =>
             {
                 outBuilder.AppendLine(line);
-                _messageSink.OnMessage(new DiagnosticMessage($"==> out: {line}"));
+                TestContext.Current.SendDiagnosticMessage($"==> out: {line}");
             }))
             .WithStandardErrorPipe(PipeTarget.ToDelegate(line =>
             {
                 errBuilder.AppendLine(line);
-                _messageSink.OnMessage(new DiagnosticMessage($"==> err: {line}"));
+                TestContext.Current.SendDiagnosticMessage($"==> err: {line}");
             }));
 
-        _messageSink.OnMessage(new DiagnosticMessage($"📁 {workingDirectory.FullName} 🛠️ {command}"));
+        TestContext.Current.SendDiagnosticMessage($"📁 {workingDirectory.FullName} 🛠️ {command}");
 
         var result = await command.ExecuteAsync();
         if (result.ExitCode != 0)
