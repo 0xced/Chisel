@@ -29,7 +29,7 @@ internal static class LockFileExtensions
         var packages = target.Libraries.Where(e => e.Name != null && e.Version != null).Select(CreatePackage).Where(e => filter == null || filter(e)).ToDictionary(e => e.Name, StringComparer.OrdinalIgnoreCase);
         var frameworkName = framework.FrameworkName.GetShortFolderName();
         var projectDependencies = lockFile.ProjectFileDependencyGroups.Where(e => e.FrameworkName == frameworkName).SelectMany(e => e.Dependencies).Select(ParseProjectFileDependency);
-        var packageDependencies = framework.Dependencies.Select(e => e.Name);
+        var packageDependencies = framework.GetDependencies().Select(e => e.Name);
         var roots = new HashSet<Package>(projectDependencies.Concat(packageDependencies).Where(e => packages.ContainsKey(e)).Select(e => packages[e]));
         foreach (var root in roots)
         {
@@ -55,5 +55,18 @@ internal static class LockFileExtensions
         // See https://github.com/NuGet/NuGet.Client/blob/6.9.1.3/src/NuGet.Core/NuGet.LibraryModel/LibraryRange.cs#L76-L115
         var spaceIndex = dependency.IndexOf(' ');
         return spaceIndex != -1 ? dependency[..spaceIndex] : dependency;
+    }
+
+    private static IEnumerable<LibraryDependency> GetDependencies(this TargetFrameworkInformation targetFrameworkInformation)
+    {
+        // Can't use targetFrameworkInformation.Dependencies because NuGet.ProjectModel 6.13.1 changed the `Dependencies` property type
+        // from IList<LibraryDependency> to ImmutableArray<LibraryDependency>, leading to this exception (use the .NET SDK 9.0.200 with Chisel 1.1.1 to reproduce)
+        // > Chisel.targets(12,5): Error  : MissingMethodException: Method not found: 'System.Collections.Generic.IList`1<NuGet.LibraryModel.LibraryDependency> NuGet.ProjectModel.TargetFrameworkInformation.get_Dependencies()'.
+        // > at Chisel.LockFileExtensions.ReadPackages(LockFile lockFile, String tfm, String rid, Predicate`1 filter)
+        // > at Chisel.Chisel.ProcessGraph() in /_/src/Chisel/Chisel.cs:line 178
+        // > at Chisel.Chisel.Execute() in /_/src/Chisel/Chisel.cs:line 137
+        var type = targetFrameworkInformation.GetType();
+        var dependenciesProperty = type.GetProperty(nameof(targetFrameworkInformation.Dependencies)) ?? throw new MissingMemberException(type.FullName, nameof(targetFrameworkInformation.Dependencies));
+        return (IEnumerable<LibraryDependency>)dependenciesProperty.GetValue(targetFrameworkInformation);
     }
 }
