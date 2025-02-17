@@ -1,7 +1,8 @@
 <Project>
 
   <PropertyGroup>
-    <ChiselEnabled Condition="$(ChiselEnabled) == ''">true</ChiselEnabled>
+    <ChiselEnabled Condition="$(ChiselEnabled) == '' AND $(DesignTimeBuild) == 'true'">false</ChiselEnabled>
+    <ChiselEnabled Condition="$(ChiselEnabled) == '' AND $(DesignTimeBuild) != 'true'">true</ChiselEnabled>
     <ChiselGraphName Condition="$(ChiselGraphName) == ''">$(MSBuildProjectName).Chisel.mermaid</ChiselGraphName>
     <ChiselGraphDirection Condition="$(ChiselGraphDirection) == ''">LeftToRight</ChiselGraphDirection>
     <ChiselGraphIncludeVersions Condition="$(ChiselGraphIncludeVersions) == ''">false</ChiselGraphIncludeVersions>

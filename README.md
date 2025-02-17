@@ -301,7 +301,7 @@ Here are all the MSBuild properties and items supported by Chisel.
 
 ### `ChiselEnabled`
 
-defaults to `true`
+defaults to `true` for standard builds and `false` for [design-time builds](https://github.com/dotnet/project-system/blob/main/docs/design-time-builds.md)
 
 In order to completely disable Chisel, set the `ChiselEnabled` property to `false`. This can be useful for building on the command line with `dotnet build -p:ChiselEnabled=false` for example.
 
