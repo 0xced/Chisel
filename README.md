@@ -8,7 +8,7 @@
 
 Chisel was born because some database drivers can't resist taking dependencies on cloud libraries. The [MongoDB driver](https://www.nuget.org/packages/MongoDB.Driver) (version 2.*) depends on the ASW SDK for authentication with Identity and Access Management (IAM) and [Microsoft's SQL Server driver](https://www.nuget.org/packages/Microsoft.Data.SqlClient) depends on the Azure SDK for authentication with the Microsoft identity platform (formerly Azure AD).
 
-Users have asked for separate NuGet packages for both MongoDB ([issue #4635](https://jira.mongodb.org/browse/CSHARP-4635)) and SqlClient ([issue #1108](https://github.com/dotnet/SqlClient/issues/1108)) but as of `MongoDB.Driver` 2.* and `Microsoft.Data.SqlClient` 5.* the cloud dependencies are unavoidable, even if MongoDB or SQL Server is used on premises (where cloud authentication is obviously not needed).
+Users have asked for separate NuGet packages for both MongoDB ([issue #4635](https://jira.mongodb.org/browse/CSHARP-4635)) and SqlClient ([issue #1108](https://github.com/dotnet/SqlClient/issues/1108)) but as of `MongoDB.Driver` 2.* and `Microsoft.Data.SqlClient` 6.* the cloud dependencies are unavoidable, even if MongoDB or SQL Server is used on premises (where cloud authentication is obviously not needed).
 
 > [!NOTE]  
 > Chisel is no longer needed starting with version 3.0.0 of the `MongoDB.Driver` package since AWS authentication has been moved into a new optional [MongoDB.Driver.Authentication.AWS](https://www.nuget.org/packages/MongoDB.Driver.Authentication.AWS) package. See [Version 3.0 Breaking Changes](https://www.mongodb.com/docs/drivers/csharp/current/upgrade/v3/#version-3.0-breaking-changes) for more information.
@@ -141,7 +141,7 @@ Now, both `AWSSDK.Core.dll` and `AWSSDK.SecurityToken.dll` have disappeared from
 
 As long as the [MONGODB-AWS authentication mechanism](https://www.mongodb.com/docs/drivers/csharp/current/fundamentals/authentication/#std-label-csharp-mongodb-aws) is not used everything will work fine. See the `MongoDbSample` project in the `samples` directory.
 
-## Removing the Azure SDK from `Microsoft.Data.SqlClient`
+## Removing the Azure SDK from `Microsoft.Data.SqlClient` version 6.*
 
 Getting rid of the Azure/Microsoft Identity bits requires defining three packages to remove. In the previous example, `<ChiselPackage>` was used as an MSBuild property. Here, it's used as an MSBuild item (i.e. with the `Include` attribute) to specify multiple packages.
 
