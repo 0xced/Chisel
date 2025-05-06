@@ -25,6 +25,11 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: 🏎 Optimize Windows runner
+        if: matrix.os == 'windows-latest'
+        run: |
+          echo "DOTNET_INSTALL_DIR=D:\dotnet" >> $env:GITHUB_ENV
+          echo "NUGET_PACKAGES=D:\nuget" >> $env:GITHUB_ENV
       - name: 🧑‍🔧 Install .NET SDK
         uses: actions/setup-dotnet@v4
       - name: ℹ️ Show .NET info
