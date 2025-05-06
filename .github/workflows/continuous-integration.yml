@@ -48,12 +48,6 @@ jobs:
         with:
           name: Received-${{ runner.os }}
           path: "**/*.received.*"
-      - name: 📤 Upload test results
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: TestResults (${{ runner.os }})
-          path: TestResults-*.html
       - name: 📊 Test Report
         uses: dorny/test-reporter@v1
         if: always()
