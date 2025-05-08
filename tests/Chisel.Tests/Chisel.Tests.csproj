@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AwesomeAssertions" Version="8.1.0" />
+    <PackageReference Include="AwesomeAssertions" Version="8.2.0" />
     <PackageReference Include="CliWrap" Version="3.8.2" />
     <PackageReference Include="Microsoft.Testing.Extensions.TrxReport" Version="1.6.3" />
     <PackageReference Include="NuGet.ProjectModel" Version="6.13.2" />
