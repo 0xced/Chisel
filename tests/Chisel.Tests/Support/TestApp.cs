@@ -7,9 +7,9 @@ using System.Runtime.CompilerServices;
 using System.Runtime.Versioning;
 using System.Text;
 using System.Threading.Tasks;
+using AwesomeAssertions;
 using CliWrap;
 using CliWrap.Exceptions;
-using FluentAssertions;
 using NuGet.Frameworks;
 using Xunit;
 

@@ -2,7 +2,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using FluentAssertions;
+using AwesomeAssertions;
 using NuGet.ProjectModel;
 using NuGet.Versioning;
 using Xunit;

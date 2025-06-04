@@ -3,10 +3,10 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AwesomeAssertions;
+using AwesomeAssertions.Execution;
 using CliWrap;
 using CliWrap.Exceptions;
-using FluentAssertions;
-using FluentAssertions.Execution;
 using VerifyXunit;
 using Xunit;
 
