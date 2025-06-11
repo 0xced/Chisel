@@ -67,6 +67,6 @@ internal static class LockFileExtensions
         // > at Chisel.Chisel.Execute() in /_/src/Chisel/Chisel.cs:line 137
         var type = targetFrameworkInformation.GetType();
         var dependenciesProperty = type.GetProperty(nameof(targetFrameworkInformation.Dependencies)) ?? throw new MissingMemberException(type.FullName, nameof(targetFrameworkInformation.Dependencies));
-        return (IEnumerable<LibraryDependency>)dependenciesProperty.GetValue(targetFrameworkInformation);
+        return (IEnumerable<LibraryDependency>)(dependenciesProperty.GetValue(targetFrameworkInformation) ?? (IEnumerable<LibraryDependency>)[]);
     }
 }
