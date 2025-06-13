@@ -41,7 +41,7 @@ internal sealed class GraphvizWriter(TextWriter writer) : GraphWriter(writer)
             _ => package.IsProjectReference ? options.Color.Project : (Color?)null,
         };
 
-        if (package.IsRoot || color.HasValue)
+        if (package.IsRoot || color.HasValue || options.IncludeLinks)
         {
             Writer.Write(" [");
             if (package.IsRoot)
@@ -55,6 +55,14 @@ internal sealed class GraphvizWriter(TextWriter writer) : GraphWriter(writer)
                     Writer.Write(',');
                 }
                 Writer.Write($" {Color(color.Value)}");
+            }
+            if (options.IncludeLinks)
+            {
+                if (package.IsRoot || color.HasValue)
+                {
+                    Writer.Write(',');
+                }
+                Writer.Write($" href=\"https://www.nuget.org/packages/{package.Name}/{package.Version}\"");
             }
             Writer.Write(" ]");
         }

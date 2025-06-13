@@ -20,6 +20,7 @@
           NativeLibraries="@(NativeCopyLocalItems)"
           GraphName="$(ChiselGraphName)"
           GraphDirection="$(ChiselGraphDirection)"
+          GraphIncludeLinks="$(ChiselGraphIncludeLinks)"
           GraphIncludeVersions="$(ChiselGraphIncludeVersions)"
           GraphWriteIgnoredPackages="$(ChiselGraphWriteIgnoredPackages)"
           GraphIgnores="@(ChiselGraphIgnore)"

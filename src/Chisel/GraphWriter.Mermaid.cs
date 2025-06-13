@@ -47,9 +47,10 @@ internal sealed class MermaidWriter(TextWriter writer) : GraphWriter(writer)
 
     protected override void WriteNode(Package package, GraphOptions options)
     {
+        var packageId = GetPackageId(package, options);
         if (package.IsRoot)
         {
-            Writer.WriteLine($"class {GetPackageId(package, options)} root");
+            Writer.WriteLine($"class {packageId} root");
         }
         var className = package.State switch
         {
@@ -57,7 +58,11 @@ internal sealed class MermaidWriter(TextWriter writer) : GraphWriter(writer)
             PackageState.Remove => "removed",
             _ => package.IsProjectReference ? "project" : "default",
         };
-        Writer.WriteLine($"class {GetPackageId(package, options)} {className}");
+        Writer.WriteLine($"class {packageId} {className}");
+        if (options.IncludeLinks)
+        {
+            Writer.WriteLine($"click {packageId} \"https://www.nuget.org/packages/{package.Name}/{package.Version}\" \"{package.Name} {package.Version}\"");
+        }
     }
 
     protected override void WriteEdge(Package package, Package dependency, GraphOptions options)

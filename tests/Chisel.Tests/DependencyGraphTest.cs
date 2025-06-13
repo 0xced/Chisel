@@ -86,7 +86,7 @@ public class DependencyGraphTest
         var (removed, notFound, removedRoots) = graph.Remove([ "MongoDB.Driver", "AWSSDK.SecurityToken", "NonExistentPackage" ]);
         await using var writer = new StringWriter();
         var graphWriter = format == "graphviz" ? GraphWriter.Graphviz(writer) : GraphWriter.Mermaid(writer);
-        graphWriter.Write(graph, new GraphOptions { Direction = GraphDirection.LeftToRight, IncludeVersions = false, WriteIgnoredPackages = writeIgnoredPackages });
+        graphWriter.Write(graph, new GraphOptions { Direction = GraphDirection.LeftToRight, IncludeLinks = false, IncludeVersions = false, WriteIgnoredPackages = writeIgnoredPackages });
 
         removed.Should().BeEquivalentTo("AWSSDK.SecurityToken", "AWSSDK.Core");
         notFound.Should().BeEquivalentTo("NonExistentPackage");
@@ -107,7 +107,7 @@ public class DependencyGraphTest
         await using var writer = new StringWriter();
 
         var graphWriter = format == "graphviz" ? GraphWriter.Graphviz(writer) : GraphWriter.Mermaid(writer);
-        graphWriter.Write(graph, new GraphOptions { Direction = GraphDirection.LeftToRight, IncludeVersions = true, WriteIgnoredPackages = false });
+        graphWriter.Write(graph, new GraphOptions { Direction = GraphDirection.LeftToRight, IncludeLinks = false, IncludeVersions = true, WriteIgnoredPackages = false });
 
         removed.Should().BeEquivalentTo([
             "Azure.Core",
@@ -135,9 +135,8 @@ public class DependencyGraphTest
     }
 
     [Theory]
-    [InlineData("graphviz")]
-    [InlineData("mermaid")]
-    public async Task PollyGraphIgnoreGlob(string format)
+    [CombinatorialData]
+    public async Task PollyGraphIgnoreGlob(bool includeLinks, [CombinatorialValues("graphviz", "mermaid")] string format)
     {
         var lockFile = new LockFileFormat().Read(GetAssetsPath("PollyGraph.json"));
         var (packages, roots) = lockFile.ReadPackages(tfm: "netstandard2.0", rid: "");
@@ -145,9 +144,9 @@ public class DependencyGraphTest
         await using var writer = new StringWriter();
 
         var graphWriter = format == "graphviz" ? GraphWriter.Graphviz(writer) : GraphWriter.Mermaid(writer);
-        graphWriter.Write(graph, new GraphOptions { Direction = GraphDirection.LeftToRight, IncludeVersions = true, WriteIgnoredPackages = false });
+        graphWriter.Write(graph, new GraphOptions { Direction = GraphDirection.LeftToRight, IncludeLinks = includeLinks, IncludeVersions = true, WriteIgnoredPackages = false });
 
-        await Verify(writer.ToString(), format == "graphviz" ? "gv" : "mmd").UseTextForParameters(format);
+        await Verify(writer.ToString(), format == "graphviz" ? "gv" : "mmd").UseParameters(includeLinks, format);
     }
 
     [Fact]

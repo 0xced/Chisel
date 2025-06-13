@@ -76,6 +76,11 @@ public class Chisel : Task
     public string GraphDirection { get; set; } = nameof(global::Chisel.GraphDirection.LeftToRight);
 
     /// <summary>
+    /// Include links to nuget.org for all dependencies in the generated dependency graph file.
+    /// </summary>
+    public bool GraphIncludeLinks { get; set; }
+
+    /// <summary>
     /// Include the version numbers in the generated dependency graph file.
     /// </summary>
     public bool GraphIncludeVersions { get; set; }
@@ -260,6 +265,7 @@ public class Chisel : Task
         return new GraphOptions
         {
             Direction = direction,
+            IncludeLinks = GraphIncludeLinks,
             IncludeVersions = GraphIncludeVersions,
             WriteIgnoredPackages = GraphWriteIgnoredPackages,
         };

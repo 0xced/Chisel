@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased][Unreleased]
+
+* All nodes of the graph now contains clickable links to their corresponding nuget.org page. This new behavior can be disabled by setting the `ChiselGraphIncludeLinks` MSBuild property to `false`. See the [ChiselGraphIncludeLinks](https://github.com/0xced/Chisel#chiselgraphincludelinks) documentation in the README for more information.
+
 ## [1.1.2][1.1.2] - 2025-02-17
 
 * Chisel is now disabled by default during [design-time builds](https://github.com/dotnet/project-system/blob/main/docs/design-time-builds.md).
@@ -69,6 +73,7 @@ class Microsoft.Data.SqlClient default
 
 Initial release on NuGet
 
+[Unreleased]: https://github.com/0xced/Chisel/compare/1.1.2...HEAD
 [1.1.2]: https://github.com/0xced/Chisel/compare/1.1.1...1.1.2
 [1.1.1]: https://github.com/0xced/Chisel/compare/1.1.0...1.1.1
 [1.1.0]: https://github.com/0xced/Chisel/compare/1.0.0...1.1.0

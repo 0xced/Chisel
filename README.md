@@ -301,6 +301,29 @@ defaults to `LeftToRight`
 
 This defines how the dependency graph is laid out. Possible values are `LeftToRight` and `TopToBottom`. Except for shallow graphs, left to right usually produces a more readable graph.
 
+### `ChiselGraphIncludeLinks`
+
+defaults to `true`
+
+Since version 1.2.0, all nodes of the graph contains clickable links to their corresponding nuget.org page.
+
+For example, clicking on the `Npgsql` box below opens https://www.nuget.org/packages/Npgsql/9.0.3
+
+```mermaid
+graph LR
+Npgsql.EntityFrameworkCore.PostgreSQL --> Npgsql
+click Npgsql.EntityFrameworkCore.PostgreSQL "https://www.nuget.org/packages/Npgsql.EntityFrameworkCore.PostgreSQL/9.0.4" "Npgsql.EntityFrameworkCore.PostgreSQL 9.0.4"
+click Npgsql "https://www.nuget.org/packages/Npgsql/9.0.3" "Npgsql 9.0.3"
+```
+
+To disable links, set the `ChiselGraphIncludeLinks` property to `false`.
+
+```xml
+<PropertyGroup>
+  <ChiselGraphIncludeLinks>false</ChiselGraphIncludeLinks>
+</PropertyGroup>
+```
+
 ### `ChiselGraphIncludeVersions`
 
 defaults to `false`
