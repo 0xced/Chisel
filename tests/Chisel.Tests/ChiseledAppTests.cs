@@ -19,10 +19,8 @@ public sealed class ChiseledAppTests(ITestOutputHelper outputHelper, TestApp tes
 
     public void Dispose() => _scope.Dispose();
 
-    public static readonly TheoryData<PublishMode> PublishModeData = new(Enum.GetValues<PublishMode>());
-
     [Theory]
-    [MemberData(nameof(PublishModeData))]
+    [CombinatorialData]
     public async Task RunTestApp(PublishMode publishMode)
     {
         var (stdOut, stdErr) = await RunTestAppAsync(publishMode);
