@@ -27,7 +27,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.2" />
-    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="9.0.5" />
+    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="9.0.6" />
   </ItemGroup>
 
 </Project>
