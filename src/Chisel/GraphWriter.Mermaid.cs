@@ -1,9 +1,12 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 
 namespace Chisel;
 
 internal sealed class MermaidWriter(TextWriter writer) : GraphWriter(writer)
 {
+    private readonly HashSet<string> _rootEdges = [];
+
     public override string FormatName => "Mermaid";
 
     private static string ClassDef(string name, Color color)
@@ -68,7 +71,7 @@ internal sealed class MermaidWriter(TextWriter writer) : GraphWriter(writer)
     protected override void WriteEdge(Package package, Package dependency, GraphOptions options)
     {
         var packageId = GetPackageId(package, options);
-        var source = package.IsRoot ? $"{packageId}{{{{{packageId}}}}}" : packageId;
+        var source = package.IsRoot && _rootEdges.Add(packageId) ? $"{packageId}{{{{{packageId}}}}}" : packageId;
         Writer.WriteLine($"{source} --> {GetPackageId(dependency, options)}");
     }
 }

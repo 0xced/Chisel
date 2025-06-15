@@ -35,8 +35,8 @@ classDef default fill:aquamarine,stroke:#009061,color:#333333
 
 Hangfire.Core --> Newtonsoft.Json
 Hangfire.PostgreSql{{Hangfire.PostgreSql}} --> Dapper
-Hangfire.PostgreSql{{Hangfire.PostgreSql}} --> Hangfire.Core
-Hangfire.PostgreSql{{Hangfire.PostgreSql}} --> Npgsql
+Hangfire.PostgreSql --> Hangfire.Core
+Hangfire.PostgreSql --> Npgsql
 Microsoft.EntityFrameworkCore --> Microsoft.EntityFrameworkCore.Abstractions
 Microsoft.EntityFrameworkCore --> Microsoft.Extensions.Caching.Memory
 Microsoft.EntityFrameworkCore --> Microsoft.Extensions.Logging
@@ -58,9 +58,9 @@ Microsoft.Extensions.Options --> Microsoft.Extensions.DependencyInjection.Abstra
 Microsoft.Extensions.Options --> Microsoft.Extensions.Primitives
 Npgsql --> Microsoft.Extensions.Logging.Abstractions
 Npgsql.EntityFrameworkCore.PostgreSQL{{Npgsql.EntityFrameworkCore.PostgreSQL}} --> Microsoft.EntityFrameworkCore
-Npgsql.EntityFrameworkCore.PostgreSQL{{Npgsql.EntityFrameworkCore.PostgreSQL}} --> Microsoft.EntityFrameworkCore.Abstractions
-Npgsql.EntityFrameworkCore.PostgreSQL{{Npgsql.EntityFrameworkCore.PostgreSQL}} --> Microsoft.EntityFrameworkCore.Relational
-Npgsql.EntityFrameworkCore.PostgreSQL{{Npgsql.EntityFrameworkCore.PostgreSQL}} --> Npgsql
+Npgsql.EntityFrameworkCore.PostgreSQL --> Microsoft.EntityFrameworkCore.Abstractions
+Npgsql.EntityFrameworkCore.PostgreSQL --> Microsoft.EntityFrameworkCore.Relational
+Npgsql.EntityFrameworkCore.PostgreSQL --> Npgsql
 
 class Hangfire.PostgreSql root
 class Npgsql.EntityFrameworkCore.PostgreSQL root
@@ -106,9 +106,9 @@ Microsoft.Win32.Registry/5.0.0 --> System.Security.AccessControl/5.0.0
 Microsoft.Win32.Registry/5.0.0 --> System.Security.Principal.Windows/5.0.0
 MongoDB.Bson/2.30.0 --> System.Runtime.CompilerServices.Unsafe/5.0.0
 MongoDB.Driver/2.30.0{{MongoDB.Driver/2.30.0}} --> Microsoft.Extensions.Logging.Abstractions/6.0.4
-MongoDB.Driver/2.30.0{{MongoDB.Driver/2.30.0}} --> MongoDB.Bson/2.30.0
-MongoDB.Driver/2.30.0{{MongoDB.Driver/2.30.0}} --> MongoDB.Driver.Core/2.30.0
-MongoDB.Driver/2.30.0{{MongoDB.Driver/2.30.0}} --> MongoDB.Libmongocrypt/1.12.0
+MongoDB.Driver/2.30.0 --> MongoDB.Bson/2.30.0
+MongoDB.Driver/2.30.0 --> MongoDB.Driver.Core/2.30.0
+MongoDB.Driver/2.30.0 --> MongoDB.Libmongocrypt/1.12.0
 MongoDB.Driver.Core/2.30.0 --> AWSSDK.SecurityToken/3.7.100.14
 MongoDB.Driver.Core/2.30.0 --> DnsClient/1.6.1
 MongoDB.Driver.Core/2.30.0 --> Microsoft.Extensions.Logging.Abstractions/6.0.4
@@ -174,13 +174,13 @@ Azure.Identity --> Microsoft.Identity.Client.Extensions.Msal
 Azure.Identity --> System.Security.Cryptography.ProtectedData
 Azure.Identity --> System.Text.Json
 Microsoft.Data.SqlClient{{Microsoft.Data.SqlClient}} --> Azure.Identity
-Microsoft.Data.SqlClient{{Microsoft.Data.SqlClient}} --> Microsoft.Bcl.Cryptography
-Microsoft.Data.SqlClient{{Microsoft.Data.SqlClient}} --> Microsoft.Extensions.Caching.Memory
-Microsoft.Data.SqlClient{{Microsoft.Data.SqlClient}} --> Microsoft.IdentityModel.JsonWebTokens
-Microsoft.Data.SqlClient{{Microsoft.Data.SqlClient}} --> Microsoft.IdentityModel.Protocols.OpenIdConnect
-Microsoft.Data.SqlClient{{Microsoft.Data.SqlClient}} --> Microsoft.SqlServer.Server
-Microsoft.Data.SqlClient{{Microsoft.Data.SqlClient}} --> System.Configuration.ConfigurationManager
-Microsoft.Data.SqlClient{{Microsoft.Data.SqlClient}} --> System.Security.Cryptography.Pkcs
+Microsoft.Data.SqlClient --> Microsoft.Bcl.Cryptography
+Microsoft.Data.SqlClient --> Microsoft.Extensions.Caching.Memory
+Microsoft.Data.SqlClient --> Microsoft.IdentityModel.JsonWebTokens
+Microsoft.Data.SqlClient --> Microsoft.IdentityModel.Protocols.OpenIdConnect
+Microsoft.Data.SqlClient --> Microsoft.SqlServer.Server
+Microsoft.Data.SqlClient --> System.Configuration.ConfigurationManager
+Microsoft.Data.SqlClient --> System.Security.Cryptography.Pkcs
 Microsoft.Extensions.Caching.Abstractions --> Microsoft.Extensions.Primitives
 Microsoft.Extensions.Caching.Memory --> Microsoft.Extensions.Caching.Abstractions
 Microsoft.Extensions.Caching.Memory --> Microsoft.Extensions.DependencyInjection.Abstractions
