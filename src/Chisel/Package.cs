@@ -31,4 +31,4 @@ internal sealed class Package(string name, NuGetVersion version, bool isProjectR
     public override int GetHashCode() => Name.GetHashCode();
 }
 
-internal record Dependency(string Id, VersionRange VersionRange);
+internal sealed record Dependency(string Id, VersionRange VersionRange);
