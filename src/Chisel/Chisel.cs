@@ -76,6 +76,12 @@ public class Chisel : Task
     public string GraphDirection { get; set; } = nameof(global::Chisel.GraphDirection.LeftToRight);
 
     /// <summary>
+    /// The dependency graph title.
+    /// Use <c>none</c> to have no title.
+    /// </summary>
+    public string GraphTitle { get; set; } = "";
+
+    /// <summary>
     /// Include links to nuget.org for all dependencies in the generated dependency graph file.
     /// </summary>
     public bool GraphIncludeLinks { get; set; }
@@ -265,6 +271,7 @@ public class Chisel : Task
         return new GraphOptions
         {
             Direction = direction,
+            Title = string.Equals(GraphTitle, "none", StringComparison.OrdinalIgnoreCase) ? null : GraphTitle,
             IncludeLinks = GraphIncludeLinks,
             IncludeVersions = GraphIncludeVersions,
             WriteIgnoredPackages = GraphWriteIgnoredPackages,

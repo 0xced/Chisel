@@ -18,6 +18,13 @@ internal sealed class GraphvizWriter(TextWriter writer) : GraphWriter(writer)
         else if (options.Direction == GraphDirection.TopToBottom)
             Writer.WriteLine("  rankdir=TB");
 
+        if (!string.IsNullOrWhiteSpace(options.Title))
+        {
+            var label = options.Title!.Replace("\"", "\\\"");
+            Writer.WriteLine($"  label=\"{label}\"");
+            Writer.WriteLine();
+        }
+
         Writer.WriteLine($"  node [ fontname = \"Segoe UI, sans-serif\", shape = box, style = filled, {Color(options.Color.Default)} ]");
         Writer.WriteLine();
     }

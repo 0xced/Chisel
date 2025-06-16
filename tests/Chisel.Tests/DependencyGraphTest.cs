@@ -86,7 +86,15 @@ public class DependencyGraphTest
         var (removed, notFound, removedRoots) = graph.Remove([ "MongoDB.Driver", "AWSSDK.SecurityToken", "NonExistentPackage" ]);
         await using var writer = new StringWriter();
         var graphWriter = format == "graphviz" ? GraphWriter.Graphviz(writer) : GraphWriter.Mermaid(writer);
-        graphWriter.Write(graph, new GraphOptions { Direction = GraphDirection.LeftToRight, IncludeLinks = false, IncludeVersions = false, WriteIgnoredPackages = writeIgnoredPackages });
+        var graphOptions = new GraphOptions
+        {
+            Direction = GraphDirection.LeftToRight,
+            Title = null,
+            IncludeLinks = false,
+            IncludeVersions = false,
+            WriteIgnoredPackages = writeIgnoredPackages,
+        };
+        graphWriter.Write(graph, graphOptions);
 
         removed.Should().BeEquivalentTo("AWSSDK.SecurityToken", "AWSSDK.Core");
         notFound.Should().BeEquivalentTo("NonExistentPackage");
@@ -107,7 +115,15 @@ public class DependencyGraphTest
         await using var writer = new StringWriter();
 
         var graphWriter = format == "graphviz" ? GraphWriter.Graphviz(writer) : GraphWriter.Mermaid(writer);
-        graphWriter.Write(graph, new GraphOptions { Direction = GraphDirection.LeftToRight, IncludeLinks = false, IncludeVersions = true, WriteIgnoredPackages = false });
+        var graphOptions = new GraphOptions
+        {
+            Direction = GraphDirection.LeftToRight,
+            Title = "Dependency graph of\r\n\"Microsoft.Data.SqlClient\"",
+            IncludeLinks = false,
+            IncludeVersions = true,
+            WriteIgnoredPackages = false,
+        };
+        graphWriter.Write(graph, graphOptions);
 
         removed.Should().BeEquivalentTo([
             "Azure.Core",
@@ -144,7 +160,15 @@ public class DependencyGraphTest
         await using var writer = new StringWriter();
 
         var graphWriter = format == "graphviz" ? GraphWriter.Graphviz(writer) : GraphWriter.Mermaid(writer);
-        graphWriter.Write(graph, new GraphOptions { Direction = GraphDirection.LeftToRight, IncludeLinks = includeLinks, IncludeVersions = true, WriteIgnoredPackages = false });
+        var graphOptions = new GraphOptions
+        {
+            Direction = GraphDirection.LeftToRight,
+            Title = null,
+            IncludeLinks = includeLinks,
+            IncludeVersions = true,
+            WriteIgnoredPackages = false,
+        };
+        graphWriter.Write(graph, graphOptions);
 
         await Verify(writer.ToString(), format == "graphviz" ? "gv" : "mmd").UseParameters(includeLinks, format);
     }
