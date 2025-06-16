@@ -17,6 +17,16 @@ internal sealed class MermaidWriter(TextWriter writer) : GraphWriter(writer)
 
     protected override void WriteHeader(bool hasProject, bool hasIgnored, bool hasRemoved, GraphOptions options)
     {
+        if (!string.IsNullOrWhiteSpace(options.Label))
+        {
+            // Multi-line titles are not yet supported, anticipating https://github.com/mermaid-js/mermaid/pull/6444
+            var label = options.Label!.Replace("\r", "").Replace("\n", "\\n");
+            Writer.WriteLine("---");
+            Writer.WriteLine($"title: {label}");
+            Writer.WriteLine("---");
+            Writer.WriteLine();
+        }
+
         Writer.WriteLine($"%% {GetGeneratedByComment()}");
         Writer.WriteLine();
         Writer.Write("graph");

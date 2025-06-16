@@ -4,6 +4,12 @@
 
   <Target Name="Chisel" AfterTargets="ResolvePackageAssets" Condition="$(ChiselEnabled) == 'true'">
 
+    <!-- Can't define ChiselGraphLabel in Chisel.props because $(TargetFramework) is not yet defined at that point -->
+    <PropertyGroup Condition="$(ChiselGraphLabel) == ''">
+      <ChiselGraphLabel Condition="$(RuntimeIdentifier) == ''">Dependency graph of $(MSBuildProjectName) ($(TargetFramework))</ChiselGraphLabel>
+      <ChiselGraphLabel Condition="$(RuntimeIdentifier) != ''">Dependency graph of $(MSBuildProjectName) ($(TargetFramework)/$(RuntimeIdentifier))</ChiselGraphLabel>
+    </PropertyGroup>
+
     <ItemGroup>
       <ChiselPackage Include="$(ChiselPackage)" />
       <ChiselGraphIgnore Include="$(ChiselGraphIgnore)" />
@@ -20,6 +26,7 @@
           NativeLibraries="@(NativeCopyLocalItems)"
           GraphName="$(ChiselGraphName)"
           GraphDirection="$(ChiselGraphDirection)"
+          GraphLabel="$(ChiselGraphLabel)"
           GraphIncludeLinks="$(ChiselGraphIncludeLinks)"
           GraphIncludeVersions="$(ChiselGraphIncludeVersions)"
           GraphWriteIgnoredPackages="$(ChiselGraphWriteIgnoredPackages)"

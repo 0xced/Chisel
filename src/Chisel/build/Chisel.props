@@ -3,7 +3,10 @@
   <PropertyGroup>
     <ChiselEnabled Condition="$(ChiselEnabled) == '' AND $(DesignTimeBuild) == 'true'">false</ChiselEnabled>
     <ChiselEnabled Condition="$(ChiselEnabled) == '' AND $(DesignTimeBuild) != 'true'">true</ChiselEnabled>
+    <!-- Use ChiselGraphName = none to completely disable writing the graph -->
     <ChiselGraphName Condition="$(ChiselGraphName) == ''">$(MSBuildProjectName).Chisel.mermaid</ChiselGraphName>
+    <!-- Use ChiselGraphLabel = none to remove the default graph label -->
+    <ChiselGraphLabel Condition="$(ChiselGraphLabel) == ''" />
     <ChiselGraphDirection Condition="$(ChiselGraphDirection) == ''">LeftToRight</ChiselGraphDirection>
     <ChiselGraphIncludeLinks Condition="$(ChiselGraphIncludeLinks) == ''">true</ChiselGraphIncludeLinks>
     <ChiselGraphIncludeVersions Condition="$(ChiselGraphIncludeVersions) == ''">false</ChiselGraphIncludeVersions>
