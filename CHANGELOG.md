@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [Unreleased][Unreleased]
 
 * All nodes of the graph now contains clickable links to their corresponding nuget.org page. This new behavior can be disabled by setting the `ChiselGraphIncludeLinks` MSBuild property to `false`. See the [ChiselGraphIncludeLinks](https://github.com/0xced/Chisel#chiselgraphincludelinks) documentation in the README for more information.
+* The graph now includes a title that defaults to `Dependency graph of $(MSBuildProjectName) ($(TargetFramework))`. See the [ChiselGraphTitle](https://github.com/0xced/Chisel#chiselgraphtitle) documentation in the README for more information.
 
 ## [1.1.2][1.1.2] - 2025-02-17
 

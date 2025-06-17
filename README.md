@@ -295,6 +295,14 @@ Setting the `ChiselGraphAlias` property adds an alias (link) under the project. 
 </PropertyGroup>
 ```
 
+### `ChiselGraphTitle`
+
+defaults to `Dependency graph of $(MSBuildProjectName) ($(TargetFramework))`
+
+The title appears at the top with Mermaid and at the bottom with Graphviz.
+
+Use `none` to disable the graph title.
+
 ### `ChiselGraphDirection`
 
 defaults to `LeftToRight`
