@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NuGet.Frameworks;
 using NuGet.LibraryModel;
 using NuGet.ProjectModel;
 
@@ -27,8 +28,7 @@ internal static class LockFileExtensions
             _ => throw new ArgumentException($"Multiple targets are matching \"{targetId}\" in assets at \"{lockFile.Path}\" (JSON path: targets)", nameof(rid)),
         };
         var packages = target.Libraries.Where(e => e.Name != null && e.Version != null).Select(CreatePackage).Where(e => filter == null || filter(e)).ToDictionary(e => e.Name, StringComparer.OrdinalIgnoreCase);
-        var frameworkName = framework.FrameworkName.GetShortFolderName();
-        var projectDependencies = lockFile.ProjectFileDependencyGroups.Where(e => e.FrameworkName == frameworkName).SelectMany(e => e.Dependencies).Select(ParseProjectFileDependency);
+        var projectDependencies = lockFile.ProjectFileDependencyGroups.Where(e => NuGetFramework.Parse(e.FrameworkName) == framework.FrameworkName).SelectMany(e => e.Dependencies).Select(ParseProjectFileDependency);
         var packageDependencies = framework.GetDependencies().Select(e => e.Name);
         var roots = new HashSet<Package>(projectDependencies.Concat(packageDependencies).Where(e => packages.ContainsKey(e)).Select(e => packages[e]));
         foreach (var root in roots)
