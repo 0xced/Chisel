@@ -6,8 +6,10 @@ internal struct GraphOptions
     {
         Color = new Colors
         {
+            // Fill colors from https://graphviz.org/doc/info/colors.html and Stroke color chosen with https://paletton.com
             Default = new Color { Fill = "aquamarine", Stroke = "#009061", Text = "#333333" },
             Project = new Color { Fill = "skyblue", Stroke = "#05587C" },
+            Private = new Color { Fill = "moccasin", Stroke = "#AF8844" },
             Removed = new Color { Fill = "lightcoral", Stroke = "#A42A2A" },
             Ignored = new Color { Fill = "lightgray", Stroke = "#7A7A7A" },
         };
@@ -24,6 +26,7 @@ internal struct Colors
 {
     public required Color Default { get; init; }
     public required Color Project { get; init; }
+    public required Color Private { get; init; }
     public required Color Removed { get; init; }
     public required Color Ignored { get; init; }
 }

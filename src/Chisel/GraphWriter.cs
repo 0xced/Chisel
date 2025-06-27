@@ -17,18 +17,19 @@ internal abstract class GraphWriter(TextWriter writer)
         var hasProject = graph.Packages.Any(e => e.IsProjectReference);
         var hasIgnored = graph.Packages.Any(e => e.State == PackageState.Ignore) && options.WriteIgnoredPackages;
         var hasRemoved = graph.Packages.Any(e => e.State == PackageState.Remove);
-        WriteHeader(hasProject: hasProject, hasIgnored: hasIgnored, hasRemoved: hasRemoved, options);
+        var hasNuGetLink = graph.Packages.Any(e => e.Link?.Host == "www.nuget.org") && graph.Packages.Any(e => e.Link == null);
+        WriteHeader(hasProject: hasProject, hasIgnored: hasIgnored, hasRemoved: hasRemoved, hasNuGetLink: hasNuGetLink, options);
         WriteEdges(graph, options);
         Writer.WriteLine();
-        WriteNodes(graph, options);
+        WriteNodes(graph, hasNuGetLink, options);
         WriteFooter();
     }
 
     public abstract string FormatName { get; }
-    protected abstract void WriteHeader(bool hasProject, bool hasIgnored, bool hasRemoved, GraphOptions options);
+    protected abstract void WriteHeader(bool hasProject, bool hasIgnored, bool hasRemoved, bool hasNuGetLink, GraphOptions options);
     protected abstract void WriteFooter();
     protected abstract void WriteRoot(Package package, GraphOptions options);
-    protected abstract void WriteNode(Package package, GraphOptions options);
+    protected abstract void WriteNode(Package package, bool hasNuGetLink, GraphOptions options);
     protected abstract void WriteEdge(Package package, Package dependency, GraphOptions options);
 
     protected static string GetPackageId(Package package, GraphOptions options) => options.IncludeVersions ? $"{package.Name}/{package.Version}" : package.Name;
@@ -42,11 +43,11 @@ internal abstract class GraphWriter(TextWriter writer)
 
     private static bool FilterIgnored(Package package, GraphOptions options) => options.WriteIgnoredPackages || package.State != PackageState.Ignore;
 
-    private void WriteNodes(DependencyGraph graph, GraphOptions options)
+    private void WriteNodes(DependencyGraph graph, bool hasNuGetLink, GraphOptions options)
     {
         foreach (var package in graph.Packages.Where(e => FilterIgnored(e, options)).OrderBy(e => e.Name))
         {
-            WriteNode(package, options);
+            WriteNode(package, hasNuGetLink, options);
         }
     }
 
