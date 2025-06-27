@@ -54,11 +54,11 @@ jobs:
           name: Received-${{ runner.os }}
           path: "**/*.received.*"
       - name: 📊 Test Report
-        uses: dorny/test-reporter@v1
+        uses: dorny/test-reporter@v2
         if: always()
         with:
           name: Test Results (${{ runner.os }})
-          path: TestResults-*.trx
+          path: '*.trx'
           reporter: dotnet-trx
       - name: 📤 Upload NuGet package artifact
         if: matrix.os == 'ubuntu-latest'
