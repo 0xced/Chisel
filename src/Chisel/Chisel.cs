@@ -152,6 +152,11 @@ public class Chisel : Task
                 LogWarning("CHISEL007", $"{dependent.Name}/{dependent.Version} requires {dependency.Id} to satisfy {dependency.VersionRange} but {project.Version} does not");
             }
 
+            if (GraphIncludeLinks)
+            {
+                graph.AddLinksAsync().GetAwaiter().GetResult();
+            }
+
             WriteGraph(graph);
             return true;
         }
@@ -272,7 +277,6 @@ public class Chisel : Task
         {
             Direction = direction,
             Title = string.Equals(GraphTitle, "none", StringComparison.OrdinalIgnoreCase) ? null : GraphTitle,
-            IncludeLinks = GraphIncludeLinks,
             IncludeVersions = GraphIncludeVersions,
             WriteIgnoredPackages = GraphWriteIgnoredPackages,
         };

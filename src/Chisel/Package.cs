@@ -15,6 +15,8 @@ internal sealed class Package(string name, NuGetVersion version, bool isProjectR
 
     public bool IsRoot { get; set; }
 
+    public Uri? Link { get; set; }
+
     public PackageState State { get; set; } = PackageState.Keep;
 
     public override string ToString() => Name;

@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -90,7 +91,6 @@ public class DependencyGraphTest
         {
             Direction = GraphDirection.LeftToRight,
             Title = null,
-            IncludeLinks = false,
             IncludeVersions = false,
             WriteIgnoredPackages = writeIgnoredPackages,
         };
@@ -119,7 +119,6 @@ public class DependencyGraphTest
         {
             Direction = GraphDirection.LeftToRight,
             Title = "Dependency graph of\r\n\"Microsoft.Data.SqlClient\"",
-            IncludeLinks = false,
             IncludeVersions = true,
             WriteIgnoredPackages = false,
         };
@@ -157,6 +156,13 @@ public class DependencyGraphTest
         var lockFile = new LockFileFormat().Read(GetAssetsPath("PollyGraph.json"));
         var (packages, roots) = lockFile.ReadPackages(tfm: "netstandard2.0", rid: "");
         var graph = new DependencyGraph(packages, roots, ignores: [ "System.*" ]);
+        if (includeLinks)
+        {
+            foreach (var package in graph.Packages)
+            {
+                package.Link = new Uri($"https://www.nuget.org/packages/{package.Name}/{package.Version}");
+            }
+        }
         await using var writer = new StringWriter();
 
         var graphWriter = format == "graphviz" ? GraphWriter.Graphviz(writer) : GraphWriter.Mermaid(writer);
@@ -164,7 +170,6 @@ public class DependencyGraphTest
         {
             Direction = GraphDirection.LeftToRight,
             Title = null,
-            IncludeLinks = includeLinks,
             IncludeVersions = true,
             WriteIgnoredPackages = false,
         };

@@ -17,7 +17,7 @@
 
   <PropertyGroup>
     <ChiselGraphTitle>none</ChiselGraphTitle>
-    <ChiselGraphIncludeLinks>false</ChiselGraphIncludeLinks>
+    <ChiselGraphIncludeLinks>true</ChiselGraphIncludeLinks>
     <ChiselGraphIncludeVersions>true</ChiselGraphIncludeVersions>
   </PropertyGroup>
 

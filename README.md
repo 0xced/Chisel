@@ -311,9 +311,9 @@ This defines how the dependency graph is laid out. Possible values are `LeftToRi
 
 ### `ChiselGraphIncludeLinks`
 
-defaults to `true`
+defaults to `false`
 
-Since version 1.2.0, all nodes of the graph contains clickable links to their corresponding nuget.org page.
+Since version 1.2.0, all nodes of the graph can contain clickable links to their corresponding nuget.org page.
 
 For example, clicking on the `Npgsql` box below opens https://www.nuget.org/packages/Npgsql/9.0.3
 
@@ -324,13 +324,16 @@ click Npgsql.EntityFrameworkCore.PostgreSQL "https://www.nuget.org/packages/Npgs
 click Npgsql "https://www.nuget.org/packages/Npgsql/9.0.3" "Npgsql 9.0.3"
 ```
 
-To disable links, set the `ChiselGraphIncludeLinks` property to `false`.
+To enable links, set the `ChiselGraphIncludeLinks` property to `true`.
 
 ```xml
 <PropertyGroup>
-  <ChiselGraphIncludeLinks>false</ChiselGraphIncludeLinks>
+  <ChiselGraphIncludeLinks>true</ChiselGraphIncludeLinks>
 </PropertyGroup>
 ```
+
+> [!TIP]  
+> Including links can slow down the build process since each package is verified to actually exist on nuget.org. This is why this option is disabled by default.
 
 ### `ChiselGraphIncludeVersions`
 

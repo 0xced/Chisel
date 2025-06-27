@@ -8,7 +8,7 @@
     <!-- Use ChiselGraphTitle = none to disable the graph title -->
     <ChiselGraphTitle Condition="$(ChiselGraphTitle) == ''" />
     <ChiselGraphDirection Condition="$(ChiselGraphDirection) == ''">LeftToRight</ChiselGraphDirection>
-    <ChiselGraphIncludeLinks Condition="$(ChiselGraphIncludeLinks) == ''">true</ChiselGraphIncludeLinks>
+    <ChiselGraphIncludeLinks Condition="$(ChiselGraphIncludeLinks) == ''">false</ChiselGraphIncludeLinks>
     <ChiselGraphIncludeVersions Condition="$(ChiselGraphIncludeVersions) == ''">false</ChiselGraphIncludeVersions>
   </PropertyGroup>
 

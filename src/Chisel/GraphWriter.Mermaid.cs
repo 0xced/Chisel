@@ -72,9 +72,9 @@ internal sealed class MermaidWriter(TextWriter writer) : GraphWriter(writer)
             _ => package.IsProjectReference ? "project" : "default",
         };
         Writer.WriteLine($"class {packageId} {className}");
-        if (options.IncludeLinks)
+        if (package.Link != null)
         {
-            Writer.WriteLine($"click {packageId} \"https://www.nuget.org/packages/{package.Name}/{package.Version}\" \"{package.Name} {package.Version}\"");
+            Writer.WriteLine($"click {packageId} \"{package.Link}\" \"{package.Name} {package.Version}\"");
         }
     }
 
