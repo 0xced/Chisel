@@ -168,16 +168,12 @@ classDef removed fill:lightcoral,stroke:#A42A2A
 
 Azure.Core --> Microsoft.Bcl.AsyncInterfaces
 Azure.Core --> System.ClientModel
-Azure.Core --> System.Diagnostics.DiagnosticSource
 Azure.Core --> System.Memory.Data
-Azure.Core --> System.Text.Encodings.Web
-Azure.Core --> System.Text.Json
 Azure.Identity --> Azure.Core
 Azure.Identity --> Microsoft.Identity.Client
 Azure.Identity --> Microsoft.Identity.Client.Extensions.Msal
-Azure.Identity --> System.Security.Cryptography.ProtectedData
-Azure.Identity --> System.Text.Json
-Microsoft.Data.SqlClient{{Microsoft.Data.SqlClient}} --> Azure.Identity
+Microsoft.Data.SqlClient{{Microsoft.Data.SqlClient}} --> Azure.Core
+Microsoft.Data.SqlClient --> Azure.Identity
 Microsoft.Data.SqlClient --> Microsoft.Bcl.Cryptography
 Microsoft.Data.SqlClient --> Microsoft.Extensions.Caching.Memory
 Microsoft.Data.SqlClient --> Microsoft.IdentityModel.JsonWebTokens
@@ -185,6 +181,7 @@ Microsoft.Data.SqlClient --> Microsoft.IdentityModel.Protocols.OpenIdConnect
 Microsoft.Data.SqlClient --> Microsoft.SqlServer.Server
 Microsoft.Data.SqlClient --> System.Configuration.ConfigurationManager
 Microsoft.Data.SqlClient --> System.Security.Cryptography.Pkcs
+Microsoft.Data.SqlClient --> System.Text.Json
 Microsoft.Extensions.Caching.Abstractions --> Microsoft.Extensions.Primitives
 Microsoft.Extensions.Caching.Memory --> Microsoft.Extensions.Caching.Abstractions
 Microsoft.Extensions.Caching.Memory --> Microsoft.Extensions.DependencyInjection.Abstractions
@@ -204,15 +201,13 @@ Microsoft.IdentityModel.Protocols --> Microsoft.IdentityModel.Tokens
 Microsoft.IdentityModel.Protocols.OpenIdConnect --> Microsoft.IdentityModel.Protocols
 Microsoft.IdentityModel.Protocols.OpenIdConnect --> System.IdentityModel.Tokens.Jwt
 Microsoft.IdentityModel.Tokens --> Microsoft.IdentityModel.Logging
+System.ClientModel --> Microsoft.Extensions.Logging.Abstractions
 System.ClientModel --> System.Memory.Data
-System.ClientModel --> System.Text.Json
 System.Configuration.ConfigurationManager --> System.Diagnostics.EventLog
 System.Configuration.ConfigurationManager --> System.Security.Cryptography.ProtectedData
 System.Diagnostics.DiagnosticSource --> System.Runtime.CompilerServices.Unsafe
 System.IdentityModel.Tokens.Jwt --> Microsoft.IdentityModel.JsonWebTokens
 System.IdentityModel.Tokens.Jwt --> Microsoft.IdentityModel.Tokens
-System.Memory.Data --> System.Text.Encodings.Web
-System.Memory.Data --> System.Text.Json
 
 class Azure.Core removed
 class Azure.Identity removed
@@ -244,8 +239,7 @@ class System.Memory.Data removed
 class System.Runtime.CompilerServices.Unsafe removed
 class System.Security.Cryptography.Pkcs default
 class System.Security.Cryptography.ProtectedData default
-class System.Text.Encodings.Web removed
-class System.Text.Json removed
+class System.Text.Json default
 ```
 
 For `Microsoft.Data.SqlClient` prior to version 6, an additional trick is required to get rid of the `Microsoft.Identity.Client` dependency. See a [previous version](https://github.com/0xced/Chisel/blob/1.1.1/README.md#removing-the-azure-sdk-from-microsoftdatasqlclient) of the README for more information.
