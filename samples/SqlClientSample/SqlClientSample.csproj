@@ -9,13 +9,13 @@
     <Nullable>enable</Nullable>
     <UseCurrentRuntimeIdentifier>true</UseCurrentRuntimeIdentifier>
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
-    <MicrosoftDataSqlClientVersion>6.0.2</MicrosoftDataSqlClientVersion>
+    <MicrosoftDataSqlClientVersion>6.1.1</MicrosoftDataSqlClientVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Chisel" Version="1.1.2" PrivateAssets="all" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="$(MicrosoftDataSqlClientVersion)" />
-    <PackageReference Include="System.Memory.Data" Version="9.0.6" />
+    <PackageReference Include="System.Memory.Data" Version="9.0.8" />
   </ItemGroup>
 
   <ItemGroup Condition="$([MSBuild]::VersionLessThan('$(MicrosoftDataSqlClientVersion)', '6.0'))">
@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ChiselPackage Include="Azure.Core" />
     <ChiselPackage Include="Azure.Identity" />
     <ChiselPackage Include="Microsoft.IdentityModel.JsonWebTokens" />
     <ChiselPackage Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" />

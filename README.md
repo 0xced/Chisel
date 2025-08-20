@@ -143,17 +143,21 @@ As long as the [MONGODB-AWS authentication mechanism](https://www.mongodb.com/do
 
 ## Removing the Azure SDK from `Microsoft.Data.SqlClient` version 6.*
 
-Getting rid of the Azure/Microsoft Identity bits requires defining three packages to remove. In the previous example, `<ChiselPackage>` was used as an MSBuild property. Here, it's used as an MSBuild item (i.e. with the `Include` attribute) to specify multiple packages.
+Getting rid of the Azure/Microsoft Identity bits requires defining some packages to remove. In the previous example, `<ChiselPackage>` was used as an MSBuild property. Here, it's used as an MSBuild item (i.e. with the `Include` attribute) to specify multiple packages.
+
+> [!TIP]  
+> Since version 6.1.1, `Microsoft.Data.SqlClient` has an additional direct dependency on `Azure.Core`. Previously, `Azure.Core` was only a transitive dependency of `Azure.Identity`. 
 
 ```xml
 <ItemGroup>
+  <ChiselPackage Include="Azure.Core" />
   <ChiselPackage Include="Azure.Identity" />
   <ChiselPackage Include="Microsoft.IdentityModel.JsonWebTokens" />
   <ChiselPackage Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" />
 </ItemGroup>
 ```
 
-As with the MongoDB driver, specifying the three _direct_ dependencies is enough. We can see in the produced graph that the `Microsoft.Identity*` libraries have many transitive dependencies which are also removed (in red).
+As with the MongoDB driver, specifying the _direct_ dependencies is enough. We can see in the produced graph that the `Microsoft.Identity*` libraries have many transitive dependencies which are also removed (in red).
 
 ```mermaid
 graph LR
