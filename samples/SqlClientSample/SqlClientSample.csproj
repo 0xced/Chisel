@@ -9,7 +9,7 @@
     <Nullable>enable</Nullable>
     <UseCurrentRuntimeIdentifier>true</UseCurrentRuntimeIdentifier>
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
-    <MicrosoftDataSqlClientVersion>6.1.1</MicrosoftDataSqlClientVersion>
+    <MicrosoftDataSqlClientVersion>6.1.2</MicrosoftDataSqlClientVersion>
   </PropertyGroup>
 
   <ItemGroup>
