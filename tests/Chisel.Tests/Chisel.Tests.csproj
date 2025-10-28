@@ -14,7 +14,7 @@
     <PackageReference Include="NuGet.ProjectModel" Version="6.14.0" />
     <PackageReference Include="PublicApiGenerator" Version="11.4.6" />
     <PackageReference Include="System.Text.Json" Version="9.0.9" />
-    <PackageReference Include="Verify.XunitV3" Version="30.19.2" />
+    <PackageReference Include="Verify.XunitV3" Version="31.1.0" />
     <PackageReference Include="xunit.v3" Version="3.1.0" />
     <PackageReference Include="Xunit.Combinatorial" Version="2.0.24" />
   </ItemGroup>
