@@ -22,7 +22,7 @@ jobs:
     name: 🛠 Build, test and pack
     steps:
       - name: 🧑‍💻 Checkout git repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
       - name: 🏎 Optimize Windows runner
@@ -31,7 +31,7 @@ jobs:
           echo "DOTNET_INSTALL_DIR=D:\dotnet" >> $env:GITHUB_ENV
           echo "NUGET_PACKAGES=D:\nuget" >> $env:GITHUB_ENV
       - name: 🧑‍🔧 Install .NET SDK
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
       - name: ℹ️ Show .NET info
         run: dotnet --info
       - name: 💾 Retrieve cached NuGet packages
@@ -48,7 +48,7 @@ jobs:
       - name: 🧪 Run tests
         run: dotnet test --no-build
       - name: 📤 Upload received files from failing tests
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         if: failure()
         with:
           name: Received-${{ runner.os }}
@@ -62,7 +62,7 @@ jobs:
           reporter: dotnet-trx
       - name: 📤 Upload NuGet package artifact
         if: matrix.os == 'ubuntu-latest'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: NuGet package
           path: "*.nupkg"
@@ -73,7 +73,7 @@ jobs:
           git tag --list ${{ github.ref_name }} --format='%(contents)' > ReleaseNotes.md
       - name: 📤 Upload release notes
         if: matrix.os == 'ubuntu-latest' && startsWith(github.ref, 'refs/tags/')
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: Release Notes
           path: ReleaseNotes.md
@@ -86,11 +86,11 @@ jobs:
     name: 🐿 Publish
     steps:
       - name: 📥 Download NuGet package artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: NuGet package
       - name: 📥 Download release notes artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: Release Notes
       - name: 🚢 Create GitHub Release
