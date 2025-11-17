@@ -1,6 +1,5 @@
 <Solution>
   <Folder Name="/meta/">
-    <File Path=".github/dependabot.yml" />
     <File Path=".github/workflows/continuous-integration.yml" />
     <File Path="CHANGELOG.md" />
     <File Path="CODE_OF_CONDUCT.md" />
