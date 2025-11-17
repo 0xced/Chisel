@@ -41,7 +41,7 @@ jobs:
       - name: 💾 Retrieve cached NuGet packages
         uses: actions/cache@v4
         with:
-          path: ~/.nuget/packages
+          path: ${{ env.NUGET_PACKAGES || '~/.nuget/packages' }}
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
           restore-keys: |
             ${{ runner.os }}-nuget-
@@ -87,6 +87,7 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/')
     permissions:
       contents: write
+      id-token: write
     name: 🐿 Publish
     steps:
       - name: 📥 Download NuGet package artifact
