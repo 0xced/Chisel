@@ -100,41 +100,41 @@ classDef root stroke-width:4px
 classDef default fill:aquamarine,stroke:#009061,color:#333333
 classDef removed fill:lightcoral,stroke:#A42A2A
 
-AWSSDK.SecurityToken/3.7.100.14 --> AWSSDK.Core/3.7.100.14
-DnsClient/1.6.1 --> Microsoft.Win32.Registry/5.0.0
-Microsoft.Win32.Registry/5.0.0 --> System.Security.AccessControl/5.0.0
-Microsoft.Win32.Registry/5.0.0 --> System.Security.Principal.Windows/5.0.0
-MongoDB.Bson/2.30.0 --> System.Runtime.CompilerServices.Unsafe/5.0.0
-MongoDB.Driver/2.30.0{{MongoDB.Driver/2.30.0}} --> Microsoft.Extensions.Logging.Abstractions/6.0.4
-MongoDB.Driver/2.30.0 --> MongoDB.Bson/2.30.0
-MongoDB.Driver/2.30.0 --> MongoDB.Driver.Core/2.30.0
-MongoDB.Driver/2.30.0 --> MongoDB.Libmongocrypt/1.12.0
-MongoDB.Driver.Core/2.30.0 --> AWSSDK.SecurityToken/3.7.100.14
-MongoDB.Driver.Core/2.30.0 --> DnsClient/1.6.1
-MongoDB.Driver.Core/2.30.0 --> Microsoft.Extensions.Logging.Abstractions/6.0.4
-MongoDB.Driver.Core/2.30.0 --> MongoDB.Bson/2.30.0
-MongoDB.Driver.Core/2.30.0 --> MongoDB.Libmongocrypt/1.12.0
-MongoDB.Driver.Core/2.30.0 --> SharpCompress/0.30.1
-MongoDB.Driver.Core/2.30.0 --> Snappier/1.0.0
-MongoDB.Driver.Core/2.30.0 --> ZstdSharp.Port/0.7.3
-System.Security.AccessControl/5.0.0 --> System.Security.Principal.Windows/5.0.0
+AWSSDK.SecurityToken[AWSSDK.SecurityToken#64;3.7.100.14] --> AWSSDK.Core[AWSSDK.Core#64;3.7.100.14]
+DnsClient[DnsClient#64;1.6.1] --> Microsoft.Win32.Registry[Microsoft.Win32.Registry#64;5.0.0]
+Microsoft.Win32.Registry --> System.Security.AccessControl[System.Security.AccessControl#64;5.0.0]
+Microsoft.Win32.Registry --> System.Security.Principal.Windows[System.Security.Principal.Windows#64;5.0.0]
+MongoDB.Bson[MongoDB.Bson#64;2.30.0] --> System.Runtime.CompilerServices.Unsafe[System.Runtime.CompilerServices.Unsafe#64;5.0.0]
+MongoDB.Driver{{MongoDB.Driver#64;2.30.0}} --> Microsoft.Extensions.Logging.Abstractions[Microsoft.Extensions.Logging.Abstractions#64;2.0.0]
+MongoDB.Driver --> MongoDB.Bson
+MongoDB.Driver --> MongoDB.Driver.Core[MongoDB.Driver.Core#64;2.30.0]
+MongoDB.Driver --> MongoDB.Libmongocrypt[MongoDB.Libmongocrypt#64;1.12.0]
+MongoDB.Driver.Core --> AWSSDK.SecurityToken
+MongoDB.Driver.Core --> DnsClient
+MongoDB.Driver.Core --> Microsoft.Extensions.Logging.Abstractions
+MongoDB.Driver.Core --> MongoDB.Bson
+MongoDB.Driver.Core --> MongoDB.Libmongocrypt
+MongoDB.Driver.Core --> SharpCompress[SharpCompress#64;0.30.1]
+MongoDB.Driver.Core --> Snappier[Snappier#64;1.0.0]
+MongoDB.Driver.Core --> ZstdSharp.Port[ZstdSharp.Port#64;0.7.3]
+System.Security.AccessControl --> System.Security.Principal.Windows
 
-class AWSSDK.Core/3.7.100.14 removed
-class AWSSDK.SecurityToken/3.7.100.14 removed
-class DnsClient/1.6.1 default
-class Microsoft.Extensions.Logging.Abstractions/6.0.4 default
-class Microsoft.Win32.Registry/5.0.0 default
-class MongoDB.Bson/2.30.0 default
-class MongoDB.Driver/2.30.0 root
-class MongoDB.Driver/2.30.0 default
-class MongoDB.Driver.Core/2.30.0 default
-class MongoDB.Libmongocrypt/1.12.0 default
-class SharpCompress/0.30.1 default
-class Snappier/1.0.0 default
-class System.Runtime.CompilerServices.Unsafe/5.0.0 default
-class System.Security.AccessControl/5.0.0 default
-class System.Security.Principal.Windows/5.0.0 default
-class ZstdSharp.Port/0.7.3 default
+class AWSSDK.Core removed
+class AWSSDK.SecurityToken removed
+class DnsClient default
+class Microsoft.Extensions.Logging.Abstractions default
+class Microsoft.Win32.Registry default
+class MongoDB.Bson default
+class MongoDB.Driver root
+class MongoDB.Driver default
+class MongoDB.Driver.Core default
+class MongoDB.Libmongocrypt default
+class SharpCompress default
+class Snappier default
+class System.Runtime.CompilerServices.Unsafe default
+class System.Security.AccessControl default
+class System.Security.Principal.Windows default
+class ZstdSharp.Port default
 ```
 
 Now, both `AWSSDK.Core.dll` and `AWSSDK.SecurityToken.dll` have disappeared from the build output.
@@ -338,7 +338,7 @@ To enable links, set the `ChiselGraphIncludeLinks` property to `true`.
 
 defaults to `false`
 
-Controls whether the dependency graph nodes are named `{package}` or `{package}/{version}`.
+Controls whether the dependency graph nodes are named `{package}` or `{package}@{version}`.
 
 Example with `ChiselGraphIncludeVersions` set to `false`
 
@@ -353,7 +353,7 @@ Example with `ChiselGraphIncludeVersions` set to `true`
 ```mermaid
 graph LR
 classDef default fill:aquamarine,stroke:#009061,color:#333333
-Serilog.Sinks.File/5.0.0 --> Serilog/2.10.0
+Serilog.Sinks.File[Serilog.Sinks.File#64;5.0.0] --> Serilog[Serilog#64;2.10.0]
 ```
 
 ### `ChiselGraphIgnore`

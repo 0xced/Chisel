@@ -84,6 +84,8 @@ internal sealed class GraphvizWriter(TextWriter writer) : GraphWriter(writer)
         Writer.WriteLine($"  \"{GetPackageId(package, options)}\" -> \"{GetPackageId(dependency, options)}\"");
     }
 
+    private static string GetPackageId(Package package, GraphOptions options) => options.IncludeVersions ? $"{package.Name}@{package.Version}" : package.Name;
+
     private static string Color(Color color)
     {
         var colorDefinition = $"fillcolor = {Fill(color)}, color = {Stroke(color)}";

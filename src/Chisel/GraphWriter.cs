@@ -32,8 +32,6 @@ internal abstract class GraphWriter(TextWriter writer)
     protected abstract void WriteNode(Package package, bool hasNuGetLink, GraphOptions options);
     protected abstract void WriteEdge(Package package, Package dependency, GraphOptions options);
 
-    protected static string GetPackageId(Package package, GraphOptions options) => options.IncludeVersions ? $"{package.Name}/{package.Version}" : package.Name;
-
     protected static string GetGeneratedByComment()
     {
         var assembly = typeof(GraphWriter).Assembly;

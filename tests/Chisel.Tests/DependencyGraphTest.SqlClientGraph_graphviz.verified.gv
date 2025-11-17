@@ -8,75 +8,75 @@ digraph
 
   node [ fontname = "Segoe UI, sans-serif", shape = box, style = filled, fillcolor = aquamarine, color = "#009061", fontcolor = "#333333" ]
 
-  "Azure.Core/1.35.0" -> "Microsoft.Bcl.AsyncInterfaces/1.1.1"
-  "Azure.Core/1.35.0" -> "System.Diagnostics.DiagnosticSource/6.0.1"
-  "Azure.Core/1.35.0" -> "System.Memory.Data/8.0.0"
-  "Azure.Core/1.35.0" -> "System.Text.Encodings.Web/8.0.0"
-  "Azure.Core/1.35.0" -> "System.Text.Json/8.0.0"
-  "Azure.Identity/1.10.3" -> "Azure.Core/1.35.0"
-  "Azure.Identity/1.10.3" -> "Microsoft.Identity.Client/4.56.0"
-  "Azure.Identity/1.10.3" -> "Microsoft.Identity.Client.Extensions.Msal/4.56.0"
-  "Azure.Identity/1.10.3" -> "System.Security.Cryptography.ProtectedData/8.0.0"
-  "Azure.Identity/1.10.3" -> "System.Text.Json/8.0.0"
-  "Microsoft.Data.SqlClient/5.2.0" -> "Azure.Identity/1.10.3"
-  "Microsoft.Data.SqlClient/5.2.0" -> "Microsoft.Data.SqlClient.SNI.runtime/5.2.0"
-  "Microsoft.Data.SqlClient/5.2.0" -> "Microsoft.Identity.Client/4.56.0"
-  "Microsoft.Data.SqlClient/5.2.0" -> "Microsoft.IdentityModel.JsonWebTokens/6.35.0"
-  "Microsoft.Data.SqlClient/5.2.0" -> "Microsoft.IdentityModel.Protocols.OpenIdConnect/6.35.0"
-  "Microsoft.Data.SqlClient/5.2.0" -> "Microsoft.SqlServer.Server/1.0.0"
-  "Microsoft.Data.SqlClient/5.2.0" -> "System.Configuration.ConfigurationManager/8.0.0"
-  "Microsoft.Data.SqlClient/5.2.0" -> "System.Runtime.Caching/8.0.0"
-  "Microsoft.Identity.Client.Extensions.Msal/4.56.0" -> "Microsoft.Identity.Client/4.56.0"
-  "Microsoft.Identity.Client.Extensions.Msal/4.56.0" -> "System.IO.FileSystem.AccessControl/5.0.0"
-  "Microsoft.Identity.Client.Extensions.Msal/4.56.0" -> "System.Security.Cryptography.ProtectedData/8.0.0"
-  "Microsoft.IdentityModel.JsonWebTokens/6.35.0" -> "Microsoft.IdentityModel.Tokens/6.35.0"
-  "Microsoft.IdentityModel.JsonWebTokens/6.35.0" -> "System.Text.Encodings.Web/8.0.0"
-  "Microsoft.IdentityModel.JsonWebTokens/6.35.0" -> "System.Text.Json/8.0.0"
-  "Microsoft.IdentityModel.Logging/6.35.0" -> "Microsoft.IdentityModel.Abstractions/6.35.0"
-  "Microsoft.IdentityModel.Protocols/6.35.0" -> "Microsoft.IdentityModel.Logging/6.35.0"
-  "Microsoft.IdentityModel.Protocols/6.35.0" -> "Microsoft.IdentityModel.Tokens/6.35.0"
-  "Microsoft.IdentityModel.Protocols.OpenIdConnect/6.35.0" -> "Microsoft.IdentityModel.Protocols/6.35.0"
-  "Microsoft.IdentityModel.Protocols.OpenIdConnect/6.35.0" -> "System.IdentityModel.Tokens.Jwt/6.35.0"
-  "Microsoft.IdentityModel.Tokens/6.35.0" -> "Microsoft.IdentityModel.Logging/6.35.0"
-  "Microsoft.IdentityModel.Tokens/6.35.0" -> "System.Security.Cryptography.Cng/4.5.0"
-  "System.Configuration.ConfigurationManager/8.0.0" -> "System.Diagnostics.EventLog/8.0.0"
-  "System.Configuration.ConfigurationManager/8.0.0" -> "System.Security.Cryptography.ProtectedData/8.0.0"
-  "System.Diagnostics.DiagnosticSource/6.0.1" -> "System.Runtime.CompilerServices.Unsafe/6.0.0"
-  "System.IdentityModel.Tokens.Jwt/6.35.0" -> "Microsoft.IdentityModel.JsonWebTokens/6.35.0"
-  "System.IdentityModel.Tokens.Jwt/6.35.0" -> "Microsoft.IdentityModel.Tokens/6.35.0"
-  "System.IO.FileSystem.AccessControl/5.0.0" -> "System.Security.AccessControl/5.0.0"
-  "System.IO.FileSystem.AccessControl/5.0.0" -> "System.Security.Principal.Windows/5.0.0"
-  "System.Memory.Data/8.0.0" -> "System.Text.Json/8.0.0"
-  "System.Runtime.Caching/8.0.0" -> "System.Configuration.ConfigurationManager/8.0.0"
-  "System.Security.AccessControl/5.0.0" -> "System.Security.Principal.Windows/5.0.0"
-  "System.Text.Json/8.0.0" -> "System.Text.Encodings.Web/8.0.0"
+  "Azure.Core@1.35.0" -> "Microsoft.Bcl.AsyncInterfaces@1.1.1"
+  "Azure.Core@1.35.0" -> "System.Diagnostics.DiagnosticSource@6.0.1"
+  "Azure.Core@1.35.0" -> "System.Memory.Data@8.0.0"
+  "Azure.Core@1.35.0" -> "System.Text.Encodings.Web@8.0.0"
+  "Azure.Core@1.35.0" -> "System.Text.Json@8.0.0"
+  "Azure.Identity@1.10.3" -> "Azure.Core@1.35.0"
+  "Azure.Identity@1.10.3" -> "Microsoft.Identity.Client@4.56.0"
+  "Azure.Identity@1.10.3" -> "Microsoft.Identity.Client.Extensions.Msal@4.56.0"
+  "Azure.Identity@1.10.3" -> "System.Security.Cryptography.ProtectedData@8.0.0"
+  "Azure.Identity@1.10.3" -> "System.Text.Json@8.0.0"
+  "Microsoft.Data.SqlClient@5.2.0" -> "Azure.Identity@1.10.3"
+  "Microsoft.Data.SqlClient@5.2.0" -> "Microsoft.Data.SqlClient.SNI.runtime@5.2.0"
+  "Microsoft.Data.SqlClient@5.2.0" -> "Microsoft.Identity.Client@4.56.0"
+  "Microsoft.Data.SqlClient@5.2.0" -> "Microsoft.IdentityModel.JsonWebTokens@6.35.0"
+  "Microsoft.Data.SqlClient@5.2.0" -> "Microsoft.IdentityModel.Protocols.OpenIdConnect@6.35.0"
+  "Microsoft.Data.SqlClient@5.2.0" -> "Microsoft.SqlServer.Server@1.0.0"
+  "Microsoft.Data.SqlClient@5.2.0" -> "System.Configuration.ConfigurationManager@8.0.0"
+  "Microsoft.Data.SqlClient@5.2.0" -> "System.Runtime.Caching@8.0.0"
+  "Microsoft.Identity.Client.Extensions.Msal@4.56.0" -> "Microsoft.Identity.Client@4.56.0"
+  "Microsoft.Identity.Client.Extensions.Msal@4.56.0" -> "System.IO.FileSystem.AccessControl@5.0.0"
+  "Microsoft.Identity.Client.Extensions.Msal@4.56.0" -> "System.Security.Cryptography.ProtectedData@8.0.0"
+  "Microsoft.IdentityModel.JsonWebTokens@6.35.0" -> "Microsoft.IdentityModel.Tokens@6.35.0"
+  "Microsoft.IdentityModel.JsonWebTokens@6.35.0" -> "System.Text.Encodings.Web@8.0.0"
+  "Microsoft.IdentityModel.JsonWebTokens@6.35.0" -> "System.Text.Json@8.0.0"
+  "Microsoft.IdentityModel.Logging@6.35.0" -> "Microsoft.IdentityModel.Abstractions@6.35.0"
+  "Microsoft.IdentityModel.Protocols@6.35.0" -> "Microsoft.IdentityModel.Logging@6.35.0"
+  "Microsoft.IdentityModel.Protocols@6.35.0" -> "Microsoft.IdentityModel.Tokens@6.35.0"
+  "Microsoft.IdentityModel.Protocols.OpenIdConnect@6.35.0" -> "Microsoft.IdentityModel.Protocols@6.35.0"
+  "Microsoft.IdentityModel.Protocols.OpenIdConnect@6.35.0" -> "System.IdentityModel.Tokens.Jwt@6.35.0"
+  "Microsoft.IdentityModel.Tokens@6.35.0" -> "Microsoft.IdentityModel.Logging@6.35.0"
+  "Microsoft.IdentityModel.Tokens@6.35.0" -> "System.Security.Cryptography.Cng@4.5.0"
+  "System.Configuration.ConfigurationManager@8.0.0" -> "System.Diagnostics.EventLog@8.0.0"
+  "System.Configuration.ConfigurationManager@8.0.0" -> "System.Security.Cryptography.ProtectedData@8.0.0"
+  "System.Diagnostics.DiagnosticSource@6.0.1" -> "System.Runtime.CompilerServices.Unsafe@6.0.0"
+  "System.IdentityModel.Tokens.Jwt@6.35.0" -> "Microsoft.IdentityModel.JsonWebTokens@6.35.0"
+  "System.IdentityModel.Tokens.Jwt@6.35.0" -> "Microsoft.IdentityModel.Tokens@6.35.0"
+  "System.IO.FileSystem.AccessControl@5.0.0" -> "System.Security.AccessControl@5.0.0"
+  "System.IO.FileSystem.AccessControl@5.0.0" -> "System.Security.Principal.Windows@5.0.0"
+  "System.Memory.Data@8.0.0" -> "System.Text.Json@8.0.0"
+  "System.Runtime.Caching@8.0.0" -> "System.Configuration.ConfigurationManager@8.0.0"
+  "System.Security.AccessControl@5.0.0" -> "System.Security.Principal.Windows@5.0.0"
+  "System.Text.Json@8.0.0" -> "System.Text.Encodings.Web@8.0.0"
 
-  "Azure.Core/1.35.0" [ fillcolor = lightcoral, color = "#A42A2A" ]
-  "Azure.Identity/1.10.3" [ fillcolor = lightcoral, color = "#A42A2A" ]
-  "Microsoft.Bcl.AsyncInterfaces/1.1.1" [ fillcolor = lightcoral, color = "#A42A2A" ]
-  "Microsoft.Data.SqlClient/5.2.0" [ shape = hexagon, penwidth = 4 ]
-  "Microsoft.Data.SqlClient.SNI.runtime/5.2.0"
-  "Microsoft.Identity.Client/4.56.0" [ shape = hexagon, penwidth = 4, fillcolor = skyblue, color = "#05587C" ]
-  "Microsoft.Identity.Client.Extensions.Msal/4.56.0" [ fillcolor = lightcoral, color = "#A42A2A" ]
-  "Microsoft.IdentityModel.Abstractions/6.35.0" [ fillcolor = lightcoral, color = "#A42A2A" ]
-  "Microsoft.IdentityModel.JsonWebTokens/6.35.0" [ fillcolor = lightcoral, color = "#A42A2A" ]
-  "Microsoft.IdentityModel.Logging/6.35.0" [ fillcolor = lightcoral, color = "#A42A2A" ]
-  "Microsoft.IdentityModel.Protocols/6.35.0" [ fillcolor = lightcoral, color = "#A42A2A" ]
-  "Microsoft.IdentityModel.Protocols.OpenIdConnect/6.35.0" [ fillcolor = lightcoral, color = "#A42A2A" ]
-  "Microsoft.IdentityModel.Tokens/6.35.0" [ fillcolor = lightcoral, color = "#A42A2A" ]
-  "Microsoft.SqlServer.Server/1.0.0"
-  "System.Configuration.ConfigurationManager/8.0.0"
-  "System.Diagnostics.DiagnosticSource/6.0.1" [ fillcolor = lightcoral, color = "#A42A2A" ]
-  "System.Diagnostics.EventLog/8.0.0"
-  "System.IdentityModel.Tokens.Jwt/6.35.0" [ fillcolor = lightcoral, color = "#A42A2A" ]
-  "System.IO.FileSystem.AccessControl/5.0.0" [ fillcolor = lightcoral, color = "#A42A2A" ]
-  "System.Memory.Data/8.0.0" [ shape = hexagon, penwidth = 4 ]
-  "System.Runtime.Caching/8.0.0"
-  "System.Runtime.CompilerServices.Unsafe/6.0.0" [ fillcolor = lightcoral, color = "#A42A2A" ]
-  "System.Security.AccessControl/5.0.0" [ fillcolor = lightcoral, color = "#A42A2A" ]
-  "System.Security.Cryptography.Cng/4.5.0" [ fillcolor = lightcoral, color = "#A42A2A" ]
-  "System.Security.Cryptography.ProtectedData/8.0.0"
-  "System.Security.Principal.Windows/5.0.0" [ fillcolor = lightcoral, color = "#A42A2A" ]
-  "System.Text.Encodings.Web/8.0.0"
-  "System.Text.Json/8.0.0"
+  "Azure.Core@1.35.0" [ fillcolor = lightcoral, color = "#A42A2A" ]
+  "Azure.Identity@1.10.3" [ fillcolor = lightcoral, color = "#A42A2A" ]
+  "Microsoft.Bcl.AsyncInterfaces@1.1.1" [ fillcolor = lightcoral, color = "#A42A2A" ]
+  "Microsoft.Data.SqlClient@5.2.0" [ shape = hexagon, penwidth = 4 ]
+  "Microsoft.Data.SqlClient.SNI.runtime@5.2.0"
+  "Microsoft.Identity.Client@4.56.0" [ shape = hexagon, penwidth = 4, fillcolor = skyblue, color = "#05587C" ]
+  "Microsoft.Identity.Client.Extensions.Msal@4.56.0" [ fillcolor = lightcoral, color = "#A42A2A" ]
+  "Microsoft.IdentityModel.Abstractions@6.35.0" [ fillcolor = lightcoral, color = "#A42A2A" ]
+  "Microsoft.IdentityModel.JsonWebTokens@6.35.0" [ fillcolor = lightcoral, color = "#A42A2A" ]
+  "Microsoft.IdentityModel.Logging@6.35.0" [ fillcolor = lightcoral, color = "#A42A2A" ]
+  "Microsoft.IdentityModel.Protocols@6.35.0" [ fillcolor = lightcoral, color = "#A42A2A" ]
+  "Microsoft.IdentityModel.Protocols.OpenIdConnect@6.35.0" [ fillcolor = lightcoral, color = "#A42A2A" ]
+  "Microsoft.IdentityModel.Tokens@6.35.0" [ fillcolor = lightcoral, color = "#A42A2A" ]
+  "Microsoft.SqlServer.Server@1.0.0"
+  "System.Configuration.ConfigurationManager@8.0.0"
+  "System.Diagnostics.DiagnosticSource@6.0.1" [ fillcolor = lightcoral, color = "#A42A2A" ]
+  "System.Diagnostics.EventLog@8.0.0"
+  "System.IdentityModel.Tokens.Jwt@6.35.0" [ fillcolor = lightcoral, color = "#A42A2A" ]
+  "System.IO.FileSystem.AccessControl@5.0.0" [ fillcolor = lightcoral, color = "#A42A2A" ]
+  "System.Memory.Data@8.0.0" [ shape = hexagon, penwidth = 4 ]
+  "System.Runtime.Caching@8.0.0"
+  "System.Runtime.CompilerServices.Unsafe@6.0.0" [ fillcolor = lightcoral, color = "#A42A2A" ]
+  "System.Security.AccessControl@5.0.0" [ fillcolor = lightcoral, color = "#A42A2A" ]
+  "System.Security.Cryptography.Cng@4.5.0" [ fillcolor = lightcoral, color = "#A42A2A" ]
+  "System.Security.Cryptography.ProtectedData@8.0.0"
+  "System.Security.Principal.Windows@5.0.0" [ fillcolor = lightcoral, color = "#A42A2A" ]
+  "System.Text.Encodings.Web@8.0.0"
+  "System.Text.Json@8.0.0"
 }

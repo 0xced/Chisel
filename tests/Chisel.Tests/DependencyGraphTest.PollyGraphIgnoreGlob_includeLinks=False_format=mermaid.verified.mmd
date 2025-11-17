@@ -5,17 +5,17 @@ graph LR
 classDef root stroke-width:4px
 classDef default fill:aquamarine,stroke:#009061,color:#333333
 
-Microsoft.Bcl.TimeProvider/8.0.0 --> Microsoft.Bcl.AsyncInterfaces/6.0.0
-NETStandard.Library/2.0.3{{NETStandard.Library/2.0.3}} --> Microsoft.NETCore.Platforms/1.1.0
-Polly/8.4.0{{Polly/8.4.0}} --> Polly.Core/8.4.0
-Polly.Core/8.4.0 --> Microsoft.Bcl.AsyncInterfaces/6.0.0
-Polly.Core/8.4.0 --> Microsoft.Bcl.TimeProvider/8.0.0
+Microsoft.Bcl.TimeProvider[Microsoft.Bcl.TimeProvider#64;8.0.0] --> Microsoft.Bcl.AsyncInterfaces[Microsoft.Bcl.AsyncInterfaces#64;6.0.0]
+NETStandard.Library{{NETStandard.Library#64;2.0.3}} --> Microsoft.NETCore.Platforms[Microsoft.NETCore.Platforms#64;1.1.0]
+Polly{{Polly#64;8.4.0}} --> Polly.Core[Polly.Core#64;8.4.0]
+Polly.Core --> Microsoft.Bcl.AsyncInterfaces
+Polly.Core --> Microsoft.Bcl.TimeProvider
 
-class Microsoft.Bcl.AsyncInterfaces/6.0.0 default
-class Microsoft.Bcl.TimeProvider/8.0.0 default
-class Microsoft.NETCore.Platforms/1.1.0 default
-class NETStandard.Library/2.0.3 root
-class NETStandard.Library/2.0.3 default
-class Polly/8.4.0 root
-class Polly/8.4.0 default
-class Polly.Core/8.4.0 default
+class Microsoft.Bcl.AsyncInterfaces default
+class Microsoft.Bcl.TimeProvider default
+class Microsoft.NETCore.Platforms default
+class NETStandard.Library root
+class NETStandard.Library default
+class Polly root
+class Polly default
+class Polly.Core default

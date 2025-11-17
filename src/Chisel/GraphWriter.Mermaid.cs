@@ -5,7 +5,7 @@ namespace Chisel;
 
 internal sealed class MermaidWriter(TextWriter writer) : GraphWriter(writer)
 {
-    private readonly HashSet<string> _rootEdges = [];
+    private readonly HashSet<string> _nodes = [];
 
     public override string FormatName => "Mermaid";
 
@@ -54,18 +54,20 @@ internal sealed class MermaidWriter(TextWriter writer) : GraphWriter(writer)
     {
     }
 
+    private static string GetRoot(Package package, GraphOptions options) => options.IncludeVersions ? $"{package.Name}{{{{{package.Name}#64;{package.Version}}}}}" : $"{package.Name}{{{{{package.Name}}}}}";
+
+    private static string GetEdge(Package package, GraphOptions options) => options.IncludeVersions ? $"{package.Name}[{package.Name}#64;{package.Version}]" : package.Name;
+
     protected override void WriteRoot(Package package, GraphOptions options)
     {
-        var packageId = GetPackageId(package, options);
-        Writer.WriteLine($"{packageId}{{{{{packageId}}}}}");
+        Writer.WriteLine(GetRoot(package, options));
     }
 
     protected override void WriteNode(Package package, bool hasNuGetLink, GraphOptions options)
     {
-        var packageId = GetPackageId(package, options);
         if (package.IsRoot)
         {
-            Writer.WriteLine($"class {packageId} root");
+            Writer.WriteLine($"class {package.Name} root");
         }
         var className = package.State switch
         {
@@ -75,17 +77,17 @@ internal sealed class MermaidWriter(TextWriter writer) : GraphWriter(writer)
             _ when hasNuGetLink && package.Link == null => "private",
             _ => "default",
         };
-        Writer.WriteLine($"class {packageId} {className}");
+        Writer.WriteLine($"class {package.Name} {className}");
         if (package.Link != null)
         {
-            Writer.WriteLine($"click {packageId} \"{package.Link}\" \"{package.Name} {package.Version}\"");
+            Writer.WriteLine($"click {package.Name} \"{package.Link}\" \"{package.Name} {package.Version}\"");
         }
     }
 
     protected override void WriteEdge(Package package, Package dependency, GraphOptions options)
     {
-        var packageId = GetPackageId(package, options);
-        var source = package.IsRoot && _rootEdges.Add(packageId) ? $"{packageId}{{{{{packageId}}}}}" : packageId;
-        Writer.WriteLine($"{source} --> {GetPackageId(dependency, options)}");
+        var source = _nodes.Add(package.Name) ? package.IsRoot ? GetRoot(package, options) : GetEdge(package, options) : package.Name;
+        var destination = _nodes.Add(dependency.Name) ? GetEdge(dependency, options) : dependency.Name;
+        Writer.WriteLine($"{source} --> {destination}");
     }
 }

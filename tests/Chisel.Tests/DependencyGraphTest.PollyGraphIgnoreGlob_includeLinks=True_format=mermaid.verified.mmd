@@ -5,23 +5,23 @@ graph LR
 classDef root stroke-width:4px
 classDef default fill:aquamarine,stroke:#009061,color:#333333
 
-Microsoft.Bcl.TimeProvider/8.0.0 --> Microsoft.Bcl.AsyncInterfaces/6.0.0
-NETStandard.Library/2.0.3{{NETStandard.Library/2.0.3}} --> Microsoft.NETCore.Platforms/1.1.0
-Polly/8.4.0{{Polly/8.4.0}} --> Polly.Core/8.4.0
-Polly.Core/8.4.0 --> Microsoft.Bcl.AsyncInterfaces/6.0.0
-Polly.Core/8.4.0 --> Microsoft.Bcl.TimeProvider/8.0.0
+Microsoft.Bcl.TimeProvider[Microsoft.Bcl.TimeProvider#64;8.0.0] --> Microsoft.Bcl.AsyncInterfaces[Microsoft.Bcl.AsyncInterfaces#64;6.0.0]
+NETStandard.Library{{NETStandard.Library#64;2.0.3}} --> Microsoft.NETCore.Platforms[Microsoft.NETCore.Platforms#64;1.1.0]
+Polly{{Polly#64;8.4.0}} --> Polly.Core[Polly.Core#64;8.4.0]
+Polly.Core --> Microsoft.Bcl.AsyncInterfaces
+Polly.Core --> Microsoft.Bcl.TimeProvider
 
-class Microsoft.Bcl.AsyncInterfaces/6.0.0 default
-click Microsoft.Bcl.AsyncInterfaces/6.0.0 "https://www.nuget.org/packages/Microsoft.Bcl.AsyncInterfaces/6.0.0" "Microsoft.Bcl.AsyncInterfaces 6.0.0"
-class Microsoft.Bcl.TimeProvider/8.0.0 default
-click Microsoft.Bcl.TimeProvider/8.0.0 "https://www.nuget.org/packages/Microsoft.Bcl.TimeProvider/8.0.0" "Microsoft.Bcl.TimeProvider 8.0.0"
-class Microsoft.NETCore.Platforms/1.1.0 default
-click Microsoft.NETCore.Platforms/1.1.0 "https://www.nuget.org/packages/Microsoft.NETCore.Platforms/1.1.0" "Microsoft.NETCore.Platforms 1.1.0"
-class NETStandard.Library/2.0.3 root
-class NETStandard.Library/2.0.3 default
-click NETStandard.Library/2.0.3 "https://www.nuget.org/packages/NETStandard.Library/2.0.3" "NETStandard.Library 2.0.3"
-class Polly/8.4.0 root
-class Polly/8.4.0 default
-click Polly/8.4.0 "https://www.nuget.org/packages/Polly/8.4.0" "Polly 8.4.0"
-class Polly.Core/8.4.0 default
-click Polly.Core/8.4.0 "https://www.nuget.org/packages/Polly.Core/8.4.0" "Polly.Core 8.4.0"
+class Microsoft.Bcl.AsyncInterfaces default
+click Microsoft.Bcl.AsyncInterfaces "https://www.nuget.org/packages/Microsoft.Bcl.AsyncInterfaces/6.0.0" "Microsoft.Bcl.AsyncInterfaces 6.0.0"
+class Microsoft.Bcl.TimeProvider default
+click Microsoft.Bcl.TimeProvider "https://www.nuget.org/packages/Microsoft.Bcl.TimeProvider/8.0.0" "Microsoft.Bcl.TimeProvider 8.0.0"
+class Microsoft.NETCore.Platforms default
+click Microsoft.NETCore.Platforms "https://www.nuget.org/packages/Microsoft.NETCore.Platforms/1.1.0" "Microsoft.NETCore.Platforms 1.1.0"
+class NETStandard.Library root
+class NETStandard.Library default
+click NETStandard.Library "https://www.nuget.org/packages/NETStandard.Library/2.0.3" "NETStandard.Library 2.0.3"
+class Polly root
+class Polly default
+click Polly "https://www.nuget.org/packages/Polly/8.4.0" "Polly 8.4.0"
+class Polly.Core default
+click Polly.Core "https://www.nuget.org/packages/Polly.Core/8.4.0" "Polly.Core 8.4.0"

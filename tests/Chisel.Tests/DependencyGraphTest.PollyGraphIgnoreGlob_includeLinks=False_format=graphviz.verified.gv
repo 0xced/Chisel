@@ -5,16 +5,16 @@ digraph
   rankdir=LR
   node [ fontname = "Segoe UI, sans-serif", shape = box, style = filled, fillcolor = aquamarine, color = "#009061", fontcolor = "#333333" ]
 
-  "Microsoft.Bcl.TimeProvider/8.0.0" -> "Microsoft.Bcl.AsyncInterfaces/6.0.0"
-  "NETStandard.Library/2.0.3" -> "Microsoft.NETCore.Platforms/1.1.0"
-  "Polly/8.4.0" -> "Polly.Core/8.4.0"
-  "Polly.Core/8.4.0" -> "Microsoft.Bcl.AsyncInterfaces/6.0.0"
-  "Polly.Core/8.4.0" -> "Microsoft.Bcl.TimeProvider/8.0.0"
+  "Microsoft.Bcl.TimeProvider@8.0.0" -> "Microsoft.Bcl.AsyncInterfaces@6.0.0"
+  "NETStandard.Library@2.0.3" -> "Microsoft.NETCore.Platforms@1.1.0"
+  "Polly@8.4.0" -> "Polly.Core@8.4.0"
+  "Polly.Core@8.4.0" -> "Microsoft.Bcl.AsyncInterfaces@6.0.0"
+  "Polly.Core@8.4.0" -> "Microsoft.Bcl.TimeProvider@8.0.0"
 
-  "Microsoft.Bcl.AsyncInterfaces/6.0.0"
-  "Microsoft.Bcl.TimeProvider/8.0.0"
-  "Microsoft.NETCore.Platforms/1.1.0"
-  "NETStandard.Library/2.0.3" [ shape = hexagon, penwidth = 4 ]
-  "Polly/8.4.0" [ shape = hexagon, penwidth = 4 ]
-  "Polly.Core/8.4.0"
+  "Microsoft.Bcl.AsyncInterfaces@6.0.0"
+  "Microsoft.Bcl.TimeProvider@8.0.0"
+  "Microsoft.NETCore.Platforms@1.1.0"
+  "NETStandard.Library@2.0.3" [ shape = hexagon, penwidth = 4 ]
+  "Polly@8.4.0" [ shape = hexagon, penwidth = 4 ]
+  "Polly.Core@8.4.0"
 }
