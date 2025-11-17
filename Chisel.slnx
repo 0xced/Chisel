@@ -1,0 +1,28 @@
+<Solution>
+  <Folder Name="/meta/">
+    <File Path=".github/dependabot.yml" />
+    <File Path=".github/workflows/continuous-integration.yml" />
+    <File Path="CHANGELOG.md" />
+    <File Path="CODE_OF_CONDUCT.md" />
+    <File Path="global.json" />
+    <File Path="LICENSE" />
+    <File Path="MAINTENANCE.md" />
+    <File Path="NuGet.config" />
+    <File Path="README.md" />
+    <File Path="src/Chisel/packages.lock.json" />
+  </Folder>
+  <Folder Name="/samples/">
+    <Project Path="samples/Microsoft.Identity.Client/Microsoft.Identity.Client.csproj" />
+    <Project Path="samples/MongoDbSample/MongoDbSample.csproj" />
+    <Project Path="samples/SqlClientSample/SqlClientSample.csproj" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/Chisel/Chisel.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Chisel.Tests/Chisel.Tests.csproj" />
+    <Project Path="tests/TestApp/TestApp.csproj">
+      <Build Project="false" />
+    </Project>
+  </Folder>
+</Solution>
