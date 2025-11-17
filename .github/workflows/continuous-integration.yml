@@ -32,6 +32,8 @@ jobs:
           echo "NUGET_PACKAGES=D:\nuget" >> $env:GITHUB_ENV
       - name: 🧑‍🔧 Install .NET SDK
         uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: 10.0.x
       - name: ℹ️ Show .NET info
         run: dotnet --info
       - name: 💾 Retrieve cached NuGet packages
