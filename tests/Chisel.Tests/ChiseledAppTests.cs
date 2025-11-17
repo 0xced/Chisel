@@ -52,7 +52,7 @@ public sealed class ChiseledAppTests(ITestOutputHelper outputHelper, TestApp tes
         stdOut.Should().Contain("[OK] ");
         stdErr.Should().BeEmpty();
 
-        await Verifier.VerifyFile(testApp.IntermediateOutputPath.File("TestApp.Chisel.mermaid"))
+        await Verifier.VerifyFile(testApp.IntermediateOutputPath.File("TestApp.Chisel.gv"))
             .UseTextForParameters(OperatingSystem.IsWindows() ? "windows" : "non-windows")
             .DisableRequireUniquePrefix();
     }

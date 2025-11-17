@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <PropertyGroup>
+    <ChiselGraphName>TestApp.Chisel.gv</ChiselGraphName>
     <ChiselGraphTitle>none</ChiselGraphTitle>
     <ChiselGraphIncludeLinks>true</ChiselGraphIncludeLinks>
     <ChiselGraphIncludeVersions>true</ChiselGraphIncludeVersions>
