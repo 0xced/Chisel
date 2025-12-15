@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased][Unreleased]
+## [1.2.0][1.2.0] - 2025-12-15
 
 * All nodes of the graph can now contain clickable links to their corresponding nuget.org page. This new behavior can be enabled by setting the `ChiselGraphIncludeLinks` MSBuild property to `true`. See the [ChiselGraphIncludeLinks](https://github.com/0xced/Chisel#chiselgraphincludelinks) documentation in the README for more information.
 * The graph now includes a title that defaults to `Dependency graph of $(MSBuildProjectName) ($(TargetFramework))`. See the [ChiselGraphTitle](https://github.com/0xced/Chisel#chiselgraphtitle) documentation in the README for more information.
@@ -76,7 +76,8 @@ class Microsoft.Data.SqlClient default
 
 Initial release on NuGet
 
-[Unreleased]: https://github.com/0xced/Chisel/compare/1.1.2...HEAD
+[Unreleased]: https://github.com/0xced/Chisel/compare/1.2.0...HEAD
+[1.2.0]: https://github.com/0xced/Chisel/compare/1.1.2...1.2.0
 [1.1.2]: https://github.com/0xced/Chisel/compare/1.1.1...1.1.2
 [1.1.1]: https://github.com/0xced/Chisel/compare/1.1.0...1.1.1
 [1.1.0]: https://github.com/0xced/Chisel/compare/1.0.0...1.1.0
