@@ -3,7 +3,6 @@ name: Continuous Integration
 on: push
 
 env:
-  Configuration: Release
   ContinuousIntegrationBuild: true
   DOTNET_CLI_TELEMETRY_OPTOUT: true
   DOTNET_NOLOGO: true
@@ -48,9 +47,9 @@ jobs:
       - name: ⚙️ Restore NuGet packages
         run: dotnet restore
       - name: 🏗 Build solution
-        run: dotnet build --no-restore
+        run: dotnet build --no-restore --configuration Release
       - name: 🧪 Run tests
-        run: dotnet test --no-build
+        run: dotnet test --no-build --configuration Release
       - name: 📤 Upload received files from failing tests
         uses: actions/upload-artifact@v5
         if: failure()

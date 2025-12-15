@@ -17,6 +17,8 @@ namespace Chisel.Tests;
 
 public sealed class TestApp : IAsyncLifetime
 {
+    private static readonly bool IsContinuousIntegrationBuild = Environment.GetEnvironmentVariable("ContinuousIntegrationBuild") == "true";
+
     private readonly DirectoryInfo _workingDirectory;
     private readonly Dictionary<PublishMode, FileInfo> _executables;
     private string _packageVersion = "N/A";
@@ -40,7 +42,7 @@ public sealed class TestApp : IAsyncLifetime
 
     ValueTask IAsyncDisposable.DisposeAsync()
     {
-        if (Environment.GetEnvironmentVariable("ContinuousIntegrationBuild") == "true")
+        if (IsContinuousIntegrationBuild)
         {
             // The NuGet package was already built as part of the tests (PackAsync),
             // so move it to the root of the repository for the "Upload NuGet package artifact" step to pick it.
@@ -83,13 +85,18 @@ public sealed class TestApp : IAsyncLifetime
     private async Task PackAsync()
     {
         var projectFile = GetFile("src", "Chisel", "Chisel.csproj");
-        var packArgs = new[] {
+        var packArgs = new List<string> {
             "pack", projectFile.FullName,
             "--no-build",
             "--output", _workingDirectory.FullName,
             "--getProperty:PackageVersion",
         };
-        var packageVersion = await RunDotnetAsync(_workingDirectory, packArgs);
+        if (IsContinuousIntegrationBuild)
+        {
+            packArgs.Add("--configuration");
+            packArgs.Add("Release");
+        }
+        var packageVersion = await RunDotnetAsync(_workingDirectory, packArgs.ToArray());
         _packageVersion = packageVersion.TrimEnd();
     }
 
