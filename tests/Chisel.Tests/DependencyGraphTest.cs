@@ -178,11 +178,14 @@ public class DependencyGraphTest
         await Verify(writer.ToString(), format == "graphviz" ? "gv" : "mmd").UseParameters(includeLinks, format);
     }
 
-    [Fact]
-    public void ValidProjectVersion()
+    [Theory]
+    [InlineData("win-x64")]
+    [InlineData("")]
+    [InlineData(null)]
+    public void ValidProjectVersion(string? rid)
     {
         var lockFile = new LockFileFormat().Read(GetAssetsPath("SqlClientGraph.json"));
-        var (packages, roots) = lockFile.ReadPackages(tfm: "net8.0-windows", rid: "win-x64", package => package.IsProjectReference || SqlClientCopyLocalPackages.Contains(package.Name));
+        var (packages, roots) = lockFile.ReadPackages(tfm: "net8.0-windows", rid: rid, package => package.IsProjectReference || SqlClientCopyLocalPackages.Contains(package.Name));
         var graph = new DependencyGraph(packages, roots, ignores: []);
 
         graph.EnumerateUnsatisfiedProjectDependencies().Should().BeEmpty();

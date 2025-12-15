@@ -11,6 +11,7 @@ internal static class LockFileExtensions
 {
     public static (IReadOnlyDictionary<string, Package> Packages, IReadOnlyCollection<Package> Roots) ReadPackages(this LockFile lockFile, string tfm, string? rid, Predicate<Package>? filter = null)
     {
+        var runtimeIdentifier = string.IsNullOrEmpty(rid) ? null : rid;
         var frameworks = lockFile.PackageSpec?.TargetFrameworks?.Where(e => e.TargetAlias == tfm).ToList() ?? [];
         var framework = frameworks.Count switch
         {
@@ -18,9 +19,9 @@ internal static class LockFileExtensions
             1 => frameworks[0],
             _ => throw new ArgumentException($"Multiple target frameworks are matching \"{tfm}\" in assets at \"{lockFile.Path}\" (JSON path: project.frameworks.*.targetAlias)", nameof(tfm)),
         };
-        var targets = lockFile.Targets.Where(e => e.TargetFramework == framework.FrameworkName && (string.IsNullOrEmpty(rid) || e.RuntimeIdentifier == rid)).ToList();
+        var targets = lockFile.Targets.Where(e => e.TargetFramework == framework.FrameworkName && e.RuntimeIdentifier == runtimeIdentifier).ToList();
         // https://github.com/NuGet/NuGet.Client/blob/6.10.0.52/src/NuGet.Core/NuGet.ProjectModel/LockFile/LockFileTarget.cs#L17
-        var targetId = framework.FrameworkName + (string.IsNullOrEmpty(rid) ? "" : $"/{rid}");
+        var targetId = framework.FrameworkName + (string.IsNullOrEmpty(runtimeIdentifier) ? "" : $"/{runtimeIdentifier}");
         var target = targets.Count switch
         {
             0 => throw new ArgumentException($"Target \"{targetId}\" is not available in assets at \"{lockFile.Path}\" (JSON path: targets)", nameof(rid)),
