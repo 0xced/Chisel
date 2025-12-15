@@ -313,14 +313,14 @@ defaults to `false`
 
 Since version 1.2.0, all nodes of the graph can contain clickable links to their corresponding nuget.org page.
 
-For example, clicking on the `Npgsql` box below opens https://www.nuget.org/packages/Npgsql/9.0.3
+For example, clicking on the `Npgsql` box below opens https://www.nuget.org/packages/Npgsql/10.0.0
 
 ```mermaid
 graph LR
 classDef default fill:aquamarine,stroke:#009061,color:#333333
 Npgsql.EntityFrameworkCore.PostgreSQL --> Npgsql
-click Npgsql.EntityFrameworkCore.PostgreSQL "https://www.nuget.org/packages/Npgsql.EntityFrameworkCore.PostgreSQL/9.0.4" "Npgsql.EntityFrameworkCore.PostgreSQL 9.0.4"
-click Npgsql "https://www.nuget.org/packages/Npgsql/9.0.3" "Npgsql 9.0.3"
+click Npgsql.EntityFrameworkCore.PostgreSQL "https://www.nuget.org/packages/Npgsql.EntityFrameworkCore.PostgreSQL/10.0.0" "Npgsql.EntityFrameworkCore.PostgreSQL 10.0.0"
+click Npgsql "https://www.nuget.org/packages/Npgsql/10.0.0" "Npgsql 10.0.0"
 ```
 
 To enable links, set the `ChiselGraphIncludeLinks` property to `true`.
