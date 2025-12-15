@@ -41,7 +41,7 @@ public class Chisel : Task
     public string IntermediateOutputPath { get; set; } = "";
 
     /// <summary>
-    /// The name of the project referencing Chisel. Used to produce a high quality warnings.
+    /// The name of the project referencing Chisel. Used to produce high-quality warnings.
     /// </summary>
     public string ProjectName { get; set; } = "";
 
