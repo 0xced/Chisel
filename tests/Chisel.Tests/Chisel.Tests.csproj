@@ -4,6 +4,11 @@
     <TargetFramework>net8.0</TargetFramework>
     <OutputType>exe</OutputType>
     <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- UseMicrosoftTestingPlatformRunner is required for JetBrains Rider to see the tests -->
+    <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
     <!-- TestingPlatformDotnetTestSupport is ignored with the .NET 10 SDK but is required for older SDKs -->
     <TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
   </PropertyGroup>
