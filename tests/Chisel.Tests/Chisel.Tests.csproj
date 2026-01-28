@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <!-- UseMicrosoftTestingPlatformRunner is required for JetBrains Rider to see the tests -->
+    <!-- UseMicrosoftTestingPlatformRunner is required for JetBrains Rider to see the tests when discovery is configured to use metadata (Settings | Build, Execution, Deployment | Unit Testing | xUnit.net) -->
     <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
     <!-- TestingPlatformDotnetTestSupport is ignored with the .NET 10 SDK but is required for older SDKs -->
     <TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
