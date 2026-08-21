@@ -6,7 +6,6 @@
     <LangVersion>latest</LangVersion>
     <DebugType>embedded</DebugType>
     <UseCurrentRuntimeIdentifier>true</UseCurrentRuntimeIdentifier>
-    <SelfContained>false</SelfContained>
     <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
   </PropertyGroup>

@@ -107,6 +107,12 @@ public sealed class TestApp : IAsyncLifetime
         var restoreArgs = new[] {
             "restore",
             "--configfile", "nuget.config",
+            // At restore time, SelfContained must be set to true, else PublishAsync() command fails with this error
+            // $ dotnet publish --no-restore --output ~/Chisel/tests/TestApp-net8.0/publish/SingleFile -p:SelfContained=false -p:PublishSingleFile=True --getProperty:IntermediateOutputPath
+            // > /usr/local/share/dotnet/sdk/10.0.400/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.Sdk.FrameworkReferenceResolution.targets(544,5):
+            // > error NETSDK1112: The runtime pack for Microsoft.NETCore.App.Runtime.osx-arm64 was not downloaded.
+            // > Try running a NuGet restore with the RuntimeIdentifier 'osx-arm64'. [~/Chisel/tests/TestApp-net8.0/TestApp.csproj]
+            "-p:SelfContained=true",
             $"-p:ChiselPackageVersion={_packageVersion}",
         };
         await RunDotnetAsync(_workingDirectory, restoreArgs);
@@ -122,6 +128,7 @@ public sealed class TestApp : IAsyncLifetime
             "publish",
             "--no-restore",
             "--output", outputDirectory.FullName,
+            "-p:SelfContained=false",
             $"-p:PublishSingleFile={publishMode is PublishMode.SingleFile}",
             "--getProperty:IntermediateOutputPath",
         };
