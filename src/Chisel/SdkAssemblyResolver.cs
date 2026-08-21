@@ -66,17 +66,17 @@ internal static class SdkAssemblyResolver
         }
     }
 
-    private static IEnumerable<string> GetNuGetDirectories(AppDomain? appDomain, string assemblyFileName, string dotnet, Action<string> log)
+    private static HashSet<string> GetNuGetDirectories(AppDomain? appDomain, string assemblyFileName, string dotnet, Action<string> log)
     {
         var nugetDirectories = new HashSet<string>();
 
-        var loadedAssemblies = appDomain?.GetAssemblies().Where(e => e.GetName().Name.StartsWith("NuGet.")).ToList() ?? [];
+        var loadedAssemblies = appDomain?.GetAssemblies().Where(e => e.GetName().Name?.StartsWith("NuGet.") == true).ToList() ?? [];
         foreach (var (assembly, i) in loadedAssemblies.Select((e, i) => (e, i + 1)))
         {
             log($"Already loaded NuGet assembly from \"{appDomain?.FriendlyName}\" ({i}/{loadedAssemblies.Count}): {assembly} @ {assembly.Location}");
         }
 
-        var loadedDirectories = loadedAssemblies.OrderBy(e => e.GetName().Name == "NuGet.ProjectModel" ? 0 : 1).Select(e => Path.GetDirectoryName(e.Location)).Distinct().ToList();
+        var loadedDirectories = loadedAssemblies.OrderBy(e => e.GetName().Name == "NuGet.ProjectModel" ? 0 : 1).Select(e => Path.GetDirectoryName(e.Location)).OfType<string>().Distinct().ToList();
         foreach (var (directory, i) in loadedDirectories.Select((e, i) => (e, i + 1)))
         {
             nugetDirectories.Add(directory);
@@ -98,7 +98,10 @@ internal static class SdkAssemblyResolver
                 foreach (var assemblyFilePath in Directory.EnumerateFiles(toolsDirectory, assemblyFileName, SearchOption.AllDirectories))
                 {
                     var nugetDirectory = Path.GetDirectoryName(assemblyFilePath);
-                    nugetDirectories.Add(nugetDirectory);
+                    if (nugetDirectory != null)
+                    {
+                        nugetDirectories.Add(nugetDirectory);
+                    }
                 }
             }
             else
@@ -124,15 +127,13 @@ internal static class SdkAssemblyResolver
 
     private static DirectoryInfo? GetDotnetSdkDirectory(string dotnet, Action<string> log)
     {
-        var listSdks = new Process
+        using var listSdks = new Process();
+        listSdks.StartInfo = new ProcessStartInfo(dotnet)
         {
-            StartInfo = new ProcessStartInfo(dotnet)
-            {
-                Arguments = "--list-sdks",
-                UseShellExecute = false,
-                CreateNoWindow = true,
-                RedirectStandardOutput = true,
-            },
+            Arguments = "--list-sdks",
+            UseShellExecute = false,
+            CreateNoWindow = true,
+            RedirectStandardOutput = true,
         };
         log($"▶️ {listSdks.StartInfo.FileName} {listSdks.StartInfo.Arguments}");
         listSdks.Start();
