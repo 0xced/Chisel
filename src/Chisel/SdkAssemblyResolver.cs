@@ -162,7 +162,11 @@ internal static class SdkAssemblyResolver
 
     internal static void DebugLog(string message)
     {
+#if NUGRAPH
+        var debugFile = Environment.GetEnvironmentVariable("NUGRAPH_DEBUG_FILE");
+#else
         var debugFile = Environment.GetEnvironmentVariable("CHISEL_DEBUG_FILE");
+#endif
         if (debugFile != null)
         {
             using var stream = new FileStream(debugFile, FileMode.Append);
