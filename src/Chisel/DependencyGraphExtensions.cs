@@ -13,7 +13,7 @@ internal static class DependencyGraphExtensions
     public static async Task AddLinksAsync(this DependencyGraph dependencyGraph, ILogger? logger = null, CancellationToken cancellationToken = default)
     {
         var repository = Repository.Factory.GetCoreV3(NuGetConstants.V3FeedUrl);
-        var findPackageById = await repository.GetResourceAsync<FindPackageByIdResource>(cancellationToken);
+        var findPackageById = await repository.GetResourceAsync<FindPackageByIdResource>(cancellationToken) ?? throw new InvalidOperationException("FindPackageByIdResource is unavailable");
         using var sourceCacheContext = new SourceCacheContext();
         var packages = dependencyGraph.Packages;
 
