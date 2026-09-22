@@ -12,7 +12,7 @@ using Testcontainers.MongoDb;
  * [1]: https://www.mongodb.com/docs/drivers/csharp/current/fundamentals/authentication/#std-label-csharp-mongodb-aws
  */
 
-await using var mongoContainer = new MongoDbBuilder().Build();
+await using var mongoContainer = new MongoDbBuilder("mongo:8.0").Build();
 try
 {
     await mongoContainer.StartAsync();
