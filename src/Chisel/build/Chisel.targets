@@ -27,6 +27,7 @@
           GraphName="$(ChiselGraphName)"
           GraphDirection="$(ChiselGraphDirection)"
           GraphTitle="$(ChiselGraphTitle)"
+          GraphLayout="$(ChiselGraphLayout)"
           GraphIncludeLinks="$(ChiselGraphIncludeLinks)"
           GraphIncludeVersions="$(ChiselGraphIncludeVersions)"
           GraphWriteIgnoredPackages="$(ChiselGraphWriteIgnoredPackages)"

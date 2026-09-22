@@ -7,6 +7,7 @@
     <ChiselGraphName Condition="$(ChiselGraphName) == ''">$(MSBuildProjectName).Chisel.mermaid</ChiselGraphName>
     <!-- Use ChiselGraphTitle = none to disable the graph title -->
     <ChiselGraphTitle Condition="$(ChiselGraphTitle) == ''" />
+    <ChiselGraphLayout Condition="$(ChiselGraphLayout) == ''" />
     <ChiselGraphDirection Condition="$(ChiselGraphDirection) == ''">LeftToRight</ChiselGraphDirection>
     <ChiselGraphIncludeLinks Condition="$(ChiselGraphIncludeLinks) == ''">false</ChiselGraphIncludeLinks>
     <ChiselGraphIncludeVersions Condition="$(ChiselGraphIncludeVersions) == ''">false</ChiselGraphIncludeVersions>

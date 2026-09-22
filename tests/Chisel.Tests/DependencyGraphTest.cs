@@ -91,6 +91,7 @@ public class DependencyGraphTest
         {
             Direction = GraphDirection.LeftToRight,
             Title = null,
+            Layout = null,
             IncludeVersions = false,
             WriteIgnoredPackages = writeIgnoredPackages,
         };
@@ -119,6 +120,7 @@ public class DependencyGraphTest
         {
             Direction = GraphDirection.LeftToRight,
             Title = "Dependency graph of\r\n\"Microsoft.Data.SqlClient\"",
+            Layout = null,
             IncludeVersions = true,
             WriteIgnoredPackages = false,
         };
@@ -170,6 +172,7 @@ public class DependencyGraphTest
         {
             Direction = GraphDirection.LeftToRight,
             Title = null,
+            Layout = "elk",
             IncludeVersions = true,
             WriteIgnoredPackages = false,
         };

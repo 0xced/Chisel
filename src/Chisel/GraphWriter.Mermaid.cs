@@ -17,15 +17,7 @@ internal sealed class MermaidWriter(TextWriter writer) : GraphWriter(writer)
 
     protected override void WriteHeader(bool hasProject, bool hasIgnored, bool hasRemoved, bool hasNuGetLink, GraphOptions options)
     {
-        if (!string.IsNullOrWhiteSpace(options.Title))
-        {
-            // Multi-line titles are not yet supported, anticipating https://github.com/mermaid-js/mermaid/pull/6444
-            var title = options.Title!.Replace("\r", "").Replace("\n", "\\n");
-            Writer.WriteLine("---");
-            Writer.WriteLine($"title: {title}");
-            Writer.WriteLine("---");
-            Writer.WriteLine();
-        }
+        WriteFrontmatter(options);
 
         Writer.WriteLine($"%% {GetGeneratedByComment()}");
         Writer.WriteLine();
@@ -48,6 +40,35 @@ internal sealed class MermaidWriter(TextWriter writer) : GraphWriter(writer)
         if (hasNuGetLink)
             Writer.WriteLine(ClassDef("private", options.Color.Private));
         Writer.WriteLine();
+    }
+
+    private void WriteFrontmatter(GraphOptions options)
+    {
+        // Multi-line titles are not yet supported, anticipating https://github.com/mermaid-js/mermaid/pull/6444
+        var title = options.Title?.Replace("\r", "").Replace("\n", "\\n");
+        var hasTitle = !string.IsNullOrWhiteSpace(title);
+
+        var layout = options.Layout;
+        var hasLayout = !string.IsNullOrWhiteSpace(layout);
+
+        if (hasTitle || hasLayout)
+        {
+            Writer.WriteLine("---");
+
+            if (hasTitle)
+            {
+                Writer.WriteLine($"title: {title}");
+            }
+
+            if (hasLayout)
+            {
+                Writer.WriteLine("config:");
+                Writer.WriteLine($"  layout: {layout}");
+            }
+
+            Writer.WriteLine("---");
+            Writer.WriteLine();
+        }
     }
 
     protected override void WriteFooter()
