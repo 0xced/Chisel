@@ -14,6 +14,46 @@ namespace Chisel.Tests;
 public class DependencyGraphTest
 {
     [Theory]
+    [InlineData("graphviz")]
+    [InlineData("mermaid")]
+    public async Task EfCoreBulkExtensionsGraph(string format)
+    {
+        var lockFile = new LockFileFormat().Read(GetAssetsPath("EFCore.BulkExtensionsGraph.json"));
+        var (packages, roots) = lockFile.ReadPackages(tfm: "net48", rid: null);
+        var graph = new DependencyGraph(packages, roots, ignores: []);
+        var (removed, notFound, removedRoots) = graph.Remove([ "Microsoft.EntityFrameworkCore.Sqlite" ]);
+        await using var writer = new StringWriter();
+        var graphWriter = format == "graphviz" ? GraphWriter.Graphviz(writer) : GraphWriter.Mermaid(writer);
+        var graphOptions = new GraphOptions
+        {
+            Direction = GraphDirection.LeftToRight,
+            Title = null,
+            Layout = null,
+            IncludeVersions = false,
+            WriteIgnoredPackages = true,
+        };
+        graphWriter.Write(graph, graphOptions);
+
+        removed.Should().BeEquivalentTo([
+            "Microsoft.Data.Sqlite.Core",
+            "Microsoft.DotNet.PlatformAbstractions",
+            "Microsoft.EntityFrameworkCore.Sqlite",
+            "Microsoft.EntityFrameworkCore.Sqlite.Core",
+            "Microsoft.Extensions.DependencyModel",
+            "Newtonsoft.Json",
+            "SQLitePCLRaw.bundle_e_sqlite3",
+            "SQLitePCLRaw.core",
+            "SQLitePCLRaw.lib.e_sqlite3",
+            "SQLitePCLRaw.provider.dynamic_cdecl",
+            "System.Runtime.InteropServices.RuntimeInformation",
+        ]);
+        notFound.Should().BeEmpty();
+        removedRoots.Should().BeEmpty();
+
+        await Verify(writer.ToString(), format == "graphviz" ? "gv" : "mmd").UseParameters(format);
+    }
+
+    [Theory]
     [CombinatorialData]
     public async Task MongoDbGraph(bool writeIgnoredPackages, [CombinatorialValues("graphviz", "mermaid")] string format)
     {
