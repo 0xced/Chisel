@@ -4,6 +4,30 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased][Unreleased]
+
+* Chisel now properly handles meta-packages, i.e., packages with no contents/assets, only dependencies to other packages. The meta-packages are rendered with the _ghostwhite_ color; in this example, the `PicoXLSX` is a meta-package.
+
+```mermaid
+graph LR
+
+classDef root stroke-width:4px
+classDef default fill:aquamarine,stroke:#009061,color:#333333
+classDef meta fill:ghostwhite,stroke:#A1A1A6
+
+NanoXLSX.Formatting --> NanoXLSX.Core
+NanoXLSX.Writer --> NanoXLSX.Core
+PicoXLSX{{PicoXLSX}} --> NanoXLSX.Core
+PicoXLSX --> NanoXLSX.Formatting
+PicoXLSX --> NanoXLSX.Writer
+
+class NanoXLSX.Core default
+class NanoXLSX.Formatting default
+class NanoXLSX.Writer default
+class PicoXLSX root
+class PicoXLSX meta
+```
+
 ## [1.2.0][1.2.0] - 2025-12-15
 
 * All nodes of the graph can now contain clickable links to their corresponding nuget.org page. This new behavior can be enabled by setting the `ChiselGraphIncludeLinks` MSBuild property to `true`. See the [ChiselGraphIncludeLinks](https://github.com/0xced/Chisel#chiselgraphincludelinks) documentation in the README for more information.

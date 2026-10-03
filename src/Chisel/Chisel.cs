@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
@@ -195,8 +194,7 @@ public class Chisel : Task
     private DependencyGraph ProcessGraph()
     {
         var lockFile = new NuGet.ProjectModel.LockFileFormat().Read(ProjectAssetsFile);
-        var copyLocalPackages = new HashSet<string>(RuntimeAssemblies.Select(NuGetPackageId).Concat(NativeLibraries.Select(NuGetPackageId)));
-        var (packages, roots) = lockFile.ReadPackages(TargetFramework, RuntimeIdentifier, package => package.IsProjectReference || copyLocalPackages.Contains(package.Name));
+        var (packages, roots) = lockFile.ReadPackages(TargetFramework, RuntimeIdentifier);
         var graph = new DependencyGraph(packages, roots, GraphIgnores.Select(e => e.ItemSpec));
         var (removed, notFound, removedRoots) = graph.Remove(ChiselPackages.Select(e => e.ItemSpec));
 

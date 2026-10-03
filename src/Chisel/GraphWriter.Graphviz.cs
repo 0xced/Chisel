@@ -6,7 +6,7 @@ internal sealed class GraphvizWriter(TextWriter writer) : GraphWriter(writer)
 {
     public override string FormatName => "Graphviz";
 
-    protected override void WriteHeader(bool hasProject, bool hasIgnored, bool hasRemoved, bool hasNuGetLink, GraphOptions options)
+    protected override void WriteHeader(bool hasProject, bool hasIgnored, bool hasRemoved, bool hasNuGetLink, bool hasMetaPackage, GraphOptions options)
     {
         Writer.WriteLine($"# {GetGeneratedByComment()}");
         Writer.WriteLine();
@@ -46,6 +46,7 @@ internal sealed class GraphvizWriter(TextWriter writer) : GraphWriter(writer)
             PackageState.Ignore => options.Color.Ignored,
             PackageState.Remove => options.Color.Removed,
             _ when package.IsProjectReference => options.Color.Project,
+            _ when package.IsMetaPackage => options.Color.Meta,
             _ when hasNuGetLink && package.Link == null => options.Color.Private,
             _ => (Color?)null,
         };

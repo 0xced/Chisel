@@ -9,18 +9,22 @@ graph LR
 
 classDef root stroke-width:4px
 classDef default fill:aquamarine,stroke:#009061,color:#333333
+classDef meta fill:ghostwhite,stroke:#A1A1A6
 
-Microsoft.Bcl.TimeProvider[Microsoft.Bcl.TimeProvider#64;8.0.0] --> Microsoft.Bcl.AsyncInterfaces[Microsoft.Bcl.AsyncInterfaces#64;6.0.0]
-NETStandard.Library{{NETStandard.Library#64;2.0.3}} --> Microsoft.NETCore.Platforms[Microsoft.NETCore.Platforms#64;1.1.0]
+Microsoft.Bcl.AsyncInterfaces[Microsoft.Bcl.AsyncInterfaces#64;6.0.0] --> System.Threading.Tasks.Extensions[System.Threading.Tasks.Extensions#64;4.5.4]
+Microsoft.Bcl.TimeProvider[Microsoft.Bcl.TimeProvider#64;8.0.0] --> Microsoft.Bcl.AsyncInterfaces
 Polly{{Polly#64;8.4.0}} --> Polly.Core[Polly.Core#64;8.4.0]
 Polly.Core --> Microsoft.Bcl.AsyncInterfaces
 Polly.Core --> Microsoft.Bcl.TimeProvider
+Polly.Core --> System.ComponentModel.Annotations[System.ComponentModel.Annotations#64;4.5.0]
+Polly.Core --> System.Threading.Tasks.Extensions
+System.Threading.Tasks.Extensions --> System.Runtime.CompilerServices.Unsafe[System.Runtime.CompilerServices.Unsafe#64;4.5.3]
 
 class Microsoft.Bcl.AsyncInterfaces default
 class Microsoft.Bcl.TimeProvider default
-class Microsoft.NETCore.Platforms default
-class NETStandard.Library root
-class NETStandard.Library default
 class Polly root
 class Polly default
 class Polly.Core default
+class System.ComponentModel.Annotations default
+class System.Runtime.CompilerServices.Unsafe default
+class System.Threading.Tasks.Extensions default

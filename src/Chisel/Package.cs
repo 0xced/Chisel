@@ -6,11 +6,12 @@ using NuGet.Versioning;
 namespace Chisel;
 
 [DebuggerDisplay("{Name}/{Version}")]
-internal sealed class Package(string name, NuGetVersion version, bool isProjectReference, IReadOnlyCollection<Dependency> dependencies) : IEquatable<Package>
+internal sealed class Package(string name, NuGetVersion version, bool isProjectReference, bool isMetaPackage, IReadOnlyCollection<Dependency> dependencies) : IEquatable<Package>
 {
     public string Name { get; } = name;
     public NuGetVersion Version { get; } = version;
     public bool IsProjectReference { get; } = isProjectReference;
+    public bool IsMetaPackage { get; } = isMetaPackage;
     public IReadOnlyCollection<Dependency> Dependencies { get; } = dependencies;
 
     public bool IsRoot { get; set; }

@@ -18,7 +18,8 @@ internal abstract class GraphWriter(TextWriter writer)
         var hasIgnored = graph.Packages.Any(e => e.State == PackageState.Ignore) && options.WriteIgnoredPackages;
         var hasRemoved = graph.Packages.Any(e => e.State == PackageState.Remove);
         var hasNuGetLink = graph.Packages.Any(e => e.Link?.Host == "www.nuget.org") && graph.Packages.Any(e => e.Link == null);
-        WriteHeader(hasProject: hasProject, hasIgnored: hasIgnored, hasRemoved: hasRemoved, hasNuGetLink: hasNuGetLink, options);
+        var hasMetaPackage = graph.Packages.Any(e => e.IsMetaPackage);
+        WriteHeader(hasProject: hasProject, hasIgnored: hasIgnored, hasRemoved: hasRemoved, hasNuGetLink: hasNuGetLink, hasMetaPackage: hasMetaPackage, options);
         WriteEdges(graph, options);
         Writer.WriteLine();
         WriteNodes(graph, hasNuGetLink, options);
@@ -26,7 +27,7 @@ internal abstract class GraphWriter(TextWriter writer)
     }
 
     public abstract string FormatName { get; }
-    protected abstract void WriteHeader(bool hasProject, bool hasIgnored, bool hasRemoved, bool hasNuGetLink, GraphOptions options);
+    protected abstract void WriteHeader(bool hasProject, bool hasIgnored, bool hasRemoved, bool hasNuGetLink, bool hasMetaPackage, GraphOptions options);
     protected abstract void WriteFooter();
     protected abstract void WriteRoot(Package package, GraphOptions options);
     protected abstract void WriteNode(Package package, bool hasNuGetLink, GraphOptions options);

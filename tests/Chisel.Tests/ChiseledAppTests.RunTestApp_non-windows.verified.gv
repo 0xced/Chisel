@@ -11,9 +11,11 @@ digraph
   "Azure.Identity@1.14.2" -> "Azure.Core@1.47.1"
   "Azure.Identity@1.14.2" -> "Microsoft.Identity.Client@4.73.1"
   "Azure.Identity@1.14.2" -> "Microsoft.Identity.Client.Extensions.Msal@4.73.1"
+  "Azure.Identity@1.14.2" -> "System.Memory@4.5.5"
   "Microsoft.Data.SqlClient@6.1.3" -> "Azure.Core@1.47.1"
   "Microsoft.Data.SqlClient@6.1.3" -> "Azure.Identity@1.14.2"
   "Microsoft.Data.SqlClient@6.1.3" -> "Microsoft.Bcl.Cryptography@8.0.0"
+  "Microsoft.Data.SqlClient@6.1.3" -> "Microsoft.Data.SqlClient.SNI.runtime@6.0.2"
   "Microsoft.Data.SqlClient@6.1.3" -> "Microsoft.Extensions.Caching.Memory@8.0.1"
   "Microsoft.Data.SqlClient@6.1.3" -> "Microsoft.IdentityModel.JsonWebTokens@7.7.1"
   "Microsoft.Data.SqlClient@6.1.3" -> "Microsoft.IdentityModel.Protocols.OpenIdConnect@7.7.1"
@@ -57,6 +59,7 @@ digraph
   "Microsoft.Bcl.AsyncInterfaces@8.0.0" [ fillcolor = lightcoral, color = "#A42A2A", href="https://www.nuget.org/packages/Microsoft.Bcl.AsyncInterfaces/8.0.0" ]
   "Microsoft.Bcl.Cryptography@8.0.0" [ href="https://www.nuget.org/packages/Microsoft.Bcl.Cryptography/8.0.0" ]
   "Microsoft.Data.SqlClient@6.1.3" [ shape = hexagon, penwidth = 4, href="https://www.nuget.org/packages/Microsoft.Data.SqlClient/6.1.3" ]
+  "Microsoft.Data.SqlClient.SNI.runtime@6.0.2" [ fillcolor = ghostwhite, color = "#A1A1A6", href="https://www.nuget.org/packages/Microsoft.Data.SqlClient.SNI.runtime/6.0.2" ]
   "Microsoft.Extensions.Caching.Abstractions@8.0.0" [ href="https://www.nuget.org/packages/Microsoft.Extensions.Caching.Abstractions/8.0.0" ]
   "Microsoft.Extensions.Caching.Memory@8.0.1" [ href="https://www.nuget.org/packages/Microsoft.Extensions.Caching.Memory/8.0.1" ]
   "Microsoft.Extensions.DependencyInjection.Abstractions@8.0.2" [ href="https://www.nuget.org/packages/Microsoft.Extensions.DependencyInjection.Abstractions/8.0.2" ]
@@ -79,6 +82,7 @@ digraph
   "System.Diagnostics.EventLog@8.0.1" [ href="https://www.nuget.org/packages/System.Diagnostics.EventLog/8.0.1" ]
   "System.IdentityModel.Tokens.Jwt@7.7.1" [ fillcolor = lightcoral, color = "#A42A2A", href="https://www.nuget.org/packages/System.IdentityModel.Tokens.Jwt/7.7.1" ]
   "System.IO.Pipelines@10.0.12" [ href="https://www.nuget.org/packages/System.IO.Pipelines/10.0.12" ]
+  "System.Memory@4.5.5" [ fillcolor = lightcoral, color = "#A42A2A", href="https://www.nuget.org/packages/System.Memory/4.5.5" ]
   "System.Memory.Data@8.0.1" [ fillcolor = lightcoral, color = "#A42A2A", href="https://www.nuget.org/packages/System.Memory.Data/8.0.1" ]
   "System.Runtime.CompilerServices.Unsafe@6.0.0" [ fillcolor = lightcoral, color = "#A42A2A", href="https://www.nuget.org/packages/System.Runtime.CompilerServices.Unsafe/6.0.0" ]
   "System.Security.Cryptography.Pkcs@8.0.1" [ href="https://www.nuget.org/packages/System.Security.Cryptography.Pkcs/8.0.1" ]

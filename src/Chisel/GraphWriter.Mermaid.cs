@@ -15,7 +15,7 @@ internal sealed class MermaidWriter(TextWriter writer) : GraphWriter(writer)
         return string.IsNullOrEmpty(color.Text) ? classDef : classDef + ",color:" + color.Text;
     }
 
-    protected override void WriteHeader(bool hasProject, bool hasIgnored, bool hasRemoved, bool hasNuGetLink, GraphOptions options)
+    protected override void WriteHeader(bool hasProject, bool hasIgnored, bool hasRemoved, bool hasNuGetLink, bool hasMetaPackage, GraphOptions options)
     {
         WriteFrontmatter(options);
 
@@ -39,6 +39,8 @@ internal sealed class MermaidWriter(TextWriter writer) : GraphWriter(writer)
             Writer.WriteLine(ClassDef("removed", options.Color.Removed));
         if (hasNuGetLink)
             Writer.WriteLine(ClassDef("private", options.Color.Private));
+        if (hasMetaPackage)
+            Writer.WriteLine(ClassDef("meta", options.Color.Meta));
         Writer.WriteLine();
     }
 
@@ -95,6 +97,7 @@ internal sealed class MermaidWriter(TextWriter writer) : GraphWriter(writer)
             PackageState.Ignore => "ignored",
             PackageState.Remove => "removed",
             _ when package.IsProjectReference => "project",
+            _ when package.IsMetaPackage => "meta",
             _ when hasNuGetLink && package.Link == null => "private",
             _ => "default",
         };

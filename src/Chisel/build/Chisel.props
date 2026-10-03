@@ -21,6 +21,10 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <ChiselGraphIgnore Include="Chisel" />
+  </ItemGroup>
+
   <ItemDefinitionGroup>
     <ChiselPackage>
       <Visible>false</Visible>

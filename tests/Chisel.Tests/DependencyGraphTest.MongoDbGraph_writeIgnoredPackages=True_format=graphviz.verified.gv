@@ -8,10 +8,13 @@ digraph
   "AWSSDK.SecurityToken" -> "AWSSDK.Core"
   "DnsClient" -> "Microsoft.Win32.Registry"
   "Docker.DotNet" -> "Newtonsoft.Json"
+  "Docker.DotNet" -> "System.Buffers"
+  "Docker.DotNet" -> "System.Threading.Tasks.Extensions"
   "Docker.DotNet.X509" -> "Docker.DotNet"
   "Microsoft.Extensions.Logging.Abstractions" -> "Microsoft.Extensions.DependencyInjection.Abstractions"
   "Microsoft.Win32.Registry" -> "System.Security.AccessControl"
   "Microsoft.Win32.Registry" -> "System.Security.Principal.Windows"
+  "MongoDB.Bson" -> "System.Memory"
   "MongoDB.Bson" -> "System.Runtime.CompilerServices.Unsafe"
   "MongoDB.Driver" -> "Microsoft.Extensions.Logging.Abstractions"
   "MongoDB.Driver" -> "MongoDB.Bson"
@@ -24,8 +27,10 @@ digraph
   "MongoDB.Driver.Core" -> "MongoDB.Libmongocrypt"
   "MongoDB.Driver.Core" -> "SharpCompress"
   "MongoDB.Driver.Core" -> "Snappier"
+  "MongoDB.Driver.Core" -> "System.Buffers"
   "MongoDB.Driver.Core" -> "ZstdSharp.Port"
   "SSH.NET" -> "SshNet.Security.Cryptography"
+  "System.Security.AccessControl" -> "Microsoft.NETCore.Platforms"
   "System.Security.AccessControl" -> "System.Security.Principal.Windows"
   "System.Text.Encodings.Web" -> "System.Runtime.CompilerServices.Unsafe"
   "System.Text.Json" -> "System.Runtime.CompilerServices.Unsafe"
@@ -50,6 +55,7 @@ digraph
   "Microsoft.Bcl.AsyncInterfaces" [ fillcolor = lightgray, color = "#7A7A7A" ]
   "Microsoft.Extensions.DependencyInjection.Abstractions"
   "Microsoft.Extensions.Logging.Abstractions" [ shape = hexagon, penwidth = 4 ]
+  "Microsoft.NETCore.Platforms" [ fillcolor = ghostwhite, color = "#A1A1A6" ]
   "Microsoft.Win32.Registry"
   "MongoDB.Bson"
   "MongoDB.Driver" [ shape = hexagon, penwidth = 4 ]
@@ -61,11 +67,14 @@ digraph
   "Snappier"
   "SSH.NET" [ fillcolor = lightgray, color = "#7A7A7A" ]
   "SshNet.Security.Cryptography" [ fillcolor = lightgray, color = "#7A7A7A" ]
+  "System.Buffers" [ fillcolor = ghostwhite, color = "#A1A1A6" ]
+  "System.Memory" [ fillcolor = ghostwhite, color = "#A1A1A6" ]
   "System.Runtime.CompilerServices.Unsafe"
   "System.Security.AccessControl"
   "System.Security.Principal.Windows"
   "System.Text.Encodings.Web" [ fillcolor = lightgray, color = "#7A7A7A" ]
   "System.Text.Json" [ fillcolor = lightgray, color = "#7A7A7A" ]
+  "System.Threading.Tasks.Extensions" [ fillcolor = lightgray, color = "#7A7A7A" ]
   "Testcontainers" [ fillcolor = lightgray, color = "#7A7A7A" ]
   "Testcontainers.MongoDb" [ shape = hexagon, penwidth = 4, fillcolor = lightgray, color = "#7A7A7A" ]
   "ZstdSharp.Port"

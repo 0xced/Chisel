@@ -6,15 +6,19 @@ classDef root stroke-width:4px
 classDef default fill:aquamarine,stroke:#009061,color:#333333
 classDef ignored fill:lightgray,stroke:#7A7A7A
 classDef removed fill:lightcoral,stroke:#A42A2A
+classDef meta fill:ghostwhite,stroke:#A1A1A6
 
 AWSSDK.SecurityToken --> AWSSDK.Core
 ByteSize{{ByteSize}}
 DnsClient --> Microsoft.Win32.Registry
 Docker.DotNet --> Newtonsoft.Json
+Docker.DotNet --> System.Buffers
+Docker.DotNet --> System.Threading.Tasks.Extensions
 Docker.DotNet.X509 --> Docker.DotNet
 Microsoft.Extensions.Logging.Abstractions{{Microsoft.Extensions.Logging.Abstractions}} --> Microsoft.Extensions.DependencyInjection.Abstractions
 Microsoft.Win32.Registry --> System.Security.AccessControl
 Microsoft.Win32.Registry --> System.Security.Principal.Windows
+MongoDB.Bson --> System.Memory
 MongoDB.Bson --> System.Runtime.CompilerServices.Unsafe
 MongoDB.Driver{{MongoDB.Driver}} --> Microsoft.Extensions.Logging.Abstractions
 MongoDB.Driver --> MongoDB.Bson
@@ -27,8 +31,10 @@ MongoDB.Driver.Core --> MongoDB.Bson
 MongoDB.Driver.Core --> MongoDB.Libmongocrypt
 MongoDB.Driver.Core --> SharpCompress
 MongoDB.Driver.Core --> Snappier
+MongoDB.Driver.Core --> System.Buffers
 MongoDB.Driver.Core --> ZstdSharp.Port
 SSH.NET --> SshNet.Security.Cryptography
+System.Security.AccessControl --> Microsoft.NETCore.Platforms
 System.Security.AccessControl --> System.Security.Principal.Windows
 System.Text.Encodings.Web --> System.Runtime.CompilerServices.Unsafe
 System.Text.Json --> System.Runtime.CompilerServices.Unsafe
@@ -55,6 +61,7 @@ class Microsoft.Bcl.AsyncInterfaces ignored
 class Microsoft.Extensions.DependencyInjection.Abstractions default
 class Microsoft.Extensions.Logging.Abstractions root
 class Microsoft.Extensions.Logging.Abstractions default
+class Microsoft.NETCore.Platforms meta
 class Microsoft.Win32.Registry default
 class MongoDB.Bson default
 class MongoDB.Driver root
@@ -67,11 +74,14 @@ class SharpZipLib ignored
 class Snappier default
 class SSH.NET ignored
 class SshNet.Security.Cryptography ignored
+class System.Buffers meta
+class System.Memory meta
 class System.Runtime.CompilerServices.Unsafe default
 class System.Security.AccessControl default
 class System.Security.Principal.Windows default
 class System.Text.Encodings.Web ignored
 class System.Text.Json ignored
+class System.Threading.Tasks.Extensions ignored
 class Testcontainers ignored
 class Testcontainers.MongoDb root
 class Testcontainers.MongoDb ignored

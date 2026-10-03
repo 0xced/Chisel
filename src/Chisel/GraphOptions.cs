@@ -12,6 +12,7 @@ internal struct GraphOptions
             Private = new Color { Fill = "moccasin", Stroke = "#AF8844" },
             Removed = new Color { Fill = "lightcoral", Stroke = "#A42A2A" },
             Ignored = new Color { Fill = "lightgray", Stroke = "#7A7A7A" },
+            Meta = new Color { Fill = "ghostwhite", Stroke = "#A1A1A6" },
         };
     }
 
@@ -30,6 +31,7 @@ internal struct Colors
     public required Color Private { get; init; }
     public required Color Removed { get; init; }
     public required Color Ignored { get; init; }
+    public required Color Meta { get; init; }
 }
 
 internal struct Color

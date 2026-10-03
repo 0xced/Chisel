@@ -9,24 +9,29 @@ graph LR
 
 classDef root stroke-width:4px
 classDef default fill:aquamarine,stroke:#009061,color:#333333
+classDef meta fill:ghostwhite,stroke:#A1A1A6
 
-Microsoft.Bcl.TimeProvider[Microsoft.Bcl.TimeProvider#64;8.0.0] --> Microsoft.Bcl.AsyncInterfaces[Microsoft.Bcl.AsyncInterfaces#64;6.0.0]
-NETStandard.Library{{NETStandard.Library#64;2.0.3}} --> Microsoft.NETCore.Platforms[Microsoft.NETCore.Platforms#64;1.1.0]
+Microsoft.Bcl.AsyncInterfaces[Microsoft.Bcl.AsyncInterfaces#64;6.0.0] --> System.Threading.Tasks.Extensions[System.Threading.Tasks.Extensions#64;4.5.4]
+Microsoft.Bcl.TimeProvider[Microsoft.Bcl.TimeProvider#64;8.0.0] --> Microsoft.Bcl.AsyncInterfaces
 Polly{{Polly#64;8.4.0}} --> Polly.Core[Polly.Core#64;8.4.0]
 Polly.Core --> Microsoft.Bcl.AsyncInterfaces
 Polly.Core --> Microsoft.Bcl.TimeProvider
+Polly.Core --> System.ComponentModel.Annotations[System.ComponentModel.Annotations#64;4.5.0]
+Polly.Core --> System.Threading.Tasks.Extensions
+System.Threading.Tasks.Extensions --> System.Runtime.CompilerServices.Unsafe[System.Runtime.CompilerServices.Unsafe#64;4.5.3]
 
 class Microsoft.Bcl.AsyncInterfaces default
 click Microsoft.Bcl.AsyncInterfaces "https://www.nuget.org/packages/Microsoft.Bcl.AsyncInterfaces/6.0.0" "Microsoft.Bcl.AsyncInterfaces 6.0.0"
 class Microsoft.Bcl.TimeProvider default
 click Microsoft.Bcl.TimeProvider "https://www.nuget.org/packages/Microsoft.Bcl.TimeProvider/8.0.0" "Microsoft.Bcl.TimeProvider 8.0.0"
-class Microsoft.NETCore.Platforms default
-click Microsoft.NETCore.Platforms "https://www.nuget.org/packages/Microsoft.NETCore.Platforms/1.1.0" "Microsoft.NETCore.Platforms 1.1.0"
-class NETStandard.Library root
-class NETStandard.Library default
-click NETStandard.Library "https://www.nuget.org/packages/NETStandard.Library/2.0.3" "NETStandard.Library 2.0.3"
 class Polly root
 class Polly default
 click Polly "https://www.nuget.org/packages/Polly/8.4.0" "Polly 8.4.0"
 class Polly.Core default
 click Polly.Core "https://www.nuget.org/packages/Polly.Core/8.4.0" "Polly.Core 8.4.0"
+class System.ComponentModel.Annotations default
+click System.ComponentModel.Annotations "https://www.nuget.org/packages/System.ComponentModel.Annotations/4.5.0" "System.ComponentModel.Annotations 4.5.0"
+class System.Runtime.CompilerServices.Unsafe default
+click System.Runtime.CompilerServices.Unsafe "https://www.nuget.org/packages/System.Runtime.CompilerServices.Unsafe/4.5.3" "System.Runtime.CompilerServices.Unsafe 4.5.3"
+class System.Threading.Tasks.Extensions default
+click System.Threading.Tasks.Extensions "https://www.nuget.org/packages/System.Threading.Tasks.Extensions/4.5.4" "System.Threading.Tasks.Extensions 4.5.4"

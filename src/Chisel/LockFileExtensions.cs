@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using NuGet.Frameworks;
 using NuGet.LibraryModel;
@@ -9,7 +10,7 @@ namespace Chisel;
 
 internal static class LockFileExtensions
 {
-    public static (IReadOnlyDictionary<string, Package> Packages, IReadOnlyCollection<Package> Roots) ReadPackages(this LockFile lockFile, string tfm, string? rid, Predicate<Package>? filter = null)
+    public static (IReadOnlyDictionary<string, Package> Packages, IReadOnlyCollection<Package> Roots) ReadPackages(this LockFile lockFile, string tfm, string? rid)
     {
         var runtimeIdentifier = string.IsNullOrEmpty(rid) ? null : rid;
         var frameworks = lockFile.PackageSpec?.TargetFrameworks?.Where(e => e.TargetAlias == tfm).ToList() ?? [];
@@ -28,10 +29,10 @@ internal static class LockFileExtensions
             1 => targets[0],
             _ => throw new ArgumentException($"Multiple targets are matching \"{targetId}\" in assets at \"{lockFile.Path}\" (JSON path: targets)", nameof(rid)),
         };
-        var packages = target.Libraries.Where(e => e.Name != null && e.Version != null).Select(CreatePackage).Where(e => filter == null || filter(e)).ToDictionary(e => e.Name, StringComparer.OrdinalIgnoreCase);
+        var packages = target.Libraries.Where(e => e.Name != null && e.Version != null).Select(CreatePackage).ToDictionary(e => e.Name, StringComparer.OrdinalIgnoreCase);
         var projectDependencies = lockFile.ProjectFileDependencyGroups.Where(e => NuGetFramework.Parse(e.FrameworkName) == framework.FrameworkName).SelectMany(e => e.Dependencies).Select(ParseProjectFileDependency);
         var packageDependencies = framework.GetDependencies().Select(e => e.Name);
-        var roots = new HashSet<Package>(projectDependencies.Concat(packageDependencies).Where(e => packages.ContainsKey(e)).Select(e => packages[e]));
+        var roots = new HashSet<Package>(projectDependencies.Concat(packageDependencies).Where(packages.ContainsKey).Select(e => packages[e]));
         foreach (var root in roots)
         {
             root.IsRoot = true;
@@ -47,7 +48,18 @@ internal static class LockFileExtensions
         // > `type` - the type of the library. `package` for NuGet packages. `project` for a project reference. Can be other things as well.
         var isProjectReference = library.Type == LibraryType.Project;
         var dependencies = library.Dependencies.Select(e => new Dependency(e.Id, e.VersionRange)).ToList();
-        return new Package(name, version, isProjectReference, dependencies);
+        var hasActualFile = HasActualFile(library.NativeLibraries) ||
+                            HasActualFile(library.ResourceAssemblies) ||
+                            HasActualFile(library.RuntimeAssemblies) ||
+                            HasActualFile(library.RuntimeTargets);
+        return new Package(name, version, isProjectReference: isProjectReference, isMetaPackage: !hasActualFile, dependencies);
+    }
+
+    private static bool HasActualFile(IEnumerable<LockFileItem> assemblies)
+    {
+        // Exclude "_._" placeholder files which are used to keep empty directories inside nupkg file
+        // See https://github.com/dotnet/aspnetcore/issues/744#issuecomment-123411563
+        return assemblies.Any(e => Path.GetFileName(e.Path) != "_._");
     }
 
     private static string ParseProjectFileDependency(string dependency)

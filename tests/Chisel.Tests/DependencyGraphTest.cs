@@ -13,76 +13,12 @@ namespace Chisel.Tests;
 
 public class DependencyGraphTest
 {
-    private static readonly string[] MongoDbCopyLocalPackages =
-    [
-        "AWSSDK.Core",
-        "AWSSDK.SecurityToken",
-        "ByteSize",
-        "BouncyCastle.Cryptography",
-        "DnsClient",
-        "Docker.DotNet",
-        "Docker.DotNet.X509",
-        "Microsoft.Bcl.AsyncInterfaces",
-        "Microsoft.Extensions.DependencyInjection.Abstractions",
-        "Microsoft.Extensions.Logging.Abstractions",
-        "Microsoft.Win32.Registry",
-        "MongoDB.Bson",
-        "MongoDB.Driver.Core",
-        "MongoDB.Driver",
-        "MongoDB.Libmongocrypt",
-        "Newtonsoft.Json",
-        "SharpCompress",
-        "SharpZipLib",
-        "Snappier",
-        "SSH.NET",
-        "SshNet.Security.Cryptography",
-        "System.Runtime.CompilerServices.Unsafe",
-        "System.Security.AccessControl",
-        "System.Security.Principal.Windows",
-        "System.Text.Encodings.Web",
-        "System.Text.Json",
-        "Testcontainers",
-        "Testcontainers.MongoDb",
-        "ZstdSharp.Port",
-    ];
-
-    private static readonly string[] SqlClientCopyLocalPackages =
-    [
-        "Azure.Core",
-        "Azure.Identity",
-        "Microsoft.Bcl.AsyncInterfaces",
-        "Microsoft.Data.SqlClient",
-        "Microsoft.Data.SqlClient.SNI.runtime",
-        "Microsoft.Identity.Client.Extensions.Msal",
-        "Microsoft.IdentityModel.Abstractions",
-        "Microsoft.IdentityModel.JsonWebTokens",
-        "Microsoft.IdentityModel.Logging",
-        "Microsoft.IdentityModel.Protocols.OpenIdConnect",
-        "Microsoft.IdentityModel.Protocols",
-        "Microsoft.IdentityModel.Tokens",
-        "Microsoft.SqlServer.Server",
-        "System.Configuration.ConfigurationManager",
-        "System.Diagnostics.DiagnosticSource",
-        "System.Diagnostics.EventLog",
-        "System.IdentityModel.Tokens.Jwt",
-        "System.IO.FileSystem.AccessControl",
-        "System.Memory.Data",
-        "System.Runtime.Caching",
-        "System.Runtime.CompilerServices.Unsafe",
-        "System.Security.AccessControl",
-        "System.Security.Cryptography.Cng",
-        "System.Security.Cryptography.ProtectedData",
-        "System.Security.Principal.Windows",
-        "System.Text.Encodings.Web",
-        "System.Text.Json",
-    ];
-
     [Theory]
     [CombinatorialData]
     public async Task MongoDbGraph(bool writeIgnoredPackages, [CombinatorialValues("graphviz", "mermaid")] string format)
     {
         var lockFile = new LockFileFormat().Read(GetAssetsPath("MongoDbGraph.json"));
-        var (packages, roots) = lockFile.ReadPackages(tfm: "net8.0", rid: null, package => package.IsProjectReference || MongoDbCopyLocalPackages.Contains(package.Name));
+        var (packages, roots) = lockFile.ReadPackages(tfm: "net8.0", rid: null);
         var graph = new DependencyGraph(packages, roots, ignores: [ "Testcontainers.MongoDb" ]);
         var (removed, notFound, removedRoots) = graph.Remove([ "MongoDB.Driver", "AWSSDK.SecurityToken", "NonExistentPackage" ]);
         await using var writer = new StringWriter();
@@ -110,7 +46,7 @@ public class DependencyGraphTest
     public async Task SqlClientGraph(string format)
     {
         var lockFile = new LockFileFormat().Read(GetAssetsPath("SqlClientGraph.json"));
-        var (packages, roots) = lockFile.ReadPackages(tfm: "net8.0-windows", rid: "win-x64", package => package.IsProjectReference || SqlClientCopyLocalPackages.Contains(package.Name));
+        var (packages, roots) = lockFile.ReadPackages(tfm: "net8.0-windows", rid: "win-x64");
         var graph = new DependencyGraph(packages, roots, ignores: []);
         var (removed, notFound, removedRoots) = graph.Remove([ "Azure.Identity", "Microsoft.IdentityModel.JsonWebTokens", "Microsoft.IdentityModel.Protocols.OpenIdConnect", "System.Memory.Data" ]);
         await using var writer = new StringWriter();
@@ -130,6 +66,7 @@ public class DependencyGraphTest
             "Azure.Core",
             "Azure.Identity",
             "Microsoft.Bcl.AsyncInterfaces",
+            "Microsoft.CSharp",
             "Microsoft.Identity.Client.Extensions.Msal",
             "Microsoft.IdentityModel.Abstractions",
             "Microsoft.IdentityModel.JsonWebTokens",
@@ -137,13 +74,23 @@ public class DependencyGraphTest
             "Microsoft.IdentityModel.Protocols",
             "Microsoft.IdentityModel.Protocols.OpenIdConnect",
             "Microsoft.IdentityModel.Tokens",
+            "Microsoft.NETCore.Platforms",
+            "Microsoft.NETCore.Targets",
             "System.Diagnostics.DiagnosticSource",
             "System.IO.FileSystem.AccessControl",
             "System.IdentityModel.Tokens.Jwt",
+            "System.Memory",
+            "System.Numerics.Vectors",
+            "System.Private.Uri",
+            "System.Runtime",
             "System.Runtime.CompilerServices.Unsafe",
             "System.Security.AccessControl",
             "System.Security.Cryptography.Cng",
             "System.Security.Principal.Windows",
+            "System.Text.Encoding",
+            "System.Threading.Tasks.Extensions",
+            "runtime.any.System.Runtime",
+            "runtime.any.System.Text.Encoding",
         ]);
         notFound.Should().BeEmpty();
         removedRoots.Should().BeEquivalentTo(["System.Memory.Data"]);
@@ -157,7 +104,7 @@ public class DependencyGraphTest
     {
         var lockFile = new LockFileFormat().Read(GetAssetsPath("PollyGraph.json"));
         var (packages, roots) = lockFile.ReadPackages(tfm: "netstandard2.0", rid: "");
-        var graph = new DependencyGraph(packages, roots, ignores: [ "System.*" ]);
+        var graph = new DependencyGraph(packages, roots, ignores: [ "NETStandard.*" ]);
         if (includeLinks)
         {
             foreach (var package in graph.Packages)
@@ -188,7 +135,7 @@ public class DependencyGraphTest
     public void ValidProjectVersion(string? rid)
     {
         var lockFile = new LockFileFormat().Read(GetAssetsPath("SqlClientGraph.json"));
-        var (packages, roots) = lockFile.ReadPackages(tfm: "net8.0-windows", rid: rid, package => package.IsProjectReference || SqlClientCopyLocalPackages.Contains(package.Name));
+        var (packages, roots) = lockFile.ReadPackages(tfm: "net8.0-windows", rid: rid);
         var graph = new DependencyGraph(packages, roots, ignores: []);
 
         graph.EnumerateUnsatisfiedProjectDependencies().Should().BeEmpty();
@@ -198,7 +145,7 @@ public class DependencyGraphTest
     public void InvalidProjectVersion()
     {
         var lockFile = new LockFileFormat().Read(GetAssetsPath("SqlClientGraph-InvalidProjectVersion.json"));
-        var (packages, roots) = lockFile.ReadPackages(tfm: "net8.0-windows", rid: "win-x64", package => package.IsProjectReference || SqlClientCopyLocalPackages.Contains(package.Name));
+        var (packages, roots) = lockFile.ReadPackages(tfm: "net8.0-windows", rid: "win-x64");
         var graph = new DependencyGraph(packages, roots, ignores: []);
 
         var result = graph.EnumerateUnsatisfiedProjectDependencies().ToList();
@@ -212,7 +159,7 @@ public class DependencyGraphTest
         result.Select(e => e.Project).Distinct().Should().ContainSingle().Which.Version.Should().Be(new NuGetVersion(1, 22, 333));
 
         // Package objects are compared by name only
-        static Package Package(string name) => new(name, default!, default, default!);
+        static Package Package(string name) => new(name, default!, default, default, default!);
     }
 
     private static string GetAssetsPath(string file, [CallerFilePath] string path = "")

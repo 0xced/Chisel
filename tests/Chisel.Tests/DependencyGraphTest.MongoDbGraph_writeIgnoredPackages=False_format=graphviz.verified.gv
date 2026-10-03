@@ -10,6 +10,7 @@ digraph
   "Microsoft.Extensions.Logging.Abstractions" -> "Microsoft.Extensions.DependencyInjection.Abstractions"
   "Microsoft.Win32.Registry" -> "System.Security.AccessControl"
   "Microsoft.Win32.Registry" -> "System.Security.Principal.Windows"
+  "MongoDB.Bson" -> "System.Memory"
   "MongoDB.Bson" -> "System.Runtime.CompilerServices.Unsafe"
   "MongoDB.Driver" -> "Microsoft.Extensions.Logging.Abstractions"
   "MongoDB.Driver" -> "MongoDB.Bson"
@@ -22,7 +23,9 @@ digraph
   "MongoDB.Driver.Core" -> "MongoDB.Libmongocrypt"
   "MongoDB.Driver.Core" -> "SharpCompress"
   "MongoDB.Driver.Core" -> "Snappier"
+  "MongoDB.Driver.Core" -> "System.Buffers"
   "MongoDB.Driver.Core" -> "ZstdSharp.Port"
+  "System.Security.AccessControl" -> "Microsoft.NETCore.Platforms"
   "System.Security.AccessControl" -> "System.Security.Principal.Windows"
 
   "AWSSDK.Core" [ fillcolor = lightcoral, color = "#A42A2A" ]
@@ -31,6 +34,7 @@ digraph
   "DnsClient"
   "Microsoft.Extensions.DependencyInjection.Abstractions"
   "Microsoft.Extensions.Logging.Abstractions" [ shape = hexagon, penwidth = 4 ]
+  "Microsoft.NETCore.Platforms" [ fillcolor = ghostwhite, color = "#A1A1A6" ]
   "Microsoft.Win32.Registry"
   "MongoDB.Bson"
   "MongoDB.Driver" [ shape = hexagon, penwidth = 4 ]
@@ -38,6 +42,8 @@ digraph
   "MongoDB.Libmongocrypt"
   "SharpCompress"
   "Snappier"
+  "System.Buffers" [ fillcolor = ghostwhite, color = "#A1A1A6" ]
+  "System.Memory" [ fillcolor = ghostwhite, color = "#A1A1A6" ]
   "System.Runtime.CompilerServices.Unsafe"
   "System.Security.AccessControl"
   "System.Security.Principal.Windows"
