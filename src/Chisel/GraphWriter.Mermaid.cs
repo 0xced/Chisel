@@ -96,8 +96,8 @@ internal sealed class MermaidWriter(TextWriter writer) : GraphWriter(writer)
         {
             PackageState.Ignore => "ignored",
             PackageState.Remove => "removed",
-            _ when package.IsProjectReference => "project",
-            _ when package.IsMetaPackage => "meta",
+            _ when package.PackageType == PackageType.Project => "project",
+            _ when package.PackageType == PackageType.Meta => "meta",
             _ when hasNuGetLink && package.Link == null => "private",
             _ => "default",
         };

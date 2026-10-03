@@ -45,8 +45,8 @@ internal sealed class GraphvizWriter(TextWriter writer) : GraphWriter(writer)
         {
             PackageState.Ignore => options.Color.Ignored,
             PackageState.Remove => options.Color.Removed,
-            _ when package.IsProjectReference => options.Color.Project,
-            _ when package.IsMetaPackage => options.Color.Meta,
+            _ when package.PackageType == PackageType.Project => options.Color.Project,
+            _ when package.PackageType == PackageType.Meta => options.Color.Meta,
             _ when hasNuGetLink && package.Link == null => options.Color.Private,
             _ => (Color?)null,
         };

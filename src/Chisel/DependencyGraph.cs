@@ -103,7 +103,7 @@ internal sealed class DependencyGraph
 
     public IEnumerable<(Package Project, Package Dependent, Dependency Dependency)> EnumerateUnsatisfiedProjectDependencies()
     {
-        foreach (var (project, dependents) in _reverseGraph.Where(e => e.Key.IsProjectReference).Select(e => (e.Key, e.Value)))
+        foreach (var (project, dependents) in _reverseGraph.Where(e => e.Key.PackageType == PackageType.Project).Select(e => (e.Key, e.Value)))
         {
             foreach (var dependent in dependents)
             {

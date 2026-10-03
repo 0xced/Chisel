@@ -14,11 +14,11 @@ internal abstract class GraphWriter(TextWriter writer)
 
     public void Write(DependencyGraph graph, GraphOptions options)
     {
-        var hasProject = graph.Packages.Any(e => e.IsProjectReference);
+        var hasProject = graph.Packages.Any(e => e.PackageType == PackageType.Project);
         var hasIgnored = graph.Packages.Any(e => e.State == PackageState.Ignore) && options.WriteIgnoredPackages;
         var hasRemoved = graph.Packages.Any(e => e.State == PackageState.Remove);
         var hasNuGetLink = graph.Packages.Any(e => e.Link?.Host == "www.nuget.org") && graph.Packages.Any(e => e.Link == null);
-        var hasMetaPackage = graph.Packages.Any(e => e.IsMetaPackage);
+        var hasMetaPackage = graph.Packages.Any(e => e.PackageType == PackageType.Meta);
         WriteHeader(hasProject: hasProject, hasIgnored: hasIgnored, hasRemoved: hasRemoved, hasNuGetLink: hasNuGetLink, hasMetaPackage: hasMetaPackage, options);
         WriteEdges(graph, options);
         Writer.WriteLine();

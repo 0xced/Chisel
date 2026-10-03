@@ -52,7 +52,8 @@ internal static class LockFileExtensions
                             HasActualFile(library.ResourceAssemblies) ||
                             HasActualFile(library.RuntimeAssemblies) ||
                             HasActualFile(library.RuntimeTargets);
-        return new Package(name, version, isProjectReference: isProjectReference, isMetaPackage: !hasActualFile, dependencies);
+        var packageType = isProjectReference ? PackageType.Project : hasActualFile ? PackageType.Standard : PackageType.Meta;
+        return new Package(name, version, packageType, dependencies);
     }
 
     private static bool HasActualFile(IEnumerable<LockFileItem> assemblies)

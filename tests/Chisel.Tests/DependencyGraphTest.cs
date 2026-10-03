@@ -199,7 +199,7 @@ public class DependencyGraphTest
         result.Select(e => e.Project).Distinct().Should().ContainSingle().Which.Version.Should().Be(new NuGetVersion(1, 22, 333));
 
         // Package objects are compared by name only
-        static Package Package(string name) => new(name, default!, default, default, default!);
+        static Package Package(string name) => new(name, default!, default, default!);
     }
 
     private static string GetAssetsPath(string file, [CallerFilePath] string path = "")
